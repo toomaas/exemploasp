@@ -41,5 +41,10 @@ namespace exemploasp.Models
         [Compare("Password", ErrorMessage = "A confirmação de password é óbrigatório")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
+
+	    public UserAccount()
+	    {
+		    TipoUtilizador = 1;
+	    }
     }
 }
