@@ -76,5 +76,15 @@ namespace exemploasp.Controllers
             }
         }
 
+	    public ActionResult Logout()
+	    {
+		    if (Session["UserId"] != null)
+		    {
+			    Session["UserId"] = null;
+
+			
+		    }
+		    return RedirectToAction("LoggedIn");
+		}
     }
 }
