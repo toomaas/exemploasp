@@ -13,6 +13,8 @@ namespace exemploasp.Models
 
 		public DbSet<Exposicao> Exposicao { get; set; }
 
+        public DbSet<Tema> Tema { get; set; }
+
 	    protected override void OnModelCreating(DbModelBuilder modelBuilder)
 	    {
 		    modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
