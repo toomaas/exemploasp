@@ -90,7 +90,7 @@ namespace exemploasp.Controllers
 			return RedirectToAction("LoggedIn");
 		}
 
-		public ActionResult PerfilUser(int id)
+		public ActionResult PerfilUser(int? id)
 		{
 			using (OurDBContext db = new OurDBContext())
 			{
@@ -99,21 +99,7 @@ namespace exemploasp.Controllers
 					return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 				}
 				UserAccount user = db.userAccount.Find(id);
-				ViewBag.Username = user.Nome;
-
-				UserAccount username = new UserAccount
-				{
-					Nome = user.Nome,
-					Email = user.Email,
-					Morada = user.Morada,
-					Sexo = user.Sexo,
-					Idade = user.Idade,
-					NumTelefone = user.NumTelefone
-				};
-
-				ViewData["Utilizador"] = username;
-
-				
+				ViewData["Utilizador"] = user;
 
 			}
 
