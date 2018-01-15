@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Security.Principal;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using exemploasp.Models;
@@ -32,6 +35,8 @@ namespace exemploasp.Controllers
 			{
 				using (OurDBContext db = new OurDBContext())
 				{
+					var encrypt = Encrypt(account.Password);
+					account.Password = encrypt;
 					db.userAccount.Add(account);
 					db.SaveChanges();
 				}
@@ -40,6 +45,22 @@ namespace exemploasp.Controllers
 			}
 			return View();
 		}
+
+		public string Encrypt(string passwordPlainText)
+		{
+			if(passwordPlainText == null) throw new ArgumentNullException("passwordPlainText");
+
+			//encrypt data
+
+			var data = Encoding.Unicode.GetBytes(passwordPlainText);
+			byte[] encrypted = ProtectedData.Protect(data, null, Scope);
+
+			return Convert.ToBase64String(encrypted);
+
+		}
+
+		public DataProtectionScope Scope { get; set; }
+
 
 		//Login
 		public ActionResult Login()
@@ -92,8 +113,11 @@ namespace exemploasp.Controllers
 
 		public ActionResult PerfilUser(int? id)
 		{
+
 			using (OurDBContext db = new OurDBContext())
 			{
+
+				
 				if (id == null)
 				{
 					return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

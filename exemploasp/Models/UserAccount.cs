@@ -24,10 +24,12 @@ namespace exemploasp.Models
         [Required(ErrorMessage = "O Sexo é óbrigatório")]
         public string Sexo { get; set; }
 
-        [Required(ErrorMessage = "O NumTelefone é óbrigatório")]
+	    [Display(Name = "Numero de telefone")]
+		[Required(ErrorMessage = "O NumTelefone é óbrigatório")]
         public int NumTelefone { get; set; }
 
-        [Required(ErrorMessage = "O TipoUtilizador é óbrigatório")]
+	    [Display(Name = "Tipo utilizador")]
+		[Required(ErrorMessage = "O TipoUtilizador é óbrigatório")]
         public int TipoUtilizador { get; set; }
 
         [Required(ErrorMessage = "O email é óbrigatório")]
@@ -38,7 +40,8 @@ namespace exemploasp.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Compare("Password", ErrorMessage = "A confirmação de password é óbrigatório")]
+	    [Display(Name = "Confirmar password")]
+		[Compare("Password", ErrorMessage = "A confirmação de password é óbrigatório")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
 
@@ -46,5 +49,9 @@ namespace exemploasp.Models
 	    {
 		    TipoUtilizador = 1;
 	    }
+
+
+
+
     }
 }
