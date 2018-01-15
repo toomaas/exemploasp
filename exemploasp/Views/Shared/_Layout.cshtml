@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using System.Web.Mvc.Html
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -30,7 +31,9 @@
 
                     @if (Session["UserID"] != null)
                     {
-                        <li><a>@Session["Username"]</a></li>
+
+                        <li>@Html.ActionLink((string) Session["Username"], "PerfilUser","Account", new { id = Session["UserID"] }, null)</li>
+
                         <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
                     }
                 </ul>

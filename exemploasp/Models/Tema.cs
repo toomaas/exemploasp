@@ -17,7 +17,7 @@ namespace exemploasp.Models
 		[Required(ErrorMessage = "O nome é óbrigatório")]
 		public string Nome { get; set; }
 
-
+		[Display(Name = "Descrição do tema")]
 		[Required(ErrorMessage = "A descrição é óbrigatória")]
 		public string Descricao { get; set; }
 

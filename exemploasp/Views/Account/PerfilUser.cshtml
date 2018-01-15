@@ -1,0 +1,15 @@
+﻿@using exemploasp.Models
+
+@{
+    ViewBag.Title = "PerfilUser";
+}
+
+<h2>Perfil</h2>
+
+@{
+    var utilizador = (UserAccount) ViewData["Utilizador"];
+}
+
+<h1>Utilizador</h1>
+<h3>Nome: @utilizador.Nome</h3>
+
