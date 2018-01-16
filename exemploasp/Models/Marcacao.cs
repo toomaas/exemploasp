@@ -30,22 +30,15 @@ namespace exemploasp.Models
         [Display(Name = "Hora de inicio da visita")]
         [Required(ErrorMessage = "Introduza uma data de fim da exposição")]
         [DataType(DataType.Time)]
-        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:HH:mm}")]
         public DateTime HoraDeInicio { get; set; }
 
         [Display(Name = "Hora de fim da visita")]
         [Required(ErrorMessage = "Introduza uma data de fim da exposição")]
         [DataType(DataType.Time)]
-        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:HH:mm}")]
         public DateTime HoraDeFim { get; set; }
 
         [Display(Name = "Nº de pessoas")]
         [Required(ErrorMessage = "É necessário introduzir o número de pessoas")]
         public int NumPessoas { get; set; }
-
-        /*public Marcacao()
-        {
-           
-        }*/
     }
 }
