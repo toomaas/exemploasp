@@ -78,8 +78,8 @@ namespace exemploasp.Controllers
 		{
 			using (OurDBContext db = new OurDBContext())
 			{
-                
-				var usr = db.userAccount.Where(u => u.Email == user.Email && u.Password == user.Password).FirstOrDefault();
+			    var encrypt = Encrypt(user.Password);
+                var usr = db.userAccount.Where(u => u.Email == user.Email && u.Password == encrypt).FirstOrDefault();
 				if (usr != null)
 				{
 					Session["UserID"] = usr.UserID.ToString();
