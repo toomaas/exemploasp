@@ -117,22 +117,20 @@ namespace exemploasp.Controllers
 			return RedirectToAction("LoggedIn");
 		}
 
-		public ActionResult PerfilUser(int? id)
+	    //"int? id" signfica que o parametro id pode ter um valor inteiro ou pode receber um valor null
+        public ActionResult PerfilUser(int? id)
 		{
 
 			using (OurDBContext db = new OurDBContext())
 			{
-
-				
-				if (id == null)
+                UserAccount user = db.userAccount.Find(id);
+                if (id == null || user == null)
 				{
 					return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 				}
-				UserAccount user = db.userAccount.Find(id);
+				
 				ViewData["Utilizador"] = user;
-
 			}
-
 			return View();
 		}
 	}

@@ -32,14 +32,9 @@
                             <li>@Html.ActionLink("Marcações","Index","Marcacao")</li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
-
-                            @if (Session["UserID"] != null)
-                            {
-
                                 <li>@Html.ActionLink((string) Session["Username"], "PerfilUser", "Account", new {id = Session["UserID"]}, null)</li>
 
                                 <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
-                            }
                         </ul>
                     </div>
                 </div>
