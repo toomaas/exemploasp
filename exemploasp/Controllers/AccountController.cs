@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.IdentityModel;
 using System.Linq;
 using System.Net;
@@ -37,9 +38,11 @@ namespace exemploasp.Controllers
 				{
 					var encrypt = Encrypt(account.Password);
 					account.Password = encrypt;
-					db.userAccount.Add(account);
+				    encrypt = Encrypt(account.ConfirmPassword);
+				    account.ConfirmPassword = encrypt;
+                    db.userAccount.Add(account);
 					db.SaveChanges();
-				}
+                }
 				ModelState.Clear();
 				ViewBag.Message = account.Nome + " registado";
 			}
@@ -50,12 +53,14 @@ namespace exemploasp.Controllers
 		{
 			if(passwordPlainText == null) throw new ArgumentNullException("passwordPlainText");
 
-			//encrypt data
+            //encrypt data
+		    byte[] data = System.Text.Encoding.ASCII.GetBytes(passwordPlainText);
+		    data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
+		    String hash = System.Text.Encoding.ASCII.GetString(data);
+            //var data = Encoding.Unicode.GetBytes(passwordPlainText);
+			//byte[] encrypted = ProtectedData.Protect(data, null, Scope);
 
-			var data = Encoding.Unicode.GetBytes(passwordPlainText);
-			byte[] encrypted = ProtectedData.Protect(data, null, Scope);
-
-			return Convert.ToBase64String(encrypted);
+		    return hash; //System.Text.Encoding.UTF8.GetString(encrypted);//Convert.ToBase64String(encrypted);
 
 		}
 
@@ -73,6 +78,7 @@ namespace exemploasp.Controllers
 		{
 			using (OurDBContext db = new OurDBContext())
 			{
+                
 				var usr = db.userAccount.Where(u => u.Email == user.Email && u.Password == user.Password).FirstOrDefault();
 				if (usr != null)
 				{
