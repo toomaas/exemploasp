@@ -25,7 +25,6 @@ namespace exemploasp.Models
 		[DataType(DataType.Date)]
 		public DateTime DataFinal { get; set; }
 
-
 		[Display(Name = "Duração")]
 		[Required(ErrorMessage = "A duração é obrigatoria")]
 		public int Duracao { get; set; }

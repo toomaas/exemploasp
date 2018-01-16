@@ -153,6 +153,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ExposicaoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MarcacaoController.cs" />
     <Compile Include="Controllers\TemaController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -165,8 +166,13 @@
     <Compile Include="Migrations\201801111755337_Exposicoes_Temas.Designer.cs">
       <DependentUpon>201801111755337_Exposicoes_Temas.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801161822508_marcacao.cs" />
+    <Compile Include="Migrations\201801161822508_marcacao.Designer.cs">
+      <DependentUpon>201801161822508_marcacao.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Exposicao.cs" />
+    <Compile Include="Models\Marcacao.cs" />
     <Compile Include="Models\OurDBContext.cs" />
     <Compile Include="Models\Tema.cs" />
     <Compile Include="Models\UserAccount.cs" />
@@ -218,6 +224,8 @@
     <Content Include="Views\Tema\Index.cshtml" />
     <Content Include="Views\Tema\Create.cshtml" />
     <Content Include="Views\Account\PerfilUser.cshtml" />
+    <Content Include="Views\Marcacao\Create.cshtml" />
+    <Content Include="Views\Marcacao\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -241,6 +249,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801111755337_Exposicoes_Temas.resx">
       <DependentUpon>201801111755337_Exposicoes_Temas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801161822508_marcacao.resx">
+      <DependentUpon>201801161822508_marcacao.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
