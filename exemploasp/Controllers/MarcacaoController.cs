@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Data.Entity.Infrastructure;
 using System.Web.Mvc;
 using exemploasp.Models;
 
@@ -9,6 +10,8 @@ namespace exemploasp.Controllers
 {
     public class MarcacaoController : Controller
     {
+		OurDBContext db = new OurDBContext();
+
         // GET: Marcacao
         public ActionResult Index()
         {
@@ -28,11 +31,25 @@ namespace exemploasp.Controllers
         // GET: Marcacao/Create
         public ActionResult Create()
         {
+	        UserAccountDropdownList();
             return View();
         }
 
-        // POST: Marcacao/Create
-        [HttpPost]
+	    private void UserAccountDropdownList(object userAccount = null)
+	    {
+
+			    var utilizadoresQuery = from u in db.userAccount
+				    orderby u.Nome
+				    select u;
+
+			    ViewBag.UserAccountID = new SelectList(utilizadoresQuery, "UserAccountID", "Nome", userAccount);
+		   
+
+	    }
+
+
+		// POST: Marcacao/Create
+		[HttpPost]
         public ActionResult Create(Marcacao marcacao)
         {
             if (ModelState.IsValid)

@@ -178,6 +178,10 @@
     <Compile Include="Migrations\201801181655040_ligacoes_tabelas.Designer.cs">
       <DependentUpon>201801181655040_ligacoes_tabelas.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801181811138_marcacaoIDs.cs" />
+    <Compile Include="Migrations\201801181811138_marcacaoIDs.Designer.cs">
+      <DependentUpon>201801181811138_marcacaoIDs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Disponibilidade.cs" />
     <Compile Include="Models\Exposicao.cs" />
@@ -269,6 +273,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801181655040_ligacoes_tabelas.resx">
       <DependentUpon>201801181655040_ligacoes_tabelas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801181811138_marcacaoIDs.resx">
+      <DependentUpon>201801181811138_marcacaoIDs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
