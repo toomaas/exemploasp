@@ -32,7 +32,7 @@ namespace exemploasp.Controllers
         public ActionResult Create()
         {
 	        UserAccountDropdownList();
-	        //ExposicaoDropdownList();
+	        ExposicaoDropdownList();
 
 			return View();
         }
@@ -45,20 +45,16 @@ namespace exemploasp.Controllers
 				    select u;
 
 			    ViewBag.UserAccountID = new SelectList(utilizadoresQuery, "UserID", "Nome", userAccount);
-		   
-
 	    }
 
-	    private void ExposicaoDropdownList(object exposicao = null)
+	    private void ExposicaoDropdownList(object Exposicao = null)
 	    {
 
-		    var ExposicoesQuery = from u in db.userAccount
-			    orderby u.Nome
-			    select u;
+		        var exposicoesQuery = from e in db.Exposicao
+			        orderby e.Nome
+			        select e;
 
-		    ViewBag.UserAccountID = new SelectList(ExposicoesQuery, "ExposicaoID", "Nome", exposicao);
-
-
+		        ViewBag.ExposicaoID = new SelectList(exposicoesQuery, "ExposicaoID", "Nome", Exposicao);
 	    }
 
 
