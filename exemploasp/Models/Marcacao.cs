@@ -40,5 +40,9 @@ namespace exemploasp.Models
         [Display(Name = "Nº de pessoas")]
         [Required(ErrorMessage = "É necessário introduzir o número de pessoas")]
         public int NumPessoas { get; set; }
+
+        public virtual Exposicao Exposicao { get; set; }
+
+        public virtual UserAccount UserAccount { get; set; }
     }
 }

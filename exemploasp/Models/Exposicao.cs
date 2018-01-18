@@ -36,6 +36,10 @@ namespace exemploasp.Models
 
 		public virtual ICollection<Tema> Temas { get; set; }
 
+        public virtual ICollection<UserAccount> UserAccounts { get; set; }
+
+        public virtual ICollection<Marcacao> Marcacaos { get; set; }
+
 
 	}
 }

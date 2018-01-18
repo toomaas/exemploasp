@@ -50,10 +50,13 @@ namespace exemploasp.Models
 		    TipoUtilizador = 1;
 	    }
 
-
 	    public virtual ICollection <Tema> Temas { get; set; }
 
+        public virtual ICollection<Disponibilidade> Disponibilidades { get; set; }
 
+        public virtual ICollection<Exposicao> Exposicaos { get; set; }
+
+        public virtual ICollection<Marcacao> Marcacaos { get; set; }
 
 	}
 }
