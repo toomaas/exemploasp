@@ -32,7 +32,9 @@ namespace exemploasp.Controllers
         public ActionResult Create()
         {
 	        UserAccountDropdownList();
-            return View();
+	        //ExposicaoDropdownList();
+
+			return View();
         }
 
 	    private void UserAccountDropdownList(object userAccount = null)
@@ -42,22 +44,38 @@ namespace exemploasp.Controllers
 				    orderby u.Nome
 				    select u;
 
-			    ViewBag.UserAccountID = new SelectList(utilizadoresQuery, "UserAccountID", "Nome", userAccount);
+			    ViewBag.UserAccountID = new SelectList(utilizadoresQuery, "UserID", "Nome", userAccount);
 		   
 
 	    }
 
+	    private void ExposicaoDropdownList(object exposicao = null)
+	    {
+
+		    var ExposicoesQuery = from u in db.userAccount
+			    orderby u.Nome
+			    select u;
+
+		    ViewBag.UserAccountID = new SelectList(ExposicoesQuery, "ExposicaoID", "Nome", exposicao);
+
+
+	    }
+
+
+
 
 		// POST: Marcacao/Create
 		[HttpPost]
-        public ActionResult Create(Marcacao marcacao)
+        public ActionResult Create([Bind(Include = "MarcacaoID, NomeRequerente, Idade, NumTelefoneRequerente, Data,HoraDeInicio,HoraDeFim,NumPessoas,ExposicaoID, UserAccount_UserID,UserAccountID")]Marcacao marcacao)
         {
             if (ModelState.IsValid)
             {
                 using (OurDBContext db = new OurDBContext())
                 {
                     db.Marcacao.Add(marcacao);
-                    db.SaveChanges();
+	                UserAccountDropdownList(marcacao.UserAccountID);
+
+					db.SaveChanges();
                 }
                 ModelState.Clear();
                 ViewBag.Message = "Marcação de "+marcacao.NomeRequerente + " criada com sucesso!";

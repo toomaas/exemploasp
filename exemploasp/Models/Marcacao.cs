@@ -47,5 +47,10 @@ namespace exemploasp.Models
         public virtual Exposicao Exposicao { get; set; }
 
         public virtual UserAccount UserAccount { get; set; }
+
+	    public Marcacao()
+	    {
+		    ExposicaoID = 1;
+	    }
     }
 }
