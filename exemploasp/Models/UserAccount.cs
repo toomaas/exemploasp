@@ -51,7 +51,9 @@ namespace exemploasp.Models
 	    }
 
 
+	    public virtual ICollection <Tema> Temas { get; set; }
 
 
-    }
+
+	}
 }
