@@ -23,6 +23,7 @@ namespace exemploasp.Models
 
 		public virtual ICollection<Exposicao> Exposicoes { get; set; }
 
+		public virtual ICollection<UserAccount> UserAccounts { get; set; }
 
 
 	}

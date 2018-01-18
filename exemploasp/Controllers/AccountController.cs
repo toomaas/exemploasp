@@ -45,6 +45,7 @@ namespace exemploasp.Controllers
                 }
 				ModelState.Clear();
 				ViewBag.Message = account.Nome + " registado";
+				return RedirectToAction("Login");
 			}
 			return View();
 		}
