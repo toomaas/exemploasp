@@ -174,7 +174,12 @@
     <Compile Include="Migrations\201801181606542_TemaUser.Designer.cs">
       <DependentUpon>201801181606542_TemaUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801181655040_ligacoes_tabelas.cs" />
+    <Compile Include="Migrations\201801181655040_ligacoes_tabelas.Designer.cs">
+      <DependentUpon>201801181655040_ligacoes_tabelas.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Disponibilidade.cs" />
     <Compile Include="Models\Exposicao.cs" />
     <Compile Include="Models\Marcacao.cs" />
     <Compile Include="Models\OurDBContext.cs" />
@@ -261,6 +266,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801181606542_TemaUser.resx">
       <DependentUpon>201801181606542_TemaUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801181655040_ligacoes_tabelas.resx">
+      <DependentUpon>201801181655040_ligacoes_tabelas.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
