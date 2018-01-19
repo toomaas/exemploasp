@@ -48,9 +48,5 @@ namespace exemploasp.Models
 
         public virtual UserAccount UserAccount { get; set; }
 
-	    public Marcacao()
-	    {
-		    ExposicaoID = 1;
-	    }
     }
 }
