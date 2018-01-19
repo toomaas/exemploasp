@@ -42,8 +42,16 @@ namespace exemploasp.Controllers
 	            {
 		            using (OurDBContext db = new OurDBContext())
 		            {
-			            db.Exposicao.Add(exposicao);
-			            db.SaveChanges();
+		                if (exposicao.DataInicial >= DateTime.Now && exposicao.DataInicial < exposicao.DataFinal)
+		                {
+		                    db.Exposicao.Add(exposicao);
+		                    db.SaveChanges();
+		                }
+		                else
+		                {
+		                    ModelState.AddModelError("", "Datas inválidas");
+		                    return View();
+		                }
 		            }
 					ModelState.Clear();
 		            ViewBag.Message = exposicao.Nome+"Criada com sucesso";

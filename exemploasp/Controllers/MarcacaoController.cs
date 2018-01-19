@@ -71,7 +71,8 @@ namespace exemploasp.Controllers
                 using (OurDBContext db = new OurDBContext())
                 {
                     DateTime hoje = DateTime.Now;
-                    if (hoje.Date < marcacao.Data)
+                    var exp = db.Exposicao.FirstOrDefault(e => e.ExposicaoID == marcacao.ExposicaoID);
+                    if (marcacao.Data > exp.DataInicial && marcacao.Data < exp.DataFinal)
                     {
                         db.Marcacao.Add(marcacao);
                         db.SaveChanges();
@@ -79,7 +80,7 @@ namespace exemploasp.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("Data", "Data inválida");
+                        ModelState.AddModelError("Data", "Esta Exposição occore de "+exp.DataInicial.ToShortDateString()+" a "+exp.DataFinal.ToShortDateString());
                         UserAccountDropdownList();
                         ExposicaoDropdownList();
                         return View();
