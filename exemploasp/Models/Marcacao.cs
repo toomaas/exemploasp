@@ -12,14 +12,17 @@ namespace exemploasp.Models
         [Key]
         public int MarcacaoID { get; set; }
 
-        [Required(ErrorMessage = "O nome do requerente é obrigatório")]
+
+	    [Display(Name = "Nome do requerente")]
+		[Required(ErrorMessage = "O nome do requerente é obrigatório")]
         public string NomeRequerente { get; set; }
 
         [Required(ErrorMessage = "A idade é óbrigatória")]
         public int Idade { get; set; }
 
         [Display(Name = "Numero de telefone do requerente")]
-        [Required(ErrorMessage = "O numero de telefone do requerente é óbrigatório")]
+        [RegularExpression(@"^[0-9]{9}$", ErrorMessage = "Numero de telefone invalido")]
+		[Required(ErrorMessage = "O numero de telefone do requerente é óbrigatório")]
         public int NumTelefoneRequerente { get; set; }
 
         [Display(Name = "Data da visita")]
