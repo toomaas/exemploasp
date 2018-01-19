@@ -239,8 +239,8 @@
     <Content Include="Views\Tema\Index.cshtml" />
     <Content Include="Views\Tema\Create.cshtml" />
     <Content Include="Views\Account\PerfilUser.cshtml" />
-    <Content Include="Views\Marcacao\Index.cshtml" />
     <Content Include="Views\Marcacao\Create.cshtml" />
+    <Content Include="Views\Marcacao\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
