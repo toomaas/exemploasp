@@ -15,13 +15,16 @@ namespace exemploasp.Models
 
 
 		[Required(ErrorMessage = "O nome é óbrigatório")]
-		public string Nome { get; set; }
+		[RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Nome inválido. Utilize apenas letras.")]
+        public string Nome { get; set; }
 
 		[Required(ErrorMessage = "A morada é óbrigatória")]
 		public string Morada { get; set; }
 
 		[Required(ErrorMessage = "A idade é óbrigatória")]
-		public int Idade { get; set; }
+		[DataType(DataType.Date)]
+		public DateTime Idade { get; set; }
+        //public int Idade { get; set; }
 
 		[Required(ErrorMessage = "O Sexo é óbrigatório")]
 		public string Sexo { get; set; }

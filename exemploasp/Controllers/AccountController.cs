@@ -40,12 +40,22 @@ namespace exemploasp.Controllers
 			{
 				using (OurDBContext db = new OurDBContext())
 				{
-					var encrypt = Encrypt(account.Password);
-					account.Password = encrypt;
-				    encrypt = Encrypt(account.ConfirmPassword);
-				    account.ConfirmPassword = encrypt;
-                    db.UserAccount.Add(account);
-					db.SaveChanges();
+				    DateTime data18 = DateTime.Now;
+				    data18 = data18.AddYears(-18);
+				    if (account.Idade < data18)
+				    {
+				        var encrypt = Encrypt(account.Password);
+				        account.Password = encrypt;
+				        encrypt = Encrypt(account.ConfirmPassword);
+				        account.ConfirmPassword = encrypt;
+				        db.UserAccount.Add(account);
+				        db.SaveChanges();
+				    }
+				    else
+				    {
+				        ModelState.AddModelError("Idade", "Idade não permitida.");
+				        return View();
+				    }
                 }
 				ModelState.Clear();
 				ViewBag.Message = account.Nome + " registado";

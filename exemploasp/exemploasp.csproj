@@ -162,6 +162,10 @@
     <Compile Include="Migrations\201801191641330_Tabelas.Designer.cs">
       <DependentUpon>201801191641330_Tabelas.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801191935032_idadeuserdata.cs" />
+    <Compile Include="Migrations\201801191935032_idadeuserdata.Designer.cs">
+      <DependentUpon>201801191935032_idadeuserdata.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Disponibilidade.cs" />
     <Compile Include="Models\Exposicao.cs" />
@@ -242,6 +246,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201801191641330_Tabelas.resx">
       <DependentUpon>201801191641330_Tabelas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801191935032_idadeuserdata.resx">
+      <DependentUpon>201801191935032_idadeuserdata.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
