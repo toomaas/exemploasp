@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Data.Entity.Infrastructure;
@@ -17,7 +18,8 @@ namespace exemploasp.Controllers
         {
             using (OurDBContext db = new OurDBContext())
             {
-                return View(db.Marcacao.ToList());
+                var marcacoes = db.Marcacao.Include(u => u.UserAccount).Include(e => e.Exposicao);
+                return View(marcacoes.ToList());
             }
           
         }
