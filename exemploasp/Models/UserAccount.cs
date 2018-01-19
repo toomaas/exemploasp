@@ -9,8 +9,10 @@ namespace exemploasp.Models
 {
 	public class UserAccount
 	{
+
 		[Key]
 		public int UserAccountID { get; set; }
+
 
 		[Required(ErrorMessage = "O nome é óbrigatório")]
 		public string Nome { get; set; }
@@ -25,11 +27,10 @@ namespace exemploasp.Models
 		public string Sexo { get; set; }
 
 		[Display(Name = "Numero de telefone")]
+		[RegularExpression(@"^[0-9]{9}$", ErrorMessage = "Numero de telefone invalido")]
 		[Required(ErrorMessage = "O NumTelefone é óbrigatório")]
 		public int NumTelefone { get; set; }
 
-		[Display(Name = "Tipo utilizador")]
-		[Required(ErrorMessage = "O TipoUtilizador é óbrigatório")]
 		public int TipoUtilizador { get; set; }
 
 		[Required(ErrorMessage = "O email é óbrigatório")]
