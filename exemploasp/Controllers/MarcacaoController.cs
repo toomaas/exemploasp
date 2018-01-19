@@ -70,14 +70,23 @@ namespace exemploasp.Controllers
             {
                 using (OurDBContext db = new OurDBContext())
                 {
-                    db.Marcacao.Add(marcacao);
-					
-	               // UserAccountDropdownList(marcacao.UserAccountID);
-
-					db.SaveChanges();
+                    DateTime hoje = DateTime.Now;
+                    if (hoje.Date < marcacao.Data)
+                    {
+                        db.Marcacao.Add(marcacao);
+                        db.SaveChanges();
+                        ViewBag.Message = "Marcação de " + marcacao.NomeRequerente + " criada com sucesso!";
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Data", "Data inválida");
+                        UserAccountDropdownList();
+                        ExposicaoDropdownList();
+                        return View();
+                    }
                 }
-                ModelState.Clear();
-                ViewBag.Message = "Marcação de "+marcacao.NomeRequerente + " criada com sucesso!";
+                //ModelState.Clear();
+                
             }
 
             return RedirectToAction("Index");
