@@ -7,13 +7,13 @@ namespace exemploasp.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class ligacoes_tabelas : IMigrationMetadata
+    public sealed partial class Tabelas : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(ligacoes_tabelas));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Tabelas));
         
         string IMigrationMetadata.Id
         {
-            get { return "201801181655040_ligacoes_tabelas"; }
+            get { return "201801191641330_Tabelas"; }
         }
         
         string IMigrationMetadata.Source

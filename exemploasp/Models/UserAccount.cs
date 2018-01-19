@@ -10,7 +10,7 @@ namespace exemploasp.Models
 	public class UserAccount
 	{
 		[Key]
-		public int UserID { get; set; }
+		public int UserAccountID { get; set; }
 
 		[Required(ErrorMessage = "O nome é óbrigatório")]
 		public string Nome { get; set; }

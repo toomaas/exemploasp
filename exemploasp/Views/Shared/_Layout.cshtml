@@ -10,7 +10,7 @@
 </head>
 <body>
     @{
-        if (Session["UserId"] != null)
+        if (Session["UserAccountId"] != null)
         {
             <div class="navbar navbar-inverse navbar-fixed-top">
                 <div class="container">
@@ -32,7 +32,7 @@
                             <li>@Html.ActionLink("Marcações","Index","Marcacao")</li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
-                                <li>@Html.ActionLink((string) Session["Username"], "PerfilUser", "Account", new {id = Session["UserID"]}, null)</li>
+                                <li>@Html.ActionLink((string) Session["Username"], "PerfilUser", "Account", new {id = Session["UserAccountID"]}, null)</li>
 
                                 <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
                         </ul>
@@ -44,7 +44,7 @@
 
     <div class="container body-content">
         @RenderBody()
-        @if (Session["UserId"] != null)
+        @if (Session["UserAccountId"] != null)
         {
         <hr />
 

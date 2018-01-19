@@ -158,29 +158,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201801111628081_InitialCreate.cs" />
-    <Compile Include="Migrations\201801111628081_InitialCreate.Designer.cs">
-      <DependentUpon>201801111628081_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201801111755337_Exposicoes_Temas.cs" />
-    <Compile Include="Migrations\201801111755337_Exposicoes_Temas.Designer.cs">
-      <DependentUpon>201801111755337_Exposicoes_Temas.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201801161822508_marcacao.cs" />
-    <Compile Include="Migrations\201801161822508_marcacao.Designer.cs">
-      <DependentUpon>201801161822508_marcacao.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201801181606542_TemaUser.cs" />
-    <Compile Include="Migrations\201801181606542_TemaUser.Designer.cs">
-      <DependentUpon>201801181606542_TemaUser.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201801181655040_ligacoes_tabelas.cs" />
-    <Compile Include="Migrations\201801181655040_ligacoes_tabelas.Designer.cs">
-      <DependentUpon>201801181655040_ligacoes_tabelas.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201801181811138_marcacaoIDs.cs" />
-    <Compile Include="Migrations\201801181811138_marcacaoIDs.Designer.cs">
-      <DependentUpon>201801181811138_marcacaoIDs.cs</DependentUpon>
+    <Compile Include="Migrations\201801191641330_Tabelas.cs" />
+    <Compile Include="Migrations\201801191641330_Tabelas.Designer.cs">
+      <DependentUpon>201801191641330_Tabelas.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Disponibilidade.cs" />
@@ -204,6 +184,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -259,23 +240,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201801111628081_InitialCreate.resx">
-      <DependentUpon>201801111628081_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201801111755337_Exposicoes_Temas.resx">
-      <DependentUpon>201801111755337_Exposicoes_Temas.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201801161822508_marcacao.resx">
-      <DependentUpon>201801161822508_marcacao.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201801181606542_TemaUser.resx">
-      <DependentUpon>201801181606542_TemaUser.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201801181655040_ligacoes_tabelas.resx">
-      <DependentUpon>201801181655040_ligacoes_tabelas.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201801181811138_marcacaoIDs.resx">
-      <DependentUpon>201801181811138_marcacaoIDs.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201801191641330_Tabelas.resx">
+      <DependentUpon>201801191641330_Tabelas.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -9,7 +9,7 @@ namespace exemploasp.Models
 {
     public class OurDBContext : DbContext
     {
-        public DbSet<UserAccount> userAccount { get; set; }
+        public DbSet<UserAccount> UserAccount { get; set; }
 
 		public DbSet<Exposicao> Exposicao { get; set; }
 

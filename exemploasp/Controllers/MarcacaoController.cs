@@ -18,7 +18,7 @@ namespace exemploasp.Controllers
         {
             using (OurDBContext db = new OurDBContext())
             {
-                var marcacoes = db.Marcacao.Include(u => u.UserAccount).Include(e => e.Exposicao);
+                var marcacoes = db.Marcacao.Include(a => a.UserAccount).Include(e => e.Exposicao);
                 return View(marcacoes.ToList());
             }
           
@@ -42,11 +42,11 @@ namespace exemploasp.Controllers
 	    private void UserAccountDropdownList(object userAccount = null)
 	    {
 
-			    var utilizadoresQuery = from u in db.userAccount
+			    var utilizadoresQuery = from u in db.UserAccount
 				    orderby u.Nome
 				    select u;
 
-			    ViewBag.UserAccountID = new SelectList(utilizadoresQuery, "UserID", "Nome", userAccount);
+			    ViewBag.UserAccountID = new SelectList(utilizadoresQuery, "UserAccountID", "Nome", userAccount);
 	    }
 
 	    private void ExposicaoDropdownList(object Exposicao = null)
@@ -64,14 +64,15 @@ namespace exemploasp.Controllers
 
 		// POST: Marcacao/Create
 		[HttpPost]
-        public ActionResult Create([Bind(Include = "MarcacaoID, NomeRequerente, Idade, NumTelefoneRequerente, Data,HoraDeInicio,HoraDeFim,NumPessoas,ExposicaoID, UserAccount_UserID,UserAccountID")]Marcacao marcacao)
+        public ActionResult Create([Bind(Include = "MarcacaoID, NomeRequerente, Idade, NumTelefoneRequerente, Data,HoraDeInicio,HoraDeFim,NumPessoas,ExposicaoID, UserAccountID")]Marcacao marcacao)
         {
             if (ModelState.IsValid)
             {
                 using (OurDBContext db = new OurDBContext())
                 {
                     db.Marcacao.Add(marcacao);
-	                UserAccountDropdownList(marcacao.UserAccountID);
+					
+	               // UserAccountDropdownList(marcacao.UserAccountID);
 
 					db.SaveChanges();
                 }

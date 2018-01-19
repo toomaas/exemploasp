@@ -20,7 +20,7 @@ namespace exemploasp.Controllers
 		{
 			using (OurDBContext db = new OurDBContext())
 			{
-				return View(db.userAccount.ToList());
+				return View(db.UserAccount.ToList());
 			}
 		}
 
@@ -40,7 +40,7 @@ namespace exemploasp.Controllers
 					account.Password = encrypt;
 				    encrypt = Encrypt(account.ConfirmPassword);
 				    account.ConfirmPassword = encrypt;
-                    db.userAccount.Add(account);
+                    db.UserAccount.Add(account);
 					db.SaveChanges();
                 }
 				ModelState.Clear();
@@ -80,10 +80,10 @@ namespace exemploasp.Controllers
 			using (OurDBContext db = new OurDBContext())
 			{
 			    var encrypt = Encrypt(user.Password);
-                var usr = db.userAccount.Where(u => u.Email == user.Email && u.Password == encrypt).FirstOrDefault();
+                var usr = db.UserAccount.Where(u => u.Email == user.Email && u.Password == encrypt).FirstOrDefault();
 				if (usr != null)
 				{
-					Session["UserID"] = usr.UserID.ToString();
+					Session["UserAccountID"] = usr.UserAccountID.ToString();
 					Session["Username"] = usr.Nome.ToString();
 					return RedirectToAction("LoggedIn");
 				}
@@ -97,7 +97,7 @@ namespace exemploasp.Controllers
 
 		public ActionResult LoggedIn()
 		{
-			if (Session["UserId"] != null)
+			if (Session["UserAccountID"] != null)
 			{
 				return View();
 			}
@@ -109,9 +109,9 @@ namespace exemploasp.Controllers
 
 		public ActionResult Logout()
 		{
-			if (Session["UserId"] != null)
+			if (Session["UserAccountID"] != null)
 			{
-				Session["UserId"] = null;
+				Session["UserAccountID"] = null;
 
 
 			}
@@ -124,7 +124,7 @@ namespace exemploasp.Controllers
 
 			using (OurDBContext db = new OurDBContext())
 			{
-                UserAccount user = db.userAccount.Find(id);
+                UserAccount user = db.UserAccount.Find(id);
                 if (id == null || user == null)
 				{
 					return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
