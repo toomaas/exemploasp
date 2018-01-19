@@ -20,7 +20,11 @@ namespace exemploasp.Controllers
 		{
 			using (OurDBContext db = new OurDBContext())
 			{
-				return View(db.UserAccount.ToList());
+                List<SelectListItem> sexo_itens = new List<SelectListItem>();
+                sexo_itens.Add(new SelectListItem() {Text = "feminino", Value = "feminino"});
+			    sexo_itens.Add(new SelectListItem() { Text = "masculino", Value = "masculino" });
+			    ViewBag.Sexo = sexo_itens;
+                return View(db.UserAccount.ToList());
 			}
 		}
 
