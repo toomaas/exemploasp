@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using exemploasp.Models;
+using System.Data.Entity;
 
 namespace exemploasp.Controllers
 {
@@ -27,8 +28,9 @@ namespace exemploasp.Controllers
         // GET: Tema/Create
         public ActionResult Create()
         {
-            return View();
+                return View();
         }
+
 
         // POST: Tema/Create
         [HttpPost]
