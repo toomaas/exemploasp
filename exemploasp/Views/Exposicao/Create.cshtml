@@ -71,7 +71,7 @@
                                 }
                                 @:<td>
                                 <input type="checkbox" name="selectedTemas" value="@tema.TemaID"
-                                       @(Html.Raw(tema.Assigned ? "checked=\"checked\"" : "")) />
+                                       @(Html.Raw(tema.Assigned ? "checked=\"checked\"" : "")) required="required"/>
                                 @tema.TemaID @: @tema.Nome
                                 @:</td>
                             }

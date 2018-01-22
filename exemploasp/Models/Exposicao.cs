@@ -25,11 +25,12 @@ namespace exemploasp.Models
 		[DataType(DataType.Date)]
 		public DateTime DataFinal { get; set; }
 
-		[Display(Name = "Duração")]
-		[Required(ErrorMessage = "A duração é obrigatoria")]
-		public int Duracao { get; set; }
+	    [Display(Name = "Duração")]
+	    [Required(ErrorMessage = "A duração é obrigatoria")]
+        [DataType(DataType.Time)]
+	    public DateTime Duracao { get; set; }
 
-		[Display(Name = "Numero de Itens")]
+        [Display(Name = "Numero de Itens")]
 		[Required(ErrorMessage = "Introduza o número de itens")]
 		public int NrItens { get; set; }
 

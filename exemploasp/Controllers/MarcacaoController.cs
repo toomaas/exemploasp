@@ -74,6 +74,8 @@ namespace exemploasp.Controllers
                     var exp = db.Exposicao.FirstOrDefault(e => e.ExposicaoID == marcacao.ExposicaoID);
                     if (marcacao.Data > exp.DataInicial && marcacao.Data < exp.DataFinal)
                     {
+                        TimeSpan dur = TimeSpan.Parse(exp.Duracao.Hour+":"+exp.Duracao.Minute);
+                        marcacao.HoraDeFim = marcacao.HoraDeInicio.Add(dur);
                         db.Marcacao.Add(marcacao);
                         db.SaveChanges();
                         ViewBag.Message = "Marcação de " + marcacao.NomeRequerente + " criada com sucesso!";

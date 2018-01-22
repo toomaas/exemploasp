@@ -166,6 +166,10 @@
     <Compile Include="Migrations\201801191935032_idadeuserdata.Designer.cs">
       <DependentUpon>201801191935032_idadeuserdata.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801221032463_add-migration duracaoexp.cs" />
+    <Compile Include="Migrations\201801221032463_add-migration duracaoexp.Designer.cs">
+      <DependentUpon>201801221032463_add-migration duracaoexp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Disponibilidade.cs" />
     <Compile Include="Models\Exposicao.cs" />
@@ -250,6 +254,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801191935032_idadeuserdata.resx">
       <DependentUpon>201801191935032_idadeuserdata.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801221032463_add-migration duracaoexp.resx">
+      <DependentUpon>201801221032463_add-migration duracaoexp.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
