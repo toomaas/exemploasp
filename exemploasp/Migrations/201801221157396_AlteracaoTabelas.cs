@@ -3,7 +3,7 @@ namespace exemploasp.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Tabelas : DbMigration
+    public partial class AlteracaoTabelas : DbMigration
     {
         public override void Up()
         {
@@ -48,15 +48,17 @@ namespace exemploasp.Migrations
                         UserAccountID = c.Int(nullable: false, identity: true),
                         Nome = c.String(nullable: false),
                         Morada = c.String(nullable: false),
-                        Idade = c.Int(nullable: false),
+                        Idade = c.DateTime(nullable: false),
                         Sexo = c.String(nullable: false),
                         NumTelefone = c.Int(nullable: false),
-                        TipoUtilizador = c.Int(nullable: false),
                         Email = c.String(nullable: false),
                         Password = c.String(nullable: false),
                         ConfirmPassword = c.String(),
+                        TipoUtilizadorID = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.UserAccountID);
+                .PrimaryKey(t => t.UserAccountID)
+                .ForeignKey("dbo.TipoUtilizador", t => t.TipoUtilizadorID, cascadeDelete: true)
+                .Index(t => t.TipoUtilizadorID);
             
             CreateTable(
                 "dbo.Disponibilidade",
@@ -79,6 +81,15 @@ namespace exemploasp.Migrations
                         Descricao = c.String(nullable: false),
                     })
                 .PrimaryKey(t => t.TemaID);
+            
+            CreateTable(
+                "dbo.TipoUtilizador",
+                c => new
+                    {
+                        TipoUtilizadorID = c.Int(nullable: false, identity: true),
+                        Tipo = c.String(nullable: false),
+                    })
+                .PrimaryKey(t => t.TipoUtilizadorID);
             
             CreateTable(
                 "dbo.UserAccountExposicao",
@@ -123,6 +134,7 @@ namespace exemploasp.Migrations
         
         public override void Down()
         {
+            DropForeignKey("dbo.UserAccount", "TipoUtilizadorID", "dbo.TipoUtilizador");
             DropForeignKey("dbo.TemaUserAccount", "UserAccount_UserAccountID", "dbo.UserAccount");
             DropForeignKey("dbo.TemaUserAccount", "Tema_TemaID", "dbo.Tema");
             DropForeignKey("dbo.TemaExposicao", "Exposicao_ExposicaoID", "dbo.Exposicao");
@@ -139,11 +151,13 @@ namespace exemploasp.Migrations
             DropIndex("dbo.UserAccountExposicao", new[] { "Exposicao_ExposicaoID" });
             DropIndex("dbo.UserAccountExposicao", new[] { "UserAccount_UserAccountID" });
             DropIndex("dbo.Disponibilidade", new[] { "UserAccount_UserAccountID" });
+            DropIndex("dbo.UserAccount", new[] { "TipoUtilizadorID" });
             DropIndex("dbo.Marcacao", new[] { "UserAccountID" });
             DropIndex("dbo.Marcacao", new[] { "ExposicaoID" });
             DropTable("dbo.TemaUserAccount");
             DropTable("dbo.TemaExposicao");
             DropTable("dbo.UserAccountExposicao");
+            DropTable("dbo.TipoUtilizador");
             DropTable("dbo.Tema");
             DropTable("dbo.Disponibilidade");
             DropTable("dbo.UserAccount");

@@ -34,8 +34,6 @@ namespace exemploasp.Models
 		[Required(ErrorMessage = "O NumTelefone é óbrigatório")]
 		public int NumTelefone { get; set; }
 
-		public int TipoUtilizador { get; set; }
-
 		[Required(ErrorMessage = "O email é óbrigatório")]
 		[DataType(DataType.EmailAddress)]
 		public string Email { get; set; }
@@ -48,11 +46,15 @@ namespace exemploasp.Models
 		[Compare("Password", ErrorMessage = "A confirmação de password é óbrigatório")]
 		[DataType(DataType.Password)]
 		public string ConfirmPassword { get; set; }
+		public int TipoUtilizadorID { get; set; }
 
 		public UserAccount()
 		{
-			TipoUtilizador = 1;
+			TipoUtilizadorID = 1;
 		}
+
+
+		
 
 		public virtual ICollection <Tema> Temas { get; set; }
 
@@ -61,6 +63,8 @@ namespace exemploasp.Models
 		public virtual ICollection<Exposicao> Exposicaos { get; set; }
 
 		public virtual ICollection<Marcacao> Marcacaos { get; set; }
+
+		public  virtual TipoUtilizador TipoUtilizador { get; set; }
 
 	}
 }

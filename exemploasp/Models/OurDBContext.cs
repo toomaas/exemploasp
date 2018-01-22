@@ -17,6 +17,8 @@ namespace exemploasp.Models
 
         public DbSet<Marcacao> Marcacao { get; set; }
 
+		public DbSet<TipoUtilizador> TipoUtilizador { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
 	    {
 		    modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
