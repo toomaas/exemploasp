@@ -41,13 +41,27 @@ namespace exemploasp.Controllers
                 // TODO: Add insert logic here
                 using (OurDBContext db = new OurDBContext())
                 {
-                    db.Tema.Add(tema);
-                    db.SaveChanges();
+	                if (!db.Tema.Any(n => n.Nome == tema.Nome))
+	                {
+						db.Tema.Add(tema);
+		                db.SaveChanges();
+
+						//ViewBag.Message = tema.Nome + "criado com sucesso";
+		                Session["Mensagem"] = "sucesso";
+
+	                }
+	                else
+	                {
+						//ViewBag.Message = tema.Nome + "Ja existente na BD";
+		                Session["Mensagem"] = "insucesso";
+
+					}
+;
                 }
                 ModelState.Clear();
-                ViewBag.Message = tema.Nome + "criado com sucesso";
 
-                return RedirectToAction("Index");
+
+	            return RedirectToAction("Index");
             }
             catch
             {
