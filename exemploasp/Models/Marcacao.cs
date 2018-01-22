@@ -27,6 +27,7 @@ namespace exemploasp.Models
 
         [Display(Name = "Data da visita")]
         [Required(ErrorMessage = "Introduza uma data para a visita")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
         public DateTime Data { get; set; }
 
@@ -45,7 +46,7 @@ namespace exemploasp.Models
         public int NumPessoas { get; set; }
 
 		public int ExposicaoID { get; set; }
-		public int UserAccountID { get; set; }
+		public int? UserAccountID { get; set; }
 
         public virtual Exposicao Exposicao { get; set; }
 

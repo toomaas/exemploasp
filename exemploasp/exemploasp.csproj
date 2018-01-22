@@ -155,7 +155,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MarcacaoController.cs" />
     <Compile Include="Controllers\TemaController.cs" />
-    <Compile Include="Controllers\TipoUtilizadorController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -166,6 +165,10 @@
     <Compile Include="Migrations\201801221218226_MergeProblem.cs" />
     <Compile Include="Migrations\201801221218226_MergeProblem.Designer.cs">
       <DependentUpon>201801221218226_MergeProblem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801221400405_usernull.cs" />
+    <Compile Include="Migrations\201801221400405_usernull.Designer.cs">
+      <DependentUpon>201801221400405_usernull.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Disponibilidade.cs" />
@@ -229,10 +232,7 @@
     <Content Include="Views\Account\PerfilUser.cshtml" />
     <Content Include="Views\Marcacao\Create.cshtml" />
     <Content Include="Views\Marcacao\Index.cshtml" />
-    <Content Include="Views\TipoUtilizador\Index.cshtml" />
-    <Content Include="Views\TipoUtilizador\Create.cshtml" />
-    <Content Include="Views\TipoUtilizador\Funcao.cshtml" />
-    <Content Include="Views\TipoUtilizador\Delete.cshtml" />
+    <Content Include="Views\Marcacao\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -256,6 +256,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801221218226_MergeProblem.resx">
       <DependentUpon>201801221218226_MergeProblem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801221400405_usernull.resx">
+      <DependentUpon>201801221400405_usernull.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
