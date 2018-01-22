@@ -11,7 +11,6 @@ namespace exemploasp.Controllers
     public class ExposicaoController : Controller
     {
         OurDBContext db = new OurDBContext();
-
         // GET: Exposicao
         public ActionResult Index()
         {

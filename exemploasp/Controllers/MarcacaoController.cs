@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Data.Entity.Infrastructure;
+using System.Net;
 using System.Web.Mvc;
 using exemploasp.Models;
 
@@ -33,7 +34,7 @@ namespace exemploasp.Controllers
         // GET: Marcacao/Create
         public ActionResult Create()
         {
-	        UserAccountDropdownList();
+	        //UserAccountDropdownList();
 	        ExposicaoDropdownList();
 
 			return View();
@@ -72,10 +73,11 @@ namespace exemploasp.Controllers
                 {
                     DateTime hoje = DateTime.Now;
                     var exp = db.Exposicao.FirstOrDefault(e => e.ExposicaoID == marcacao.ExposicaoID);
-                    if (marcacao.Data > exp.DataInicial && marcacao.Data < exp.DataFinal)
+                    if (marcacao.Data >= exp.DataInicial && marcacao.Data < exp.DataFinal)
                     {
                         TimeSpan dur = TimeSpan.Parse(exp.Duracao.Hour+":"+exp.Duracao.Minute);
                         marcacao.HoraDeFim = marcacao.HoraDeInicio.Add(dur);
+                        
                         db.Marcacao.Add(marcacao);
                         db.SaveChanges();
                         ViewBag.Message = "Marcação de " + marcacao.NomeRequerente + " criada com sucesso!";
@@ -98,23 +100,24 @@ namespace exemploasp.Controllers
         // GET: Marcacao/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            Marcacao marcacao = db.Marcacao.Find(id);
+            if(marcacao == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            UserAccountDropdownList();
+            return View(marcacao);
         }
 
         // POST: Marcacao/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit([Bind(Include="MarcacaoID,NomeRequerente,Idade,NumTelefoneRequerente,Data,HoraDeInicio,HoraDeFim,NumPessoas,ExposicaoID,UserAccountID")] Marcacao marcacao)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add update logic here
-
+                db.Entry(marcacao).State = EntityState.Modified;
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
+            return View();
         }
 
         // GET: Marcacao/Delete/5
