@@ -1,0 +1,32 @@
+﻿@model IEnumerable<exemploasp.Models.TipoUtilizador>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Adicionar Função", "Create") | @Html.ActionLink("Adicionar Administrador", "Funcao")
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Tipo)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Tipo)
+        </td>
+        <td>
+            @Html.ActionLink("Eliminar", "Delete", new { id=item.TipoUtilizadorID })
+        </td>
+    </tr>
+}
+
+</table>
