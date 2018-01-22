@@ -61,19 +61,21 @@ namespace exemploasp.Controllers
 		                {
 		                    if (selectedTemas != null)
 		                    {
-                                exposicao.Temas = new List<Tema>();
+		                        exposicao.Temas = new List<Tema>();
 		                        foreach (var tema in selectedTemas)
 		                        {
 		                            var temaToAdd = db.Tema.Find(int.Parse(tema));
-                                    exposicao.Temas.Add(temaToAdd);
+		                            exposicao.Temas.Add(temaToAdd);
 		                        }
 		                        db.Exposicao.Add(exposicao);
-		                        db.SaveChanges();		                        
+		                        db.SaveChanges();
 		                    }
 		                }
 		                else
 		                {
-		                    ModelState.AddModelError("", "Datas inválidas");
+		                    exposicao.Temas = new List<Tema>();
+                            PopulateAssignedTemaData(exposicao);
+                            ModelState.AddModelError("", "Datas inválidas");
 		                    return View();
 		                }
 		            }
