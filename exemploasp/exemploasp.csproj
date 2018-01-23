@@ -233,6 +233,11 @@
     <Content Include="Views\Account\PerfilUser.cshtml" />
     <Content Include="Views\Marcacao\Create.cshtml" />
     <Content Include="Views\Marcacao\Index.cshtml" />
+    <Content Include="Views\Marcacao\Edit.cshtml" />
+    <Content Include="Views\TipoUtilizador\Create.cshtml" />
+    <Content Include="Views\TipoUtilizador\Delete.cshtml" />
+    <Content Include="Views\TipoUtilizador\Index.cshtml" />
+    <Content Include="Views\Account\Funcao.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

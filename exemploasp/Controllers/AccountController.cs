@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.IdentityModel;
 using System.Linq;
@@ -15,9 +16,12 @@ namespace exemploasp.Controllers
 {
 	public class AccountController : Controller
 	{
+		private OurDBContext db = new OurDBContext();
+
 		// GET: Account
 		public ActionResult Index()
 		{
+
 			using (OurDBContext db = new OurDBContext())
 			{
                 List<SelectListItem> sexo_itens = new List<SelectListItem>();
@@ -147,6 +151,57 @@ namespace exemploasp.Controllers
 				ViewData["Utilizador"] = user;
 			}
 			return View();
+		}
+
+
+
+		public ActionResult Funcao()
+		{
+
+			UserAccountDropdownList();
+			TipoUtilizadorDropdownList();
+
+			var users = db.UserAccount.Include(t => t.TipoUtilizador);
+			return View(users.ToList());
+		}
+
+		[HttpPost]
+		public ActionResult Funcao([Bind(Include = "UserAccountID, Nome, Morada, Idade, Sexo, NumTelefone, Email, Password, ConfirmPassword, TipoUtilizadorID")] int UserAccountID)
+		{
+
+			UserAccount userAccount = db.UserAccount.Find(UserAccountID);
+
+
+				if (ModelState.IsValid)
+	            {
+		            db.Entry(userAccount).State = EntityState.Modified;
+		            db.SaveChanges();
+		            return RedirectToAction("Index");
+	            }
+
+			return View();
+
+		}
+
+
+		private void UserAccountDropdownList(object userAccount = null)
+		{
+
+			var utilizadoresQuery = from u in db.UserAccount
+				where u.TipoUtilizadorID == 1
+				orderby u.Nome
+				select u;
+			ViewBag.UserAccountID = new SelectList(utilizadoresQuery, "UserAccountID", "Nome", userAccount);
+		}
+
+		private void TipoUtilizadorDropdownList(object tipoUtilizador = null)
+		{
+
+			var TiposUtilizadoresQuery = from u in db.TipoUtilizador
+				where u.TipoUtilizadorID != 1
+				orderby u.Tipo
+				select u;
+			ViewBag.TipoUtilizadorID = new SelectList(TiposUtilizadoresQuery, "TipoUtilizadorID", "Tipo", tipoUtilizador);
 		}
 
 	}

@@ -56,56 +56,6 @@ namespace exemploasp.Controllers
 			}
 		}
 
-
-// GET: TipoUtilizador/Edit/5
-        public ActionResult Funcao()
-        {
-
-			UserAccountDropdownList();
-	        TipoUtilizadorDropdownList();
-			var utilizadores = db.TipoUtilizador.Include(u=>u.UserAccounts);
-		        return View(utilizadores.ToList());
-	        
-		}
-
-		private void UserAccountDropdownList(object userAccount = null)
-		{
-
-			var utilizadoresQuery = from u in db.UserAccount
-				where u.TipoUtilizadorID ==1
-				orderby u.Nome
-				select u;
-			ViewBag.UserAccountID = new SelectList(utilizadoresQuery, "UserAccountID", "Nome", userAccount);
-		}
-
-		private void TipoUtilizadorDropdownList(object tipoUtilizador = null)
-		{
-
-			var TiposUtilizadoresQuery = from u in db.TipoUtilizador
-			    where u.TipoUtilizadorID !=1
-				orderby u.Tipo
-				select u;
-			ViewBag.TipoUtilizadorID = new SelectList(TiposUtilizadoresQuery, "TipoUtilizadorID", "Tipo", tipoUtilizador);
-		}
-
-		// POST: TipoUtilizador/Edit/5
-		[HttpPost]
-        public ActionResult Funcao(int UserAccountID, int TipoUtilizadorID)
-        {
-            try
-            {       
-
-
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-
 		// GET: TipoUtilizador/Delete/5
 
 		public ActionResult Delete(int id)

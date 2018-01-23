@@ -1,4 +1,5 @@
-﻿
+﻿@model List<exemploasp.Models.UserAccount>
+
 @{
     ViewBag.Title = "Funcao";
 }
@@ -18,11 +19,12 @@
             <label class="control-label col-md-2" for="UserAccountID">Utilizador</label>
             <div class="col-md-10">
                 @Html.DropDownList("UserAccountID", "--Selecionar--")
+
             </div>
 
         </div>
-        
-        
+
+
         <div class="form-group">
 
             <label class="control-label col-md-2" for="TipoUtilizadorID">Função</label>
@@ -31,18 +33,14 @@
             </div>
 
         </div>
-        
-        
+
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Definir função" class="btn btn-default" />
             </div>
         </div>
-        
+
 
     </div>
 }
-
-
-
-

@@ -55,7 +55,7 @@ namespace exemploasp.Models
 		}
 
 
-		
+		public virtual TipoUtilizador TipoUtilizador { get; set; }
 
 		public virtual ICollection <Tema> Temas { get; set; }
 
