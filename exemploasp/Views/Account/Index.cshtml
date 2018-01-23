@@ -7,7 +7,7 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Register")
 </p>
 <table class="table">
     <tr>
@@ -52,7 +52,7 @@
             @Html.DisplayFor(modelItem => item.NumTelefone)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.TipoUtilizadorID)
+            @Html.DisplayFor(modelItem => item.TipoUtilizador.Tipo)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Email)

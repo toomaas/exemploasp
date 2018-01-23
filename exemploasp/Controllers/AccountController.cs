@@ -25,11 +25,8 @@ namespace exemploasp.Controllers
 
 			using (OurDBContext db = new OurDBContext())
 			{
-                List<SelectListItem> sexo_itens = new List<SelectListItem>();
-                sexo_itens.Add(new SelectListItem() {Text = "feminino", Value = "feminino"});
-			    sexo_itens.Add(new SelectListItem() { Text = "masculino", Value = "masculino" });
-			    ViewBag.Sexo = sexo_itens;
-                return View(db.UserAccount.ToList());
+			    var user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas);
+                return View(user.ToList());
 			}
 		}
 
