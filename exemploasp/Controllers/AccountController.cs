@@ -234,29 +234,32 @@ namespace exemploasp.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult Funcao([Bind(Include = "UserAccountID, Nome, Morada, Idade, Sexo, NumTelefone, Email, Password, ConfirmPassword, TipoUtilizadorID")] int UserAccountID)
-		{
+		public ActionResult Funcao(int userAccountID, int tipoUtilizadorID)
+        { 
+		    var userAccountToUpdate = db.UserAccount.Single(u => u.UserAccountID == userAccountID);
+            userAccountToUpdate.TipoUtilizadorID = tipoUtilizadorID;
+            if (ModelState.IsValid)
+            {
+                     db.Entry(userAccountToUpdate).State = EntityState.Modified;
+                     db.SaveChanges();
+                     return RedirectToAction("Index");
+            }
 
-			UserAccount userAccount = db.UserAccount.Find(UserAccountID);
+            UserAccountDropdownList();
+            TipoUtilizadorDropdownList();
 
+            var users = db.UserAccount.Include(t => t.TipoUtilizador);
+            ModelState.AddModelError("", "Erro ao alterar função");
+            return View(users.ToList());
 
-				if (ModelState.IsValid)
-	            {
-		            db.Entry(userAccount).State = EntityState.Modified;
-		            db.SaveChanges();
-		            return RedirectToAction("Index");
-	            }
-
-			return View();
-
-		}
+        }
 
 
 		private void UserAccountDropdownList(object userAccount = null)
 		{
 
 			var utilizadoresQuery = from u in db.UserAccount
-				where u.TipoUtilizadorID == 1
+				//where u.TipoUtilizadorID == 1
 				orderby u.Nome
 				select u;
 			ViewBag.UserAccountID = new SelectList(utilizadoresQuery, "UserAccountID", "Nome", userAccount);
@@ -266,7 +269,7 @@ namespace exemploasp.Controllers
 		{
 
 			var TiposUtilizadoresQuery = from u in db.TipoUtilizador
-				where u.TipoUtilizadorID != 1
+				where u.TipoUtilizadorID !=1
 				orderby u.Tipo
 				select u;
 			ViewBag.TipoUtilizadorID = new SelectList(TiposUtilizadoresQuery, "TipoUtilizadorID", "Tipo", tipoUtilizador);
