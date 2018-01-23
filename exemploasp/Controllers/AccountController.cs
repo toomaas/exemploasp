@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.IdentityModel;
 using System.Linq;
@@ -11,15 +12,15 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using exemploasp.Models;
+using exemploasp.ViewModels;
 
 namespace exemploasp.Controllers
 {
 	public class AccountController : Controller
 	{
-		private OurDBContext db = new OurDBContext();
-
-		// GET: Account
-		public ActionResult Index()
+	    OurDBContext db = new OurDBContext();
+        // GET: Account
+        public ActionResult Index()
 		{
 
 			using (OurDBContext db = new OurDBContext())
@@ -32,7 +33,19 @@ namespace exemploasp.Controllers
 			}
 		}
 
-		public ActionResult Register()
+	    private void PopulateAssignedTemaData(UserAccount userAccount)
+	    {
+	        var allTemas = db.Tema;
+	        var userAccountTemas = new HashSet<int>(userAccount.Temas.Select(t => t.TemaID));
+	        var viewModel = new List<AssignedTemaData>();
+	        foreach (var tema in allTemas)
+	        {
+	            viewModel.Add(new AssignedTemaData { TemaID = tema.TemaID, Nome = tema.Nome, Assigned = userAccountTemas.Contains(tema.TemaID) });
+	        }
+	        ViewBag.Temas = viewModel;
+	    }
+
+        public ActionResult Register()
 		{
 			return View();
 		}
@@ -140,18 +153,73 @@ namespace exemploasp.Controllers
         public ActionResult PerfilUser(int? id)
 		{
 
-			using (OurDBContext db = new OurDBContext())
-			{
-                UserAccount user = db.UserAccount.Find(id);
-                if (id == null || user == null)
-				{
-					return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-				}
-				
-				ViewData["Utilizador"] = user;
-			}
-			return View();
+		    using (OurDBContext db = new OurDBContext())
+		    {
+		        UserAccount user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas).Where(u => u.UserAccountID == id).Single();
+		        if (id == null || user == null)
+		        {
+		            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+		        }
+
+		        //ViewData["Utilizador"] = user;
+		        PopulateAssignedTemaData(user);
+		        return View(user);
+		    }
 		}
+
+        [HttpPost]
+	    public ActionResult PerfilUser(int? id, string[] selectedTemas)
+	    {
+            if(id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+	        var userAccountToUpdate = db.UserAccount
+	            .Include(u => u.Temas).Single(u => u.UserAccountID == id);
+	        if (TryUpdateModel(userAccountToUpdate, "",
+	            new string[] {"Nome,Morada,Idade,Sexo,NumTelefone,Email,Password,ConfirmPassword,TipoUtilizadorID"}))
+	        {
+	            try
+	            {
+	                UpdateUserAccountTemas(selectedTemas, userAccountToUpdate);
+	                db.Entry(userAccountToUpdate).State = EntityState.Modified;
+	                db.SaveChanges();
+	                return RedirectToAction("PerfilUser");
+                }
+	            catch (RetryLimitExceededException /* dex */)
+                {
+                    ModelState.AddModelError("", "Nao foi possivel atualizar o user");
+                }
+	        }
+            PopulateAssignedTemaData(userAccountToUpdate);
+	        return View(userAccountToUpdate);
+        }
+
+	    private void UpdateUserAccountTemas(string[] selectedTemas, UserAccount userAccountToUpdate)
+	    {
+	        if (selectedTemas == null)
+	        {
+                userAccountToUpdate.Temas = new List<Tema>();
+	            return;
+	        }
+	        var selectedTemasHS = new HashSet<string>(selectedTemas);
+	        var userAccountTemas = new HashSet<int>(userAccountToUpdate.Temas.Select(t => t.TemaID));
+	        foreach (var tema in db.Tema)
+	        {
+	            if (selectedTemasHS.Contains(tema.TemaID.ToString()))
+	            {
+	                if (!userAccountTemas.Contains(tema.TemaID))
+	                {
+	                    userAccountToUpdate.Temas.Add(tema);
+	                }
+	            }
+	            else
+	            {
+	                if (userAccountTemas.Contains(tema.TemaID))
+	                {
+	                    userAccountToUpdate.Temas.Remove(tema);
+	                }
+	            }
+	        }
+	    }
 
 
 
