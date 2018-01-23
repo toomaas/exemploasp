@@ -1,19 +1,103 @@
-﻿@using exemploasp.Models
+﻿@model exemploasp.Models.UserAccount
 
 @{
     ViewBag.Title = "PerfilUser";
 }
 
-<h2>Perfil</h2>
+<h2>Perfil de Utilizador</h2>
 
-@{
-    var utilizador = (UserAccount) ViewData["Utilizador"];
+<p>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Idade)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Morada)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NumTelefone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Sexo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TipoUtilizadorID)
+        </th>
+
+        <th></th>
+    </tr>
+
+    <tr>
+        <td>
+            @Html.DisplayFor(model => model.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.Idade)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.Morada)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.NumTelefone)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.Sexo)
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.TipoUtilizador.Tipo)
+        </td>
+    </tr>
+</table>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.UserAccountID)
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <table>
+                    <tr>
+                    @{
+                        int cnt = 0;
+                        List<exemploasp.ViewModels.AssignedTemaData> temas = ViewBag.Temas;
+
+                        foreach (var tema in temas)
+                        {
+                            if (cnt++ % 3 == 0)
+                            {
+                                @:</tr><tr>
+                            }
+                            @:<td>
+                            <input type="checkbox" name="selectedTemas" value="@tema.TemaID"
+                                   @(Html.Raw(tema.Assigned ? "checked=\"checked\"" : ""))/>
+                            @tema.TemaID @: @tema.Nome
+                            @:</td>
+                        }
+                        @:</tr>
+                    }
+                </table>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Dominar temas" class="btn btn-default" />
+            </div>
+        </div>
+
+    </div>
 }
-
-<h1>Utilizador</h1>
-<h3>Nome: @utilizador.Nome</h3>
-<h3>Idade: @utilizador.Idade</h3>
-<h3>Morada: @utilizador.Morada</h3>
-<h3>Telefone: @utilizador.NumTelefone</h3>
-<h3>Password: @utilizador.Password</h3>
-
