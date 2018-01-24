@@ -159,22 +159,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201801221157396_AlteracaoTabelas.cs" />
-    <Compile Include="Migrations\201801221157396_AlteracaoTabelas.Designer.cs">
-      <DependentUpon>201801221157396_AlteracaoTabelas.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201801221218226_MergeProblem.cs" />
-    <Compile Include="Migrations\201801221218226_MergeProblem.Designer.cs">
-      <DependentUpon>201801221218226_MergeProblem.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201801221400405_usernull.cs" />
-    <Compile Include="Migrations\201801221400405_usernull.Designer.cs">
-      <DependentUpon>201801221400405_usernull.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201801231157424_usertem.cs" />
-    <Compile Include="Migrations\201801231157424_usertem.Designer.cs">
-      <DependentUpon>201801231157424_usertem.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Disponibilidade.cs" />
     <Compile Include="Models\Exposicao.cs" />
@@ -189,7 +173,12 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\css\site.css" />
     <Content Include="Content\css\style.css" />
+    <Content Include="Content\images\footer\facebook_round.png" />
+    <Content Include="Content\images\footer\instagram_round.png" />
+    <Content Include="Content\images\footer\twitter_round.png" />
+    <Content Include="Content\images\footer\youtube_round.png" />
     <Content Include="Content\images\museu_login.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -258,20 +247,6 @@
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201801221157396_AlteracaoTabelas.resx">
-      <DependentUpon>201801221157396_AlteracaoTabelas.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201801221218226_MergeProblem.resx">
-      <DependentUpon>201801221218226_MergeProblem.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201801221400405_usernull.resx">
-      <DependentUpon>201801221400405_usernull.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201801231157424_usertem.resx">
-      <DependentUpon>201801231157424_usertem.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

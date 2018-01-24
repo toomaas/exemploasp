@@ -113,6 +113,7 @@ namespace exemploasp.Controllers
 				{
 					Session["UserAccountID"] = usr.UserAccountID.ToString();
 					Session["Username"] = usr.Nome.ToString();
+					Session["TipoUtilizador"] = usr.TipoUtilizador.Tipo.ToString();
 					return RedirectToAction("LoggedIn");
 				}
 				else

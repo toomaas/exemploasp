@@ -25,16 +25,34 @@
                     </div>
                     <div class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
-                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                            <li>@Html.ActionLink("About", "About", "Home")</li>
-                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                            <li>@Html.ActionLink("Exposições", "Index", "Exposicao")</li>
-                            
+                            <li>@Html.ActionLink("Exposições", "Index", "Home")</li>
+                            <li>@Html.ActionLink("Contactos", "Contact", "Home")</li>
 
-                            <li>@Html.ActionLink("Temas", "Index", "Tema")</li>
-                            <li>@Html.ActionLink("Marcações","Index","Marcacao")</li>
-                            <li>@Html.ActionLink("Gestão de utilizadores","Index","TipoUtilizador")</li>
+                            @{
+                                if ((string)Session["TipoUtilizador"] == "Administrador")
+                                {
+                                    <li class="dropdown">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                            Gestão Do Museu
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li>@Html.ActionLink("Temas", "Index", "Tema")</li>
+                                            <li>@Html.ActionLink("Exposições", "Index", "Exposicao")</li>
+                                            <li>@Html.ActionLink("Marcações", "Index", "Marcacao")</li>
+                                            <li>@Html.ActionLink("Gestão de utilizadores", "Index", "TipoUtilizador")</li>
+                                        </ul>
+                                    </li>
+
+                                }
+                            }
+
                         </ul>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                        </ul>
+
                         <ul class="nav navbar-nav navbar-right">
                                 <li>@Html.ActionLink((string) Session["Username"], "PerfilUser", "Account", new {id = Session["UserAccountID"]}, null)</li>
 
