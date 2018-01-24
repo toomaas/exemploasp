@@ -1,0 +1,17 @@
+﻿@model IEnumerable<exemploasp.Models.Exposicao>
+
+@{
+    ViewBag.Title = "User";
+}
+
+<h2>User</h2>
+
+<div class="form-group">
+
+    <label class="control-label col-md-2" for="ExposicaoID">Exposição</label>
+    <div class="col-md-10">
+        @Html.DropDownList("ExposicaoID", String.Empty)
+    </div>
+
+</div>
+

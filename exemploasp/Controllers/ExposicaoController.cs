@@ -88,6 +88,48 @@ namespace exemploasp.Controllers
                // return View();
             }
 
+
+        //GET: Exposicao/User/id
+        public ActionResult User(int id)
+        {
+            bool existeTema = false;
+            var user = db.UserAccount.Single(u => u.UserAccountID == id);
+            var exposicoes = db.Exposicao.ToList();
+            List<Exposicao> exposicoesAUsar = new List<Exposicao>();
+            foreach (var exp in exposicoes)
+            {
+                List<bool> temasExp = new List<bool>();
+                foreach (var temaExp in exp.Temas)
+                {
+                    existeTema = false;
+                    foreach (var temaUser in user.Temas)
+                    {
+                        if (temaExp.TemaID == temaUser.TemaID)
+                            existeTema = true;
+                    }
+                    temasExp.Add(existeTema);
+                }
+                if (!temasExp.Contains(false))
+                {
+                    exposicoesAUsar.Add(exp);
+                }
+            }
+
+            List<Exposicao> newList = new List<Exposicao>();
+            foreach (var member in exposicoesAUsar)
+                newList.Add(new Exposicao
+                {
+                    ExposicaoID = member.ExposicaoID,
+                    Nome = member.Nome + " de " + member.DataInicial.ToShortDateString() + " a " + member.DataFinal.ToShortDateString() + " DUR: " + member.Duracao.ToShortTimeString()
+                });
+
+            ViewBag.ExposicaoID = new SelectList(newList, "ExposicaoID", "Nome");
+
+            return View();
+        }
+
+
+
         // GET: Exposicao/Edit/5
         public ActionResult Edit(int id)
         {
