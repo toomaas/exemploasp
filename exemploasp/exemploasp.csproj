@@ -163,6 +163,10 @@
     <Compile Include="Migrations\201801231759106_tabelas.Designer.cs">
       <DependentUpon>201801231759106_tabelas.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801241208034_seed.cs" />
+    <Compile Include="Migrations\201801241208034_seed.Designer.cs">
+      <DependentUpon>201801241208034_seed.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Disponibilidade.cs" />
     <Compile Include="Models\Exposicao.cs" />
@@ -257,6 +261,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201801231759106_tabelas.resx">
       <DependentUpon>201801231759106_tabelas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801241208034_seed.resx">
+      <DependentUpon>201801241208034_seed.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
