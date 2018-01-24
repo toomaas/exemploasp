@@ -157,7 +157,7 @@ namespace exemploasp.Controllers
 
 		    using (OurDBContext db = new OurDBContext())
 		    {
-		        UserAccount user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas).Where(u => u.UserAccountID == id).Single();
+		        UserAccount user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas).SingleOrDefault(u => u.UserAccountID == id);
 		        if (id == null || user == null)
 		        {
 		            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -170,14 +170,16 @@ namespace exemploasp.Controllers
 		}
 
         [HttpPost]
-	    public ActionResult PerfilUser(int? id,string morada, string[] selectedTemas)
+	    public ActionResult PerfilUser(int? id,string nome,string morada,int numTelefone, string[] selectedTemas)
 	    {
             if(id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 	        var userAccountToUpdate = db.UserAccount
 	            .Include(u => u.Temas).Single(u => u.UserAccountID == id);
 	        userAccountToUpdate.Morada = morada;
-	        if (TryUpdateModel(userAccountToUpdate, "",
+	        userAccountToUpdate.NumTelefone = numTelefone;
+	        userAccountToUpdate.Nome = nome;
+            if (TryUpdateModel(userAccountToUpdate, "",
 	            new string[] {"Nome,Morada,Idade,Sexo,NumTelefone,Email,Password,ConfirmPassword,TipoUtilizadorID"}))
 	        {
 	            try
