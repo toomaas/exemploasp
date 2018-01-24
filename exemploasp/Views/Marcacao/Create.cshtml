@@ -70,6 +70,7 @@
         <label class="control-label col-md-2" for="ExposicaoID">Exposição</label>
         <div class="col-md-10">
             @Html.DropDownList("ExposicaoID", String.Empty)
+
             @Html.ValidationMessageFor(model => model.ExposicaoID)
         </div>
 

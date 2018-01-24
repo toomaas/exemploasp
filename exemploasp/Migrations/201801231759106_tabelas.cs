@@ -3,7 +3,7 @@ namespace exemploasp.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class AlteracaoTabelas : DbMigration
+    public partial class tabelas : DbMigration
     {
         public override void Up()
         {
@@ -15,7 +15,7 @@ namespace exemploasp.Migrations
                         Nome = c.String(nullable: false),
                         DataInicial = c.DateTime(nullable: false),
                         DataFinal = c.DateTime(nullable: false),
-                        Duracao = c.Int(nullable: false),
+                        Duracao = c.DateTime(nullable: false),
                         NrItens = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.ExposicaoID);
@@ -33,11 +33,11 @@ namespace exemploasp.Migrations
                         HoraDeFim = c.DateTime(nullable: false),
                         NumPessoas = c.Int(nullable: false),
                         ExposicaoID = c.Int(nullable: false),
-                        UserAccountID = c.Int(nullable: false),
+                        UserAccountID = c.Int(),
                     })
                 .PrimaryKey(t => t.MarcacaoID)
                 .ForeignKey("dbo.Exposicao", t => t.ExposicaoID, cascadeDelete: true)
-                .ForeignKey("dbo.UserAccount", t => t.UserAccountID, cascadeDelete: true)
+                .ForeignKey("dbo.UserAccount", t => t.UserAccountID)
                 .Index(t => t.ExposicaoID)
                 .Index(t => t.UserAccountID);
             
@@ -95,14 +95,15 @@ namespace exemploasp.Migrations
                 "dbo.UserAccountExposicao",
                 c => new
                     {
-                        UserAccount_UserAccountID = c.Int(nullable: false),
-                        Exposicao_ExposicaoID = c.Int(nullable: false),
+                        UserAccountID = c.Int(nullable: false),
+                        ExposicaoID = c.Int(nullable: false),
+                        Assigned = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => new { t.UserAccount_UserAccountID, t.Exposicao_ExposicaoID })
-                .ForeignKey("dbo.UserAccount", t => t.UserAccount_UserAccountID, cascadeDelete: true)
-                .ForeignKey("dbo.Exposicao", t => t.Exposicao_ExposicaoID, cascadeDelete: true)
-                .Index(t => t.UserAccount_UserAccountID)
-                .Index(t => t.Exposicao_ExposicaoID);
+                .PrimaryKey(t => new { t.UserAccountID, t.ExposicaoID })
+                .ForeignKey("dbo.Exposicao", t => t.ExposicaoID, cascadeDelete: true)
+                .ForeignKey("dbo.UserAccount", t => t.UserAccountID, cascadeDelete: true)
+                .Index(t => t.UserAccountID)
+                .Index(t => t.ExposicaoID);
             
             CreateTable(
                 "dbo.TemaExposicao",
@@ -134,22 +135,22 @@ namespace exemploasp.Migrations
         
         public override void Down()
         {
+            DropForeignKey("dbo.UserAccountExposicao", "UserAccountID", "dbo.UserAccount");
+            DropForeignKey("dbo.UserAccountExposicao", "ExposicaoID", "dbo.Exposicao");
             DropForeignKey("dbo.UserAccount", "TipoUtilizadorID", "dbo.TipoUtilizador");
             DropForeignKey("dbo.TemaUserAccount", "UserAccount_UserAccountID", "dbo.UserAccount");
             DropForeignKey("dbo.TemaUserAccount", "Tema_TemaID", "dbo.Tema");
             DropForeignKey("dbo.TemaExposicao", "Exposicao_ExposicaoID", "dbo.Exposicao");
             DropForeignKey("dbo.TemaExposicao", "Tema_TemaID", "dbo.Tema");
             DropForeignKey("dbo.Marcacao", "UserAccountID", "dbo.UserAccount");
-            DropForeignKey("dbo.UserAccountExposicao", "Exposicao_ExposicaoID", "dbo.Exposicao");
-            DropForeignKey("dbo.UserAccountExposicao", "UserAccount_UserAccountID", "dbo.UserAccount");
             DropForeignKey("dbo.Disponibilidade", "UserAccount_UserAccountID", "dbo.UserAccount");
             DropForeignKey("dbo.Marcacao", "ExposicaoID", "dbo.Exposicao");
             DropIndex("dbo.TemaUserAccount", new[] { "UserAccount_UserAccountID" });
             DropIndex("dbo.TemaUserAccount", new[] { "Tema_TemaID" });
             DropIndex("dbo.TemaExposicao", new[] { "Exposicao_ExposicaoID" });
             DropIndex("dbo.TemaExposicao", new[] { "Tema_TemaID" });
-            DropIndex("dbo.UserAccountExposicao", new[] { "Exposicao_ExposicaoID" });
-            DropIndex("dbo.UserAccountExposicao", new[] { "UserAccount_UserAccountID" });
+            DropIndex("dbo.UserAccountExposicao", new[] { "ExposicaoID" });
+            DropIndex("dbo.UserAccountExposicao", new[] { "UserAccountID" });
             DropIndex("dbo.Disponibilidade", new[] { "UserAccount_UserAccountID" });
             DropIndex("dbo.UserAccount", new[] { "TipoUtilizadorID" });
             DropIndex("dbo.Marcacao", new[] { "UserAccountID" });
