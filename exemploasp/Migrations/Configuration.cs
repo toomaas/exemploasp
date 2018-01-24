@@ -25,22 +25,23 @@ namespace exemploasp.Migrations
 	        );
 
 
-			context.UserAccount.AddOrUpdate(u=>u.UserAccountID,
+			context.UserAccount.AddOrUpdate(u => u.UserAccountID,
 		        new UserAccount()
 		        {
-			        Nome= "Utilizador",Morada="Universidade da Madeira", Idade = DateTime.Parse("12-12-1998"),
-			        Sexo = "Masculino", NumTelefone = 961234567, Email = "utilizador@email.com", Password = "?e?Y B/?A~Hg??O??J???~??????z?",
+			        UserAccountID=1, Nome= "Utilizador",Morada="Universidade da Madeira", Idade = DateTime.Parse("12-12-1998"),
+			        Sexo = "masculino", NumTelefone = 961234567, Email = "utilizador@email.com", Password = "?e?Y B/?A~Hg??O??J???~??????z?",
 			        ConfirmPassword = "?e?Y B/?A~Hg??O??J???~??????z?", TipoUtilizadorID = 1
 		        },
 
 		        new UserAccount()
 		        {
-			        Nome= "Administrador",Morada="Universidade da Madeira", Idade = DateTime.Parse("12-8-1998"),
-			        Sexo = "Masculino", NumTelefone = 961234569, Email = "administrador@email.com", Password = "?e?Y B/?A~Hg??O??J???~??????z?",
+					UserAccountID=2, Nome= "Administrador",Morada="Universidade da Madeira", Idade = DateTime.Parse("12-8-1998"),
+			        Sexo = "masculino", NumTelefone = 961234569, Email = "administrador@email.com", Password = "?e?Y B/?A~Hg??O??J???~??????z?",
 			        ConfirmPassword = "?e?Y B/?A~Hg??O??J???~??????z?", TipoUtilizadorID = 2
 		        }
 			);
 	
 		}
     }
+
 }
