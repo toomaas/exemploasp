@@ -22,12 +22,8 @@ namespace exemploasp.Controllers
         // GET: Account
         public ActionResult Index()
 		{
-
-			using (OurDBContext db = new OurDBContext())
-			{
 			    var user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas);
                 return View(user.ToList());
-			}
 		}
 
 	    private void PopulateAssignedTemaData(UserAccount userAccount)
@@ -57,14 +53,22 @@ namespace exemploasp.Controllers
 				    DateTime data18 = DateTime.Now;
 				    data18 = data18.AddYears(-18);
 				    if (account.Idade < data18)
-				    {
-				        var encrypt = Encrypt(account.Password);
-				        account.Password = encrypt;
-				        encrypt = Encrypt(account.ConfirmPassword);
-				        account.ConfirmPassword = encrypt;
-				        db.UserAccount.Add(account);
-				        db.SaveChanges();
-				    }
+                    {
+                        if (!db.UserAccount.Any(n => n.Email == account.Email))
+                        {
+                            var encrypt = Encrypt(account.Password);
+                            account.Password = encrypt;
+                            encrypt = Encrypt(account.ConfirmPassword);
+                            account.ConfirmPassword = encrypt;
+                            db.UserAccount.Add(account);
+                            db.SaveChanges();
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("Email", "Email já existente.");
+                            return View();
+                        }
+                    }
 				    else
 				    {
 				        ModelState.AddModelError("Idade", "Idade não permitida.");
@@ -166,12 +170,13 @@ namespace exemploasp.Controllers
 		}
 
         [HttpPost]
-	    public ActionResult PerfilUser(int? id, string[] selectedTemas)
+	    public ActionResult PerfilUser(int? id,string morada, string[] selectedTemas)
 	    {
             if(id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 	        var userAccountToUpdate = db.UserAccount
 	            .Include(u => u.Temas).Single(u => u.UserAccountID == id);
+	        userAccountToUpdate.Morada = morada;
 	        if (TryUpdateModel(userAccountToUpdate, "",
 	            new string[] {"Nome,Morada,Idade,Sexo,NumTelefone,Email,Password,ConfirmPassword,TipoUtilizadorID"}))
 	        {

@@ -17,12 +17,8 @@ namespace exemploasp.Controllers
         // GET: Marcacao
         public ActionResult Index()
         {
-            using (OurDBContext db = new OurDBContext())
-            {
                 var marcacoes = db.Marcacao.Include(a => a.UserAccount).Include(e => e.Exposicao);
                 return View(marcacoes.ToList());
-            }
-          
         }
 
         // GET: Marcacao/Details/5
@@ -36,8 +32,8 @@ namespace exemploasp.Controllers
         {
 	        //UserAccountDropdownList();
 	        ExposicaoDropdownList();
-
-			return View();
+            
+            return View();
         }
 
 	    private void UserAccountDropdownList(object userAccount = null)
@@ -57,7 +53,15 @@ namespace exemploasp.Controllers
 			        orderby e.Nome
 			        select e;
 
-		        ViewBag.ExposicaoID = new SelectList(exposicoesQuery, "ExposicaoID", "Nome", Exposicao);
+            List<Exposicao> newList = new List<Exposicao>();
+	        foreach (var member in exposicoesQuery)
+	           newList.Add(new Exposicao
+	            {
+	                ExposicaoID = member.ExposicaoID,
+	                Nome = member.Nome + " de " + member.DataInicial.ToShortDateString() + " a "+member.DataFinal.ToShortDateString()+ " DUR: "+member.Duracao.ToShortTimeString()
+               });
+
+            ViewBag.ExposicaoID = new SelectList(newList, "ExposicaoID", "Nome", Exposicao);
 	    }
 
 
@@ -73,7 +77,7 @@ namespace exemploasp.Controllers
                 {
                     DateTime hoje = DateTime.Now;
                     var exp = db.Exposicao.FirstOrDefault(e => e.ExposicaoID == marcacao.ExposicaoID);
-                    if (marcacao.Data >= exp.DataInicial && marcacao.Data < exp.DataFinal)
+                    if (DataExposicaoMarcacao(marcacao.Data, exp.DataInicial, exp.DataFinal))
                     {
                         TimeSpan dur = TimeSpan.Parse(exp.Duracao.Hour+":"+exp.Duracao.Minute);
                         marcacao.HoraDeFim = marcacao.HoraDeInicio.Add(dur);
@@ -97,6 +101,16 @@ namespace exemploasp.Controllers
             return RedirectToAction("Index");
         }
 
+        private bool DataExposicaoMarcacao(DateTime dataMarcacao, DateTime dataInicialExposicao,
+            DateTime dataFinalExposicao)
+        {
+            if (dataMarcacao >= dataInicialExposicao && dataMarcacao <= dataFinalExposicao)
+            {
+                return true;
+            }
+            return false;
+        }
+
         // GET: Marcacao/Edit/5
         public ActionResult Edit(int id)
         {
@@ -113,11 +127,25 @@ namespace exemploasp.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(marcacao).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                Exposicao exposicao = db.Exposicao.Find(marcacao.ExposicaoID);
+                if (DataExposicaoMarcacao(marcacao.Data, exposicao.DataInicial,exposicao.DataFinal))
+                {
+                    TimeSpan dur = TimeSpan.Parse(exposicao.Duracao.Hour + ":" + exposicao.Duracao.Minute);
+                    marcacao.HoraDeFim = marcacao.HoraDeInicio.Add(dur);
+                    db.Entry(marcacao).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.AddModelError("Data", "Esta Exposição occore de " + exposicao.DataInicial.ToShortDateString() + " a " + exposicao.DataFinal.ToShortDateString());
+                    UserAccountDropdownList();
+                    return View(marcacao);
+                }
+
             }
-            return View();
+            UserAccountDropdownList();
+            return View(marcacao);
         }
 
         // GET: Marcacao/Delete/5
