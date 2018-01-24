@@ -241,6 +241,8 @@
     <Content Include="Views\TipoUtilizador\Index.cshtml" />
     <Content Include="Views\Account\Funcao.cshtml" />
     <Content Include="Views\Exposicao\User.cshtml" />
+    <Content Include="Views\Account\Edit.cshtml" />
+    <Content Include="Views\Account\AlterarPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

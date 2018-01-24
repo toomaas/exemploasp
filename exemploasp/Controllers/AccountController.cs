@@ -163,22 +163,19 @@ namespace exemploasp.Controllers
 		            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 		        }
 
-		        //ViewData["Utilizador"] = user;
+		        if(TempData["Message"] != null) ViewBag.Message = TempData["Message"].ToString();
 		        PopulateAssignedTemaData(user);
 		        return View(user);
 		    }
 		}
 
         [HttpPost]
-	    public ActionResult PerfilUser(int? id,string nome,string morada,int numTelefone, string[] selectedTemas)
+	    public ActionResult PerfilUser(int? id, string[] selectedTemas)
 	    {
             if(id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 	        var userAccountToUpdate = db.UserAccount
-	            .Include(u => u.Temas).Single(u => u.UserAccountID == id);
-	        userAccountToUpdate.Morada = morada;
-	        userAccountToUpdate.NumTelefone = numTelefone;
-	        userAccountToUpdate.Nome = nome;
+	            .Include(u => u.Temas).Single(u => u.UserAccountID == id);	        
             if (TryUpdateModel(userAccountToUpdate, "",
 	            new string[] {"Nome,Morada,Idade,Sexo,NumTelefone,Email,Password,ConfirmPassword,TipoUtilizadorID"}))
 	        {
@@ -198,7 +195,78 @@ namespace exemploasp.Controllers
 	        return View(userAccountToUpdate);
         }
 
-	    private void UpdateUserAccountTemas(string[] selectedTemas, UserAccount userAccountToUpdate)
+	    public ActionResult Edit(int? id)
+	    {
+	        UserAccount user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas).SingleOrDefault(u => u.UserAccountID == id);
+	        if (id == null || user == null)
+	        {
+	            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+	        }
+	        PopulateAssignedTemaData(user);
+	        return View(user);   
+	    }
+
+	    [HttpPost]
+	    public ActionResult Edit(int? id, string nome, string morada, int numTelefone)
+	    {
+	        if (id == null)
+	            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+	        var userAccountToUpdate = db.UserAccount
+	            .Include(u => u.Temas).Single(u => u.UserAccountID == id);
+	        userAccountToUpdate.Morada = morada;
+	        userAccountToUpdate.NumTelefone = numTelefone;
+	        userAccountToUpdate.Nome = nome;
+	        if (TryUpdateModel(userAccountToUpdate, "",
+	            new string[] { "Nome,Morada,Idade,Sexo,NumTelefone,Email,Password,ConfirmPassword,TipoUtilizadorID" }))
+	        {
+	            try
+	            {
+	                db.Entry(userAccountToUpdate).State = EntityState.Modified;
+	                db.SaveChanges();
+	                return RedirectToAction("PerfilUser", new {  id });
+	            }
+	            catch (RetryLimitExceededException /* dex */)
+	            {
+	                ModelState.AddModelError("", "Nao foi possivel atualizar o user");
+	            }
+	        }
+	        return View(userAccountToUpdate);
+	    }
+
+	    public ActionResult AlterarPassword(int? id)
+	    {
+	        var userAccountToUpdate = db.UserAccount.SingleOrDefault(u => u.UserAccountID == id);
+            if (id == null || userAccountToUpdate == null)
+	        {
+	            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+	        }
+	        PopulateAssignedTemaData(userAccountToUpdate);
+	        return View(userAccountToUpdate);
+	    }
+
+        [HttpPost]
+	    public ActionResult AlterarPassword(int?id,string pwAntiga, string Password, string confpw)
+	    {
+	        UserAccount user = db.UserAccount.SingleOrDefault(u => u.UserAccountID == id);
+	        if (id == null || user == null)
+	        {
+	            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+	        }
+	        if (user.Password == Encrypt(pwAntiga))
+	        {
+	            user.Password = Encrypt(Password);
+	            user.ConfirmPassword = Encrypt(Password);
+	            db.Entry(user).State = EntityState.Modified;
+	            db.SaveChanges();
+	            TempData["Message"] = "Password alterada com sucesso";
+                return RedirectToAction("PerfilUser", new { id });
+            }
+	        ModelState.AddModelError("", "Nao foi possivel atualizar a password");
+            PopulateAssignedTemaData(user);
+	        return View(user);
+	    }
+
+        private void UpdateUserAccountTemas(string[] selectedTemas, UserAccount userAccountToUpdate)
 	    {
 	        if (selectedTemas == null)
 	        {

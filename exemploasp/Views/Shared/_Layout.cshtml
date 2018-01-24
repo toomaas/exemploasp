@@ -60,9 +60,8 @@
                                 <ul class="dropdown-menu">
                                 
                                     <li>@Html.ActionLink("Conta de Utilizador", "PerfilUser", "Account", new {id=Session["UserAccountId"]},null)</li>
-                                    <li>@Html.ActionLink("Editar Perfil", "PerfilUser", "Account",new { id = Session["UserAccountId"] }, null)</li>
-                                    <li></li>
-
+                                    <li>@Html.ActionLink("Editar Perfil", "Edit", "Account",new { id = Session["UserAccountId"] }, null)</li>
+                                    <li>&nbsp;</li>
                                     <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
                                 </ul>
 

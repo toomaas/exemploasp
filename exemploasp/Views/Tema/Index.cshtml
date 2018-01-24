@@ -1,4 +1,5 @@
-﻿@model IEnumerable<exemploasp.Models.Tema>
+﻿@using System.Runtime.Remoting.Messaging
+@model IEnumerable<exemploasp.Models.Tema>
 
 @{
     ViewBag.Title = "Index";
@@ -7,12 +8,7 @@
 
 <body>
 
-<h2>Index</h2>
-    @if (Session["Mensagem"] != null)
-       {
-           <h4 style="color:red;">Tema criado com @Session["Mensagem"].ToString()</h4>
-       }
-
+<h5 style="color: red">@ViewBag.Message</h5>
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
@@ -38,24 +34,23 @@
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id=item.TemaID }) |
                 @Html.ActionLink("Details", "Details", new { id=item.TemaID }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.TemaID })
+                <p onClick="say_hi(@item.TemaID)">Delete</p>
             </td>
         </tr>
     }
 
 </table>
     
-    @if (ViewBag.Message != null)
-    {
-        <script type ="text/javascript">
-            window.onload = function() {
 
-                alert("@ViewBag.Message");
+        <script type="text/javaScript">
+            function say_hi(idt) {
+                var hi= confirm("Quer mesmo apagar este tema?");
+                if (hi == true) {
+                    window.location.href = "/Tema/Delete/"+idt;
+                }
             }
-
-
         </script>
-    }
+
        
 
 </body>

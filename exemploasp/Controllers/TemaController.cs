@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using exemploasp.Models;
 using System.Data.Entity;
+using System.Web.Services.Description;
 
 namespace exemploasp.Controllers
 {
@@ -15,6 +16,7 @@ namespace exemploasp.Controllers
         {
             using (OurDBContext db = new OurDBContext())
             {
+                if (TempData["Message"] != null) ViewBag.Message = TempData["Message"].ToString();
                 return View(db.Tema.ToList());
             }
         }
@@ -46,16 +48,12 @@ namespace exemploasp.Controllers
 						db.Tema.Add(tema);
 		                db.SaveChanges();
 
-						//ViewBag.Message = tema.Nome + "criado com sucesso";
-		                Session["Mensagem"] = "sucesso";
-
+	                    TempData["Message"] = tema.Nome + "criado com sucesso";
 	                }
 	                else
 	                {
-						//ViewBag.Message = tema.Nome + "Ja existente na BD";
-		                Session["Mensagem"] = "insucesso";
-
-					}
+	                    TempData["Message"] = tema.Nome + " já existente";
+                    }
 ;
                 }
                 ModelState.Clear();
