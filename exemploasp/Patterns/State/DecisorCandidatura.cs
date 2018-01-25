@@ -11,17 +11,18 @@ namespace exemploasp.Patterns
 	{
 		OurDBContext db = new OurDBContext();
 
-		public IState AguardarEnvio;
-		public IState CandidaturaAceite;
-		public IState EsperaInformacaoAdicional;
-		public IState VerificarCandidatura;
-		public IState EstadoActual;
+		public IState AguardarEnvio { get; }
+		public IState CandidaturaAceite { get; }
+		public IState EsperaInformacaoAdicional { get; }
+		public IState VerificarCandidatura { get; }
+	    public IState EstadoActual { get; set; }
 
-		public UserAccountExposicao userAccountExposicao;
+	    public UserAccountExposicao userAccountExposicao;
 
 		public DecisorCandidatura(UserAccountExposicao userAccountExposicao)
 		{
-			this.userAccountExposicao = userAccountExposicao;
+		    this.userAccountExposicao = userAccountExposicao;
+		    EstadoActual = BuscarEstadoAtual();
 
 			EstadoActual = BuscarEstadoAtual();
 
@@ -29,8 +30,6 @@ namespace exemploasp.Patterns
 			CandidaturaAceite = new CandidaturaAceite(this);
 			EsperaInformacaoAdicional = new EsperaInformacaoAdicional(this);
 			VerificarCandidatura = new VerificarCandidatura(this);
-
-
 		}
 
 		public IState BuscarEstadoAtual()
@@ -61,12 +60,16 @@ namespace exemploasp.Patterns
 					{
 						return CandidaturaAceite;
 					}
+
+
+
 				}
 			}
 			return AguardarEnvio;
 		}
 
 
+		OurDBContext bd = new OurDBContext();
 
 		public void Submeter()
 		{
