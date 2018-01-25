@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Resources;
 using System.Web;
 using System.Web.Mvc;
 using exemploasp.Models;
@@ -126,7 +128,8 @@ namespace exemploasp.Controllers
 
             ViewBag.ExposicaoID = new SelectList(newList, "ExposicaoID", "Nome");
             ViewBag.UserID = id.ToString();
-            return View();
+            
+            return View(db.UserAccountExposicao.Where(u => u.UserAccountID == id).Where(u => u.Assigned == 2).Include(u => u.Exposicao).Include(u => u.UserAccount).ToList());
         }
 
         // POST: Exposicao/Edit/5
@@ -134,12 +137,16 @@ namespace exemploasp.Controllers
         public ActionResult User(string UserID, string ExposicaoID)
         {
             UserAccountExposicao userAccountExposicao = new UserAccountExposicao();
-            userAccountExposicao.ExposicaoID = Int32.Parse(ExposicaoID);
-            userAccountExposicao.UserAccountID = Int32.Parse(UserID);
-            DecisorCandidatura decisorCandidatura = new DecisorCandidatura(userAccountExposicao);
-            decisorCandidatura.EstadoActual = decisorCandidatura.BuscarEstadoAtual();
-            decisorCandidatura.Submeter();
-            return RedirectToAction("LoggedIn","Account");
+            if (ExposicaoID != "")
+            {
+                userAccountExposicao.ExposicaoID = Int32.Parse(ExposicaoID);
+                userAccountExposicao.UserAccountID = Int32.Parse(UserID);
+                DecisorCandidatura decisorCandidatura = new DecisorCandidatura(userAccountExposicao);
+                decisorCandidatura.EstadoActual = decisorCandidatura.BuscarEstadoAtual();
+                decisorCandidatura.Submeter();
+                
+            }
+            return RedirectToAction("LoggedIn", "Account");
         }
 
 

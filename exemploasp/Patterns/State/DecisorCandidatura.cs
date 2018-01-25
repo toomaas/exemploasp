@@ -49,7 +49,6 @@ namespace exemploasp.Patterns
 					{
 						return VerificarCandidatura;
 					}
-
 					case 3:
 					{
 						return EsperaInformacaoAdicional;
@@ -58,9 +57,6 @@ namespace exemploasp.Patterns
 					{
 						return CandidaturaAceite;
 					}
-
-
-
 				}
 			}
 			return AguardarEnvio;

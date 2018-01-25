@@ -1,4 +1,4 @@
-﻿@model IEnumerable<exemploasp.Models.Exposicao>
+﻿@model IEnumerable<exemploasp.Models.UserAccountExposicao>
 @{
     ViewBag.Title = "User";
 }
@@ -24,8 +24,33 @@
             <input type="submit" value="Candidatar" class="btn btn-default" />
         </div>
     </div>
-
 }
+<br><hr>
+<h4>Candidaturas à espera de verificação</h4>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Exposicao.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserAccount.Nome)
+        </th>
+    </tr>
+
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Exposicao.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserAccount.Nome)
+            </td>
+        </tr>
+    }
+
+</table>
+
+
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
