@@ -24,6 +24,8 @@ namespace exemploasp.Patterns
 		    this.userAccountExposicao = userAccountExposicao;
 		    EstadoActual = BuscarEstadoAtual();
 
+			EstadoActual = BuscarEstadoAtual();
+
 			AguardarEnvio = new AguardarEnvio(this);
 			CandidaturaAceite = new CandidaturaAceite(this);
 			EsperaInformacaoAdicional = new EsperaInformacaoAdicional(this);
