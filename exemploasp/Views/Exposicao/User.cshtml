@@ -1,17 +1,39 @@
 ﻿@model IEnumerable<exemploasp.Models.Exposicao>
-
 @{
     ViewBag.Title = "User";
 }
 
 <h2>User</h2>
 
-<div class="form-group">
 
-    <label class="control-label col-md-2" for="ExposicaoID">Exposição</label>
-    <div class="col-md-10">
-        @Html.DropDownList("ExposicaoID", String.Empty)
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("UserID",(string) ViewBag.UserID)
+
+    <div class="form-group">
+        <label class="control-label col-md-2" for="ExposicaoID">Exposição</label>
+        <div class="col-md-10">
+            @Html.DropDownList("ExposicaoID", String.Empty)
+        </div>
     </div>
 
-</div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Candidatar" class="btn btn-default" />
+        </div>
+    </div>
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+
+
+
+
 

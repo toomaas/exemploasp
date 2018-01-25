@@ -11,27 +11,26 @@ namespace exemploasp.Patterns
 	{
 		OurDBContext db = new OurDBContext();
 
-		public IState AguardarEnvio;
-		public IState CandidaturaAceite;
-		public IState EsperaInformacaoAdicional;
-		public IState VerificarCandidatura;
-		public IState EstadoActual;
+		public IState AguardarEnvio { get; }
+		public IState CandidaturaAceite { get; }
+		public IState EsperaInformacaoAdicional { get; }
+		public IState VerificarCandidatura { get; }
+	    public IState EstadoActual { get; set; }
 
-
+	    public UserAccountExposicao userAccountExposicao;
 
 		public DecisorCandidatura(UserAccountExposicao userAccountExposicao)
 		{
-			EstadoActual = BuscarEstadoAtual(userAccountExposicao);
+		    this.userAccountExposicao = userAccountExposicao;
+		    EstadoActual = BuscarEstadoAtual();
 
 			AguardarEnvio = new AguardarEnvio(this);
 			CandidaturaAceite = new CandidaturaAceite(this);
 			EsperaInformacaoAdicional = new EsperaInformacaoAdicional(this);
 			VerificarCandidatura = new VerificarCandidatura(this);
-
-
 		}
 
-		public IState BuscarEstadoAtual(UserAccountExposicao userAccountExposicao)
+		public IState BuscarEstadoAtual()
 		{
 			var obterEstado = db.UserAccountExposicao
 				.Where(u => u.UserAccountID == userAccountExposicao.UserAccountID).SingleOrDefault(u => u.ExposicaoID == userAccountExposicao.ExposicaoID);
@@ -70,24 +69,24 @@ namespace exemploasp.Patterns
 
 		OurDBContext bd = new OurDBContext();
 
-		public void Submeter(UserAccountExposicao userAccountExposicao)
+		public void Submeter()
 		{
 
 			EstadoActual.Submeter(userAccountExposicao);
 			
 		}
 
-		public void Rejeitar(UserAccountExposicao userAccountExposicao)
+		public void Rejeitar()
 		{
 			EstadoActual.Rejeitar(userAccountExposicao);
 		}
 
-		public void PedirInformacao(UserAccountExposicao userAccountExposicao)
+		public void PedirInformacao()
 		{
 			EstadoActual.PedirInformacao(userAccountExposicao);
 		}
 
-		public void Aceitar(UserAccountExposicao userAccountExposicao)
+		public void Aceitar()
 		{
 			EstadoActual.Aceitar(userAccountExposicao);
 		}

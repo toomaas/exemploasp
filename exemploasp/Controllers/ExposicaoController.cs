@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using exemploasp.Models;
+using exemploasp.Patterns;
 using exemploasp.ViewModels;
 
 namespace exemploasp.Controllers
@@ -92,7 +93,7 @@ namespace exemploasp.Controllers
         //GET: Exposicao/User/id
         public ActionResult User(int id)
         {
-           /* bool existeTema = false;
+            bool existeTema = false;
             var user = db.UserAccount.Single(u => u.UserAccountID == id);
             var exposicoes = db.Exposicao.ToList();
             List<Exposicao> exposicoesAUsar = new List<Exposicao>();
@@ -124,13 +125,22 @@ namespace exemploasp.Controllers
                 });
 
             ViewBag.ExposicaoID = new SelectList(newList, "ExposicaoID", "Nome");
-			*/
-
-
-
+            ViewBag.UserID = id.ToString();
             return View();
         }
 
+        // POST: Exposicao/Edit/5
+        [HttpPost]
+        public ActionResult User(string UserID, string ExposicaoID)
+        {
+            UserAccountExposicao userAccountExposicao = new UserAccountExposicao();
+            userAccountExposicao.ExposicaoID = Int32.Parse(ExposicaoID);
+            userAccountExposicao.UserAccountID = Int32.Parse(UserID);
+            DecisorCandidatura decisorCandidatura = new DecisorCandidatura(userAccountExposicao);
+            decisorCandidatura.EstadoActual = decisorCandidatura.BuscarEstadoAtual();
+            decisorCandidatura.Submeter();
+            return RedirectToAction("LoggedIn","Account");
+        }
 
 
         // GET: Exposicao/Edit/5
