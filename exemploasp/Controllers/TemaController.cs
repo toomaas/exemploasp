@@ -11,6 +11,7 @@ namespace exemploasp.Controllers
 {
     public class TemaController : Controller
     {
+        private OurDBContext db = new OurDBContext();
         // GET: Tema
         public ActionResult Index()
         {
@@ -90,25 +91,20 @@ namespace exemploasp.Controllers
         }
 
         // GET: Tema/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Tema/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+          public ActionResult Delete(int? id)
+          {
+              var temaToDelete = db.Tema.SingleOrDefault(t => t.TemaID == id);
+              if (temaToDelete != null)
+              {
+                  db.Tema.Remove(temaToDelete);
+                  db.SaveChanges();
+                  TempData["Message"] = temaToDelete.Nome + " removido com sucesso";
+              }
+              else
+              {
+                  TempData["Message"] = "erro ao remover o tema";
+              }
+              return RedirectToAction("Index");
         }
     }
 }

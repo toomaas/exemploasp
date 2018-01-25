@@ -34,13 +34,13 @@
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id=item.TemaID }) |
                 @Html.ActionLink("Details", "Details", new { id=item.TemaID }) |
-                <p onClick="say_hi(@item.TemaID)">Delete</p>
+                <p onClick="say_hi(@item.TemaID)"><a href="#">Delete</a></p>
             </td>
         </tr>
     }
 
 </table>
-    
+
 
         <script type="text/javaScript">
             function say_hi(idt) {
