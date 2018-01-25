@@ -17,11 +17,13 @@ namespace exemploasp.Patterns
 		public IState VerificarCandidatura;
 		public IState EstadoActual;
 
-
+		public UserAccountExposicao userAccountExposicao;
 
 		public DecisorCandidatura(UserAccountExposicao userAccountExposicao)
 		{
-			EstadoActual = BuscarEstadoAtual(userAccountExposicao);
+			this.userAccountExposicao = userAccountExposicao;
+
+			EstadoActual = BuscarEstadoAtual();
 
 			AguardarEnvio = new AguardarEnvio(this);
 			CandidaturaAceite = new CandidaturaAceite(this);
@@ -31,7 +33,7 @@ namespace exemploasp.Patterns
 
 		}
 
-		public IState BuscarEstadoAtual(UserAccountExposicao userAccountExposicao)
+		public IState BuscarEstadoAtual()
 		{
 			var obterEstado = db.UserAccountExposicao
 				.Where(u => u.UserAccountID == userAccountExposicao.UserAccountID).SingleOrDefault(u => u.ExposicaoID == userAccountExposicao.ExposicaoID);
@@ -59,35 +61,31 @@ namespace exemploasp.Patterns
 					{
 						return CandidaturaAceite;
 					}
-
-
-
 				}
 			}
 			return AguardarEnvio;
 		}
 
 
-		OurDBContext bd = new OurDBContext();
 
-		public void Submeter(UserAccountExposicao userAccountExposicao)
+		public void Submeter()
 		{
 
 			EstadoActual.Submeter(userAccountExposicao);
 			
 		}
 
-		public void Rejeitar(UserAccountExposicao userAccountExposicao)
+		public void Rejeitar()
 		{
 			EstadoActual.Rejeitar(userAccountExposicao);
 		}
 
-		public void PedirInformacao(UserAccountExposicao userAccountExposicao)
+		public void PedirInformacao()
 		{
 			EstadoActual.PedirInformacao(userAccountExposicao);
 		}
 
-		public void Aceitar(UserAccountExposicao userAccountExposicao)
+		public void Aceitar()
 		{
 			EstadoActual.Aceitar(userAccountExposicao);
 		}

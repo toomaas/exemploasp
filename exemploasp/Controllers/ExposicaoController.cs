@@ -92,7 +92,7 @@ namespace exemploasp.Controllers
         //GET: Exposicao/User/id
         public ActionResult User(int id)
         {
-           /* bool existeTema = false;
+            bool existeTema = false;
             var user = db.UserAccount.Single(u => u.UserAccountID == id);
             var exposicoes = db.Exposicao.ToList();
             List<Exposicao> exposicoesAUsar = new List<Exposicao>();
@@ -124,7 +124,7 @@ namespace exemploasp.Controllers
                 });
 
             ViewBag.ExposicaoID = new SelectList(newList, "ExposicaoID", "Nome");
-			*/
+		
 
 
 
