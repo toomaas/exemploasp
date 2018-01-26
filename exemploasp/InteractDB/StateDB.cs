@@ -51,7 +51,7 @@ namespace exemploasp.InteractDB
 			}
 		}
 
-		//Alterar o estado da candidatura na base de dados para 2 (CandidaturaAceite)
+		//Alterar o estado da candidatura na base de dados para 4 (CandidaturaAceite)
 		public void AceitarDb(UserAccountExposicao userAccountExposicao)
 		{
 			var candidaturaAceitar = db.UserAccountExposicao
@@ -65,7 +65,7 @@ namespace exemploasp.InteractDB
 			}
 		}
 
-		//Alterar o estado da candidatura na base de dados para 2 (AguardarEnvio)
+		//Alterar o estado da candidatura na base de dados para 1 (AguardarEnvio)
 		public void RejeitarDb(UserAccountExposicao userAccountExposicao)
 		{
 			var rejeitarCandidatura = db.UserAccountExposicao
@@ -79,7 +79,7 @@ namespace exemploasp.InteractDB
 			}
 		}
 
-		//Alterar o estado da candidatura na base de dados para 2 (EsperaInformacaoAdicional)
+		//Alterar o estado da candidatura na base de dados para 3 (EsperaInformacaoAdicional)
 		public void PedirInformacaoDb(UserAccountExposicao userAccountExposicao)
 		{
 			var pedirInformacao = db.UserAccountExposicao
