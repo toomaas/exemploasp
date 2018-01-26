@@ -25,7 +25,7 @@
                     </div>
                     <div class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
-                            <li>@Html.ActionLink("Exposições", "User", "Exposicao", new { id = Session["UserAccountID"] },null)</li>
+                            <li>@Html.ActionLink("Exposições", "Index", "UserAccountExposicao", new { id = Session["UserAccountID"] },null)</li>
                             <li>@Html.ActionLink("Contactos", "Contact", "Home")</li>
 
                             @{

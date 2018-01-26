@@ -156,6 +156,7 @@
     <Compile Include="Controllers\MarcacaoController.cs" />
     <Compile Include="Controllers\TemaController.cs" />
     <Compile Include="Controllers\TipoUtilizadorController.cs" />
+    <Compile Include="Controllers\UserAccountExposicaoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -262,9 +263,9 @@
     <Content Include="Views\TipoUtilizador\Delete.cshtml" />
     <Content Include="Views\TipoUtilizador\Index.cshtml" />
     <Content Include="Views\Account\Funcao.cshtml" />
-    <Content Include="Views\Exposicao\User.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Account\AlterarPassword.cshtml" />
+    <Content Include="Views\UserAccountExposicao\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -12,7 +12,8 @@ namespace exemploasp.Models
 		[Key]
 		public int ExposicaoID { get; set; }
 
-		[Required(ErrorMessage = "O nome é óbrigatório")]
+	    [Display(Name = "Nome da exposição")]
+        [Required(ErrorMessage = "O nome é óbrigatório")]
 		public string Nome { get; set; }
 
 		[Display(Name = "Data Inicio da exposição")]
