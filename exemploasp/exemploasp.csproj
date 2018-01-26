@@ -261,6 +261,7 @@
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Account\AlterarPassword.cshtml" />
     <Content Include="Views\UserAccountExposicao\Index.cshtml" />
+    <Content Include="Views\UserAccountExposicao\GestaoCandidaturas.cshtml" />
     <Content Include="Views\Exposicao\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
