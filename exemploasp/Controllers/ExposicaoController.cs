@@ -91,12 +91,9 @@ namespace exemploasp.Controllers
                // return View();
             }
 
-
-        //GET: Exposicao/User/id
-        public ActionResult User(int id)
+        private List<Exposicao> ExposicoesUtilizador(int idUser)
         {
-            bool existeTema = false;
-            var user = db.UserAccount.Single(u => u.UserAccountID == id);
+            var user = db.UserAccount.Single(u => u.UserAccountID == idUser);
             var exposicoes = db.Exposicao.ToList();
             List<Exposicao> exposicoesAUsar = new List<Exposicao>();
             foreach (var exp in exposicoes)
@@ -104,7 +101,7 @@ namespace exemploasp.Controllers
                 List<bool> temasExp = new List<bool>();
                 foreach (var temaExp in exp.Temas)
                 {
-                    existeTema = false;
+                    var existeTema = false;
                     foreach (var temaUser in user.Temas)
                     {
                         if (temaExp.TemaID == temaUser.TemaID)
@@ -125,16 +122,21 @@ namespace exemploasp.Controllers
                     ExposicaoID = member.ExposicaoID,
                     Nome = member.Nome + " de " + member.DataInicial.ToShortDateString() + " a " + member.DataFinal.ToShortDateString() + " DUR: " + member.Duracao.ToShortTimeString()
                 });
+            return newList;
+        }
 
-            ViewBag.ExposicaoID = new SelectList(newList, "ExposicaoID", "Nome");
+        //GET: Exposicao/User/id
+        public ActionResult User(int id)
+        {
+            List<Exposicao> listaExposicoes = ExposicoesUtilizador(id);
+            ViewBag.ExposicaoID = new SelectList(listaExposicoes, "ExposicaoID", "Nome");
             ViewBag.UserID = id.ToString();
-            
             return View(db.UserAccountExposicao.Where(u => u.UserAccountID == id).Where(u => u.Assigned == 2).Include(u => u.Exposicao).Include(u => u.UserAccount).ToList());
         }
 
 
 
-        // POST: Exposicao/Edit/5
+        // POST: Exposicao/User
         [HttpPost]
         public ActionResult User(string UserID, string ExposicaoID)
         {
@@ -148,7 +150,11 @@ namespace exemploasp.Controllers
                 decisorCandidatura.Submeter();
                 
             }
-            return RedirectToAction("LoggedIn", "Account");
+            List<Exposicao> listaExposicoes = ExposicoesUtilizador(Int32.Parse(UserID));
+            ViewBag.ExposicaoID = new SelectList(listaExposicoes, "ExposicaoID", "Nome");
+            ViewBag.UserID = UserID;
+            int id = Int32.Parse(UserID);
+            return View(db.UserAccountExposicao.Where(u => u.UserAccountID == id).Where(u => u.Assigned == 2).Include(u => u.Exposicao).Include(u => u.UserAccount).ToList());
         }
 
 
