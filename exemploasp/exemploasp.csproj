@@ -259,6 +259,7 @@
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Account\AlterarPassword.cshtml" />
     <Content Include="Views\UserAccountExposicao\Index.cshtml" />
+    <Content Include="Views\UserAccountExposicao\GestaoCandidaturas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

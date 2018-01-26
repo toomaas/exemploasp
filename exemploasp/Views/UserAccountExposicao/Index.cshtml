@@ -3,10 +3,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
-
-
-
+<h4>Lista de Exposições</h4>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -25,7 +22,7 @@
         </div>
     </div>
 }
-<br><hr>
+<table><th>&nbsp;</th></table>
 <h4>Candidaturas à espera de verificação</h4>
 <table class="table">
     <tr>
@@ -48,7 +45,30 @@
 
 </table>
 
-<br><hr>
+<table><th>&nbsp;</th></table>
+<h4>Candidaturas à espera de verificação depois de enviar dados adicionais</h4>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Exposicao.Nome)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        if (item.Assigned == 3 && item.InformacaoExtra != null)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Exposicao.Nome)
+                </td>
+            </tr>
+        }
+    }
+
+</table>
+
+<table><th>&nbsp;</th></table>
 <h4>Candidaturas à espera de informação adicional</h4>
 <table class="table">
     <tr>
@@ -62,28 +82,77 @@
 
     @foreach (var item in Model)
     {
-        if (item.Assigned == 3)
+        if (item.Assigned == 3 && item.InformacaoExtra == null)
         {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Exposicao.Nome)
+                </td>
+                <td>
+                    @using (Html.BeginForm("ExtraInfo", "UserAccountExposicao"))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("UserID", (string)ViewBag.UserID)
+                        @Html.Hidden("ExposicaoID", item.ExposicaoID)
+                        @Html.TextArea("InformacaoExtra")
+                    <td>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Enviar Informação" class="btn btn-default" />
+                            </div>
+                        </div>
+                    </td>
+                }
+
+                </tr>
+            }
+        }
+</table>
+
+<table><th>&nbsp;</th></table>
+<h4>Candidaturas Rejeitadas</h4>
+<table class="table">
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Exposicao.Nome)
-        </td>
-        <td>
-            @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-        @Html.Hidden("UserID", (string)ViewBag.UserID)
-        @Html.HiddenFor(modelItem => item.ExposicaoID)
-        @Html.EditorFor(modelItem => item.InformacaoExtra)
-}
-        </td>
+        <th>
+            @Html.DisplayNameFor(model => model.Exposicao.Nome)
+        </th>
     </tr>
+
+    @foreach (var item in Model)
+    {
+        if (item.Assigned == 1)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Exposicao.Nome)
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+<table><th>&nbsp;</th></table>
+<h4>Candidaturas Aceites/apto para realizar visitas guiadas</h4>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Exposicao.Nome)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        if (item.Assigned == 4)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Exposicao.Nome)
+                </td>
+            </tr>
         }
     }
 
 </table>
-
-
 
 
 @section Scripts {

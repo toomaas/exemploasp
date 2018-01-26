@@ -40,6 +40,7 @@ namespace exemploasp.InteractDB
 			if (submeterCandidatura != null)
 			{
 				submeterCandidatura.Assigned = 2;
+			    submeterCandidatura.InformacaoExtra = null;
 				db.Entry(submeterCandidatura).State = EntityState.Modified;
 				db.SaveChanges();
 			}
