@@ -132,6 +132,8 @@ namespace exemploasp.Controllers
             return View(db.UserAccountExposicao.Where(u => u.UserAccountID == id).Where(u => u.Assigned == 2).Include(u => u.Exposicao).Include(u => u.UserAccount).ToList());
         }
 
+
+
         // POST: Exposicao/Edit/5
         [HttpPost]
         public ActionResult User(string UserID, string ExposicaoID)

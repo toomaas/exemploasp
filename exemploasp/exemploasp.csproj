@@ -167,6 +167,10 @@
     <Compile Include="Migrations\201801241208034_seed.Designer.cs">
       <DependentUpon>201801241208034_seed.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201801261136501_extrainfo_useraccountexp.cs" />
+    <Compile Include="Migrations\201801261136501_extrainfo_useraccountexp.Designer.cs">
+      <DependentUpon>201801261136501_extrainfo_useraccountexp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Disponibilidade.cs" />
     <Compile Include="Models\Exposicao.cs" />
@@ -284,6 +288,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201801241208034_seed.resx">
       <DependentUpon>201801241208034_seed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801261136501_extrainfo_useraccountexp.resx">
+      <DependentUpon>201801261136501_extrainfo_useraccountexp.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

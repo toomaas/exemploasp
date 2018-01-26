@@ -22,5 +22,6 @@ namespace exemploasp.Models
         public Exposicao Exposicao { get; set; }
 
         public int Assigned { get; set; }
+        public string InformacaoExtra { get; set; }
     }
 }
