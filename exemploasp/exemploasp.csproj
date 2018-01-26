@@ -160,6 +160,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="InteractDB\MuseuInteractDB.cs" />
     <Compile Include="InteractDB\StateDB.cs" />
     <Compile Include="Migrations\201801231759106_tabelas.cs" />
     <Compile Include="Migrations\201801231759106_tabelas.Designer.cs">
@@ -176,6 +177,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Disponibilidade.cs" />
     <Compile Include="Models\Exposicao.cs" />
+    <Compile Include="Models\ITabelas.cs" />
     <Compile Include="Models\Marcacao.cs" />
     <Compile Include="Models\OurDBContext.cs" />
     <Compile Include="Models\Tema.cs" />
@@ -259,6 +261,7 @@
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Account\AlterarPassword.cshtml" />
     <Content Include="Views\UserAccountExposicao\Index.cshtml" />
+    <Content Include="Views\Exposicao\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

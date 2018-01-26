@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Net;
 using System.Resources;
+using System.Security.Cryptography.Pkcs;
 using System.Web;
 using System.Web.Mvc;
+using exemploasp.InteractDB;
 using exemploasp.Models;
 using exemploasp.Patterns;
 using exemploasp.ViewModels;
@@ -14,6 +18,7 @@ namespace exemploasp.Controllers
     public class ExposicaoController : Controller
     {
         OurDBContext db = new OurDBContext();
+		MuseuInteractDB museuDB = new MuseuInteractDB();
         // GET: Exposicao
         public ActionResult Index()
         {
@@ -79,5 +84,100 @@ namespace exemploasp.Controllers
 	        }
             return RedirectToAction("Index");
         }
+
+	    public ActionResult Edit(int? id)
+	    {
+		
+		    Exposicao exposicao = db.Exposicao.Include(t => t.Temas).SingleOrDefault(u => u.ExposicaoID == id);
+		    if (exposicao == null || id == null)
+		    {
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+			}
+
+		    PopulateAssignedTemaData(exposicao);
+			return View(exposicao);
+	    }
+
+
+	    [HttpPost]
+		public ActionResult Edit(int? id, string[] selectedTemas)
+	    {
+			if (id == null)
+				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+		    var exposicaoUpdate = db.Exposicao.Include(t => t.Temas).Single(e => e.ExposicaoID == id);
+
+		    if (TryUpdateModel(exposicaoUpdate, "",
+			    new string[] {"Nome,DataInicial,DataFinal,Duracao,NrItens"}))
+		    {
+			    try
+			    {
+
+				    UpdateTemas(selectedTemas, exposicaoUpdate);
+				    db.Entry(exposicaoUpdate).State = EntityState.Modified;
+				    db.SaveChanges();
+				    return RedirectToAction("Index");
+
+			    }
+			    catch (RetryLimitExceededException /* dex */)
+			    {
+				    ModelState.AddModelError("", "Nao foi possivel atualizar a exposição");
+			    }
+			}
+		    return View(exposicaoUpdate);
+
+	    }
+
+
+	    public void UpdateTemas(string[] selectedTemas, Exposicao exposicao)
+	    {
+		    if (selectedTemas == null)
+		    {
+			    exposicao.Temas = new List<Tema>();
+			    return;
+		    }
+		    var selectedTemasHS = new HashSet<string>(selectedTemas);
+		    var userAccountTemas = new HashSet<int>(exposicao.Temas.Select(t => t.TemaID));
+		    foreach (var tema in db.Tema)
+		    {
+			    if (selectedTemasHS.Contains(tema.TemaID.ToString()))
+			    {
+				    if (!userAccountTemas.Contains(tema.TemaID))
+				    {
+					    exposicao.Temas.Add(tema);
+
+				    }
+			    }
+			    else
+			    {
+				    if (userAccountTemas.Contains(tema.TemaID))
+				    {
+					    exposicao.Temas.Remove(tema);
+				    }
+			    }
+
+		    }
+
+	    }
+
+
+
+		public ActionResult Delete(int? id)
+	    {
+		    var exposicaoToDelete = db.Exposicao.SingleOrDefault(e => e.ExposicaoID == id);
+		    if (exposicaoToDelete != null)
+		    {
+
+			    db.Exposicao.Remove(exposicaoToDelete);
+			    db.SaveChanges();
+
+			    TempData["Message"] = exposicaoToDelete.Nome + " removido com sucesso";
+			}
+		    else
+		    {
+			    TempData["Message"] = "Erro ao remover Exposição";
+		    }
+		    return RedirectToAction("Index");
+		}
     }
 }

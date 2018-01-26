@@ -7,7 +7,7 @@ using System.Runtime.ExceptionServices;
 
 namespace exemploasp.Models
 {
-	public class Exposicao
+	public class Exposicao : ITabelas
 	{
 		[Key]
 		public int ExposicaoID { get; set; }
@@ -18,11 +18,13 @@ namespace exemploasp.Models
 
 		[Display(Name = "Data Inicio da exposição")]
 		[Required(ErrorMessage = "Introduza uma data de inicio da exposição")]
+		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
 		[DataType(DataType.Date)]
 		public DateTime DataInicial { get; set; }
 
 		[Display(Name = "Data Fim da exposição")]
 		[Required(ErrorMessage = "Introduza uma data de fim da exposição")]
+		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
 		[DataType(DataType.Date)]
 		public DateTime DataFinal { get; set; }
 

@@ -1,15 +1,12 @@
 ﻿@model exemploasp.Models.Exposicao
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Edit";
 }
 
-<h2>Create</h2>
+<h2>Edit</h2>
 
-<h5 style="color: red">@ViewBag.Message</h5>
-
-
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
@@ -17,6 +14,8 @@
         <h4>Exposicao</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ExposicaoID)
+
         <div class="form-group">
             @Html.LabelFor(model => model.Nome, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -57,44 +56,41 @@
             </div>
         </div>
         
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <table>
-                    <tr>
-                        @{
-                            int cnt = 0;
-                            List<exemploasp.ViewModels.AssignedTemaData> temas = ViewBag.Temas;
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <table>
+            <tr>
+            @{
+                int cnt = 0;
+                List<exemploasp.ViewModels.AssignedTemaData> temas = ViewBag.Temas;
 
-                            foreach (var tema in temas)
-                            {
-                                if (cnt++ % 3 == 0)
-                                {
-                                    @:</tr><tr>
-                                }
-                                @:<td>
-                                <input type="checkbox" name="selectedTemas" value="@tema.TemaID"
-                                       @(Html.Raw(tema.Assigned ? "checked=\"checked\"" : "")) required="required"/>
-                                @tema.TemaID @: @tema.Nome
-                                @:</td>
-                            }
-                            @:</tr>
-                        }
+                foreach (var tema in temas)
+                {
+                    if (cnt++ % 3 == 0)
+                    {
+                        @:</tr><tr>
+                    }
+                    @:<td>
+                    <input type="checkbox" name="selectedTemas" value="@tema.TemaID"
+                           @(Html.Raw(tema.Assigned ? "checked=\"checked\"" : ""))/>
+                    @tema.TemaID @: @tema.Nome
+                    @:</td>
+                }
+                @:</tr>
+            }
                 </table>
-            </div>
         </div>
 
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Criar Exposição" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-default"/>
             </div>
         </div>
     </div>
+        </div>
 }
 
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}

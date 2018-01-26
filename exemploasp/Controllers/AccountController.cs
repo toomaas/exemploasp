@@ -11,6 +11,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using exemploasp.InteractDB;
 using exemploasp.Models;
 using exemploasp.ViewModels;
 
@@ -19,6 +20,8 @@ namespace exemploasp.Controllers
 	public class AccountController : Controller
 	{
 	    OurDBContext db = new OurDBContext();
+		MuseuInteractDB museuDB = new MuseuInteractDB();
+
         // GET: Account
         public ActionResult Index()
 		{
@@ -56,9 +59,9 @@ namespace exemploasp.Controllers
                     {
                         if (!db.UserAccount.Any(n => n.Email == account.Email))
                         {
-                            var encrypt = Encrypt(account.Password);
+                            var encrypt = museuDB.Encrypt(account.Password);
                             account.Password = encrypt;
-                            encrypt = Encrypt(account.ConfirmPassword);
+                            encrypt = museuDB.Encrypt(account.ConfirmPassword);
                             account.ConfirmPassword = encrypt;
                             db.UserAccount.Add(account);
                             db.SaveChanges();
@@ -82,20 +85,7 @@ namespace exemploasp.Controllers
 			return View();
 		}
 
-		public string Encrypt(string passwordPlainText)
-		{
-			if(passwordPlainText == null) throw new ArgumentNullException("passwordPlainText");
 
-            //encrypt data
-		    byte[] data = System.Text.Encoding.ASCII.GetBytes(passwordPlainText);
-		    data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
-		    String hash = System.Text.Encoding.ASCII.GetString(data);
-            //var data = Encoding.Unicode.GetBytes(passwordPlainText);
-			//byte[] encrypted = ProtectedData.Protect(data, null, Scope);
-
-		    return hash; //System.Text.Encoding.UTF8.GetString(encrypted);//Convert.ToBase64String(encrypted);
-
-		}
 
 		public DataProtectionScope Scope { get; set; }
 
@@ -111,7 +101,7 @@ namespace exemploasp.Controllers
 		{
 			using (OurDBContext db = new OurDBContext())
 			{
-			    var encrypt = Encrypt(user.Password);
+			    var encrypt = museuDB.Encrypt(user.Password);
                 var usr = db.UserAccount.Where(u => u.Email == user.Email && u.Password == encrypt).FirstOrDefault();
 				if (usr != null)
 				{
@@ -155,8 +145,6 @@ namespace exemploasp.Controllers
         public ActionResult PerfilUser(int? id)
 		{
 
-		    using (OurDBContext db = new OurDBContext())
-		    {
 		        UserAccount user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas).SingleOrDefault(u => u.UserAccountID == id);
 		        if (id == null || user == null)
 		        {
@@ -166,7 +154,7 @@ namespace exemploasp.Controllers
 		        if(TempData["Message"] != null) ViewBag.Message = TempData["Message"].ToString();
 		        PopulateAssignedTemaData(user);
 		        return View(user);
-		    }
+		    
 		}
 
         [HttpPost]
@@ -181,7 +169,7 @@ namespace exemploasp.Controllers
 	        {
 	            try
 	            {
-	                UpdateUserAccountTemas(selectedTemas, userAccountToUpdate);
+	                UpdateTemas(selectedTemas, userAccountToUpdate);
 	                db.Entry(userAccountToUpdate).State = EntityState.Modified;
 	                db.SaveChanges();
 	                return RedirectToAction("PerfilUser");
@@ -195,7 +183,39 @@ namespace exemploasp.Controllers
 	        return View(userAccountToUpdate);
         }
 
-	    public ActionResult Edit(int? id)
+
+		private void UpdateTemas(string[] selectedTemas, UserAccount userAccount)
+		{
+			if (selectedTemas == null)
+			{
+				userAccount.Temas = new List<Tema>();
+				return;
+			}
+			var selectedTemasHS = new HashSet<string>(selectedTemas);
+			var userAccountTemas = new HashSet<int>(userAccount.Temas.Select(t => t.TemaID));
+			foreach (var tema in db.Tema)
+			{
+				if (selectedTemasHS.Contains(tema.TemaID.ToString()))
+				{
+					if (!userAccountTemas.Contains(tema.TemaID))
+					{
+						userAccount.Temas.Add(tema);
+
+					}
+				}
+				else
+				{
+					if (userAccountTemas.Contains(tema.TemaID))
+					{
+						userAccount.Temas.Remove(tema);
+					}
+				}
+
+			}
+
+		}
+
+		public ActionResult Edit(int? id)
 	    {
 	        UserAccount user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas).SingleOrDefault(u => u.UserAccountID == id);
 	        if (id == null || user == null)
@@ -211,17 +231,15 @@ namespace exemploasp.Controllers
 	    {
 	        if (id == null)
 	            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-	        var userAccountToUpdate = db.UserAccount
-	            .Include(u => u.Temas).Single(u => u.UserAccountID == id);
-	        userAccountToUpdate.Morada = morada;
-	        userAccountToUpdate.NumTelefone = numTelefone;
-	        userAccountToUpdate.Nome = nome;
-	        if (TryUpdateModel(userAccountToUpdate, "",
+			
+
+
+	        if (TryUpdateModel(museuDB.EditUser(id, nome, morada, numTelefone), "",
 	            new string[] { "Nome,Morada,Idade,Sexo,NumTelefone,Email,Password,ConfirmPassword,TipoUtilizadorID" }))
 	        {
 	            try
 	            {
-	                db.Entry(userAccountToUpdate).State = EntityState.Modified;
+	                db.Entry(museuDB.EditUser(id, nome, morada, numTelefone)).State = EntityState.Modified;
 	                db.SaveChanges();
 	                return RedirectToAction("PerfilUser", new {  id });
 	            }
@@ -230,7 +248,7 @@ namespace exemploasp.Controllers
 	                ModelState.AddModelError("", "Nao foi possivel atualizar o user");
 	            }
 	        }
-	        return View(userAccountToUpdate);
+	        return View(museuDB.EditUser(id, nome, morada, numTelefone));
 	    }
 
 	    public ActionResult AlterarPassword(int? id)
@@ -252,10 +270,10 @@ namespace exemploasp.Controllers
 	        {
 	            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 	        }
-	        if (user.Password == Encrypt(pwAntiga))
+	        if (user.Password == museuDB.Encrypt(pwAntiga))
 	        {
-	            user.Password = Encrypt(Password);
-	            user.ConfirmPassword = Encrypt(Password);
+	            user.Password = museuDB.Encrypt(Password);
+	            user.ConfirmPassword = museuDB.Encrypt(Password);
 	            db.Entry(user).State = EntityState.Modified;
 	            db.SaveChanges();
 	            TempData["Message"] = "Password alterada com sucesso";
@@ -265,36 +283,6 @@ namespace exemploasp.Controllers
             PopulateAssignedTemaData(user);
 	        return View(user);
 	    }
-
-        private void UpdateUserAccountTemas(string[] selectedTemas, UserAccount userAccountToUpdate)
-	    {
-	        if (selectedTemas == null)
-	        {
-                userAccountToUpdate.Temas = new List<Tema>();
-	            return;
-	        }
-	        var selectedTemasHS = new HashSet<string>(selectedTemas);
-	        var userAccountTemas = new HashSet<int>(userAccountToUpdate.Temas.Select(t => t.TemaID));
-	        foreach (var tema in db.Tema)
-	        {
-	            if (selectedTemasHS.Contains(tema.TemaID.ToString()))
-	            {
-	                if (!userAccountTemas.Contains(tema.TemaID))
-	                {
-	                    userAccountToUpdate.Temas.Add(tema);
-	                }
-	            }
-	            else
-	            {
-	                if (userAccountTemas.Contains(tema.TemaID))
-	                {
-	                    userAccountToUpdate.Temas.Remove(tema);
-	                }
-	            }
-	        }
-	    }
-
-
 
 		public ActionResult Funcao()
 		{
@@ -308,12 +296,12 @@ namespace exemploasp.Controllers
 
 		[HttpPost]
 		public ActionResult Funcao(int userAccountID, int tipoUtilizadorID)
-        { 
-		    var userAccountToUpdate = db.UserAccount.Single(u => u.UserAccountID == userAccountID);
-            userAccountToUpdate.TipoUtilizadorID = tipoUtilizadorID;
-            if (ModelState.IsValid)
+		{
+			museuDB.userAccountUpdate(userAccountID, tipoUtilizadorID);
+
+			if (ModelState.IsValid)
             {
-                     db.Entry(userAccountToUpdate).State = EntityState.Modified;
+                     db.Entry(museuDB.userAccountUpdate(userAccountID, tipoUtilizadorID)).State = EntityState.Modified;
                      db.SaveChanges();
                      return RedirectToAction("Index");
             }
@@ -330,22 +318,12 @@ namespace exemploasp.Controllers
 
 		private void UserAccountDropdownList(object userAccount = null)
 		{
-
-			var utilizadoresQuery = from u in db.UserAccount
-				//where u.TipoUtilizadorID == 1
-				orderby u.Nome
-				select u;
-			ViewBag.UserAccountID = new SelectList(utilizadoresQuery, "UserAccountID", "Nome", userAccount);
+			ViewBag.UserAccountID = new SelectList(museuDB.Utilizadores(), "UserAccountID", "Nome", userAccount);
 		}
 
 		private void TipoUtilizadorDropdownList(object tipoUtilizador = null)
 		{
-
-			var TiposUtilizadoresQuery = from u in db.TipoUtilizador
-				where u.TipoUtilizadorID !=1
-				orderby u.Tipo
-				select u;
-			ViewBag.TipoUtilizadorID = new SelectList(TiposUtilizadoresQuery, "TipoUtilizadorID", "Tipo", tipoUtilizador);
+			ViewBag.TipoUtilizadorID = new SelectList(museuDB.TiposUtilizadores(), "TipoUtilizadorID", "Tipo", tipoUtilizador);
 		}
 
 	}

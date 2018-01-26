@@ -52,5 +52,10 @@ namespace exemploasp.Models
 
         public virtual UserAccount UserAccount { get; set; }
 
+
+
+
+
+
     }
 }

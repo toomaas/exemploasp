@@ -6,8 +6,9 @@
 
 <h2>Index</h2>
 
+<h5 style="color: red">@ViewBag.Message</h5>
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Adicionar exposição", "Create")
 </p>
 <table class="table">
     <tr>
@@ -29,29 +30,38 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Nome)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DataInicial)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DataFinal)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Duracao)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NrItens)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit",new { id=item.ExposicaoID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ExposicaoID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ExposicaoID })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataInicial)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataFinal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Duracao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NrItens)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit",new { id=item.ExposicaoID }) |
+                <p onClick="say_hi(@item.ExposicaoID)"><a href="#">Delete</a></p>
+            </td>
+        </tr>
+    }
 
 </table>
+
+
+<script type="text/javaScript">
+    function say_hi(idt) {
+        var hi= confirm("Quer mesmo apagar esta exposição?");
+        if (hi == true) {
+            window.location.href = "/Exposicao/Delete/"+idt;
+        }
+    }
+</script>

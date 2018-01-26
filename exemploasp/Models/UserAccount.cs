@@ -7,7 +7,7 @@ using System.Runtime.ExceptionServices;
 
 namespace exemploasp.Models
 {
-	public class UserAccount
+	public class UserAccount : ITabelas
 	{
 
 		[Key]

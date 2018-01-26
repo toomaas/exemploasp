@@ -6,7 +6,9 @@ using System.Web;
 using System.Data.Entity.Infrastructure;
 using System.Net;
 using System.Web.Mvc;
+using exemploasp.InteractDB;
 using exemploasp.Models;
+using Microsoft.Ajax.Utilities;
 
 namespace exemploasp.Controllers
 {
@@ -17,7 +19,7 @@ namespace exemploasp.Controllers
         // GET: Marcacao
         public ActionResult Index()
         {
-                var marcacoes = db.Marcacao.Include(a => a.UserAccount).Include(e => e.Exposicao);
+				var marcacoes = db.Marcacao.Include(a => a.UserAccount).Include(e => e.Exposicao);
                 return View(marcacoes.ToList());
         }
 
@@ -36,36 +38,17 @@ namespace exemploasp.Controllers
             return View();
         }
 
-	    private void UserAccountDropdownList(object userAccount = null)
-	    {
+		MuseuInteractDB dbMuseu = new MuseuInteractDB(); 
 
-			    var utilizadoresQuery = from u in db.UserAccount
-				    orderby u.Nome
-				    select u;
+		private void UserAccountDropdownList(object userAccount = null)
+		{
+			ViewBag.UserAccountID = new SelectList(dbMuseu.Utilizadores(), "UserAccountID", "Nome", userAccount);
+		}
 
-			    ViewBag.UserAccountID = new SelectList(utilizadoresQuery, "UserAccountID", "Nome", userAccount);
+		private void ExposicaoDropdownList(object Exposicao = null)
+		{
+            ViewBag.ExposicaoID = new SelectList(dbMuseu.ListaExposicao(), "ExposicaoID", "Nome", Exposicao);
 	    }
-
-	    private void ExposicaoDropdownList(object Exposicao = null)
-	    {
-
-		        var exposicoesQuery = from e in db.Exposicao
-			        orderby e.Nome
-			        select e;
-
-            List<Exposicao> newList = new List<Exposicao>();
-	        foreach (var member in exposicoesQuery)
-	           newList.Add(new Exposicao
-	            {
-	                ExposicaoID = member.ExposicaoID,
-	                Nome = member.Nome + " de " + member.DataInicial.ToShortDateString() + " a "+member.DataFinal.ToShortDateString()+ " DUR: "+member.Duracao.ToShortTimeString()
-               });
-
-            ViewBag.ExposicaoID = new SelectList(newList, "ExposicaoID", "Nome", Exposicao);
-	    }
-
-
-
 
 		// POST: Marcacao/Create
 		[HttpPost]
@@ -73,11 +56,10 @@ namespace exemploasp.Controllers
         {
             if (ModelState.IsValid)
             {
-                using (OurDBContext db = new OurDBContext())
-                {
+
                     DateTime hoje = DateTime.Now;
                     var exp = db.Exposicao.FirstOrDefault(e => e.ExposicaoID == marcacao.ExposicaoID);
-                    if (DataExposicaoMarcacao(marcacao.Data, exp.DataInicial, exp.DataFinal))
+                    if (dbMuseu.DataExposicaoMarcacao(marcacao.Data, exp.DataInicial, exp.DataFinal))
                     {
                         TimeSpan dur = TimeSpan.Parse(exp.Duracao.Hour+":"+exp.Duracao.Minute);
                         marcacao.HoraDeFim = marcacao.HoraDeInicio.Add(dur);
@@ -93,7 +75,6 @@ namespace exemploasp.Controllers
                         ExposicaoDropdownList();
                         return View();
                     }
-                }
                 //ModelState.Clear();
                 
             }
@@ -101,15 +82,7 @@ namespace exemploasp.Controllers
             return RedirectToAction("Index");
         }
 
-        private bool DataExposicaoMarcacao(DateTime dataMarcacao, DateTime dataInicialExposicao,
-            DateTime dataFinalExposicao)
-        {
-            if (dataMarcacao >= dataInicialExposicao && dataMarcacao <= dataFinalExposicao)
-            {
-                return true;
-            }
-            return false;
-        }
+
 
         // GET: Marcacao/Edit/5
         public ActionResult Edit(int id)
@@ -128,7 +101,7 @@ namespace exemploasp.Controllers
             if (ModelState.IsValid)
             {
                 Exposicao exposicao = db.Exposicao.Find(marcacao.ExposicaoID);
-                if (DataExposicaoMarcacao(marcacao.Data, exposicao.DataInicial,exposicao.DataFinal))
+                if (dbMuseu.DataExposicaoMarcacao(marcacao.Data, exposicao.DataInicial,exposicao.DataFinal))
                 {
                     TimeSpan dur = TimeSpan.Parse(exposicao.Duracao.Hour + ":" + exposicao.Duracao.Minute);
                     marcacao.HoraDeFim = marcacao.HoraDeInicio.Add(dur);
