@@ -160,6 +160,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="InteractDB\StateDB.cs" />
     <Compile Include="Migrations\201801231759106_tabelas.cs" />
     <Compile Include="Migrations\201801231759106_tabelas.Designer.cs">
       <DependentUpon>201801231759106_tabelas.cs</DependentUpon>
@@ -187,14 +188,6 @@
     <Compile Include="Patterns\State\EsperaInformacaoAdicional.cs" />
     <Compile Include="Patterns\State\IState.cs" />
     <Compile Include="Patterns\State\State.cs" />
-    <Compile Include="Patterns\Strategy\AceitarCandidatura.cs" />
-    <Compile Include="Patterns\Strategy\Candidatura.cs" />
-    <Compile Include="Patterns\Strategy\DecidirCandidatura.cs" />
-    <Compile Include="Patterns\Strategy\EstadosCandidatura.cs" />
-    <Compile Include="Patterns\Strategy\IStrategy.cs" />
-    <Compile Include="Patterns\Strategy\PedirInformacao.cs" />
-    <Compile Include="Patterns\Strategy\RejeitarCandidatura.cs" />
-    <Compile Include="Patterns\Strategy\SubmeterCandidatura.cs" />
     <Compile Include="Patterns\State\VerificarCandidatura.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\ViewModels\AssignedTemaData.cs" />

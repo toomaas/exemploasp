@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using exemploasp.InteractDB;
 using exemploasp.Models;
 
 namespace exemploasp.Patterns
@@ -9,7 +11,7 @@ namespace exemploasp.Patterns
 	public class State : IState
 	{
 		protected DecisorCandidatura decisorCandidatura { get; }
-		public OurDBContext db = new OurDBContext();
+		
 
 		protected State(DecisorCandidatura adecisorCandidatura)
 		{

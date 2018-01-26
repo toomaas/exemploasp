@@ -3,43 +3,28 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using exemploasp.InteractDB;
 using exemploasp.Models;
 
 namespace exemploasp.Patterns
 {
 	public class EsperaInformacaoAdicional : State
 	{
+		public StateDB stateDb = StateDB.Instancia();
+
 		public EsperaInformacaoAdicional(DecisorCandidatura adecisorCandidatura) : base(adecisorCandidatura)
 		{ }
 
 		public override void Rejeitar(UserAccountExposicao userAccountExposicao)
 		{
-			var rejeitarCandidatura = db.UserAccountExposicao
-				.Where(u => u.UserAccountID == userAccountExposicao.UserAccountID).SingleOrDefault(u => u.ExposicaoID == userAccountExposicao.ExposicaoID);
 
-			if (rejeitarCandidatura != null)
-			{
-				rejeitarCandidatura.Assigned = 1;
-				db.Entry(rejeitarCandidatura).State = EntityState.Modified;
-				db.SaveChanges();
-			}
-
+			stateDb.RejeitarDb(userAccountExposicao);
 			decisorCandidatura.EstadoActual = decisorCandidatura.AguardarEnvio;
 		}
 
 		public override void Aceitar(UserAccountExposicao userAccountExposicao)
 		{
-			var candidaturaAceitar = db.UserAccountExposicao
-				.Where(u => u.UserAccountID == userAccountExposicao.UserAccountID).SingleOrDefault(u => u.ExposicaoID == userAccountExposicao.ExposicaoID);
-
-			if (candidaturaAceitar != null)
-			{
-				candidaturaAceitar.Assigned = 4;
-				db.Entry(candidaturaAceitar).State = EntityState.Modified;
-				db.SaveChanges();
-			}
-
-
+			stateDb.AceitarDb(userAccountExposicao);
 			decisorCandidatura.EstadoActual = decisorCandidatura.CandidaturaAceite;
 		}
 	}
