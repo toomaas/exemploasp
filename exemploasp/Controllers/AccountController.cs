@@ -143,17 +143,18 @@ namespace exemploasp.Controllers
 
 	    //"int? id" signfica que o parametro id pode ter um valor inteiro ou pode receber um valor null
         public ActionResult PerfilUser(int? id)
-		{
+        {
 
-		        UserAccount user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas).SingleOrDefault(u => u.UserAccountID == id);
-		        if (id == null || user == null)
+			UserAccount user = db.UserAccount.Include(t => t.TipoUtilizador).Include(e=>e.UserAccountExposicaos).Include(u => u.Temas).SingleOrDefault(u => u.UserAccountID == id);
+			if (id == null ||user ==null )
 		        {
 		            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 		        }
 
 		        if(TempData["Message"] != null) ViewBag.Message = TempData["Message"].ToString();
 		        PopulateAssignedTemaData(user);
-		        return View(user);
+		
+				return View(user);
 		    
 		}
 

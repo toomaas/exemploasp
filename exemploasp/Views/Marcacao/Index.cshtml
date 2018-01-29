@@ -48,29 +48,29 @@
 
                             @foreach (var item in Model)
                             {
-                            <tr>
-                                <td>@Html.DisplayFor(modelItem => item.UserAccount.Nome)</td>
-                                <td>@Html.DisplayFor(modelItem => item.Exposicao.Nome)</td>
-                                <td>@Html.DisplayFor(modelItem => item.NomeRequerente)</td>
-                                <td>@Html.DisplayFor(modelItem => item.Idade)</td>
-                                <td>@Html.DisplayFor(modelItem => item.NumTelefoneRequerente)</td>
-                                <td>@Html.DisplayFor(modelItem => item.Data)</td>
-                                <td>@Html.DisplayFor(modelItem => item.HoraDeInicio)</td>
-                                <td>@Html.DisplayFor(modelItem => item.HoraDeFim)</td>
-                                <td>@Html.DisplayFor(modelItem => item.NumPessoas)</td>
-                                <td>
-                                    <p data-placement="top" data-toggle="tooltip" title="Editar">
-                                        <a href=" @Url.Action("Edit", new {id = item.ExposicaoID}) " class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"></span></a>
-                                    </p>
-                                </td>
-                                <td>
-                                    <p data-placement="top" data-toggle="tooltip" title="Eliminar">
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.UserAccount.Nome)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Exposicao.Nome)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.NomeRequerente)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Idade)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.NumTelefoneRequerente)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Data)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.HoraDeInicio)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.HoraDeFim)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.NumPessoas)</td>
+                                    <td>
+                                        <p data-placement="top" data-toggle="tooltip" title="Editar">
+                                            <a href=" @Url.Action("Edit", new {id = item.ExposicaoID}) " class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"></span></a>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p data-placement="top" data-toggle="tooltip" title="Eliminar">
 
 
-                                        <a onclick="say_hi(@item.MarcacaoID)" href="#" class="btn btn-danger btn-sm"> <span class="glyphicon glyphicon-trash"> </span> </a>
-                                    </p>
-                                </td>
-                            </tr>
+                                            <a onclick="say_hi(@item.MarcacaoID)" href="#" class="btn btn-danger btn-sm"> <span class="glyphicon glyphicon-trash"> </span> </a>
+                                        </p>
+                                    </td>
+                                </tr>
 
                             }
                         </table>
@@ -93,12 +93,12 @@
 
 
     </div>
-</div>
-<script type="text/javaScript">
-    function say_hi(idt) {
-        var hi = confirm("Quer mesmo apagar esta exposição?");
-        if (hi == true) {
-            window.location.href = "/Marcacao/Delete/" + idt;
+    <script type="text/javaScript">
+        function say_hi(idt) {
+            var hi = confirm("Quer mesmo apagar esta exposição?");
+            if (hi == true) {
+                window.location.href = "/Marcacao/Delete/" + idt;
+            }
         }
-    }
-</script>
+    </script>
+</div>
