@@ -44,6 +44,6 @@ namespace exemploasp.Models
 
         public virtual ICollection<Marcacao> Marcacaos { get; set; }
 
-
+        public virtual ICollection<Disponibilidade> Disponibilidades { get; set; }
 	}
 }

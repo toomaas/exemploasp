@@ -17,6 +17,11 @@ namespace exemploasp.Models
         [DataType(DataType.Date)]
         public DateTime DataDisponibilidade { get; set; }
 
+        public int ExposicaoID { get; set; }
+
+        public int UserAccountID { get; set; }
+
+        public virtual Exposicao Exposicao { get; set; }
         public virtual UserAccount UserAccount { get; set; } 
     }
 }

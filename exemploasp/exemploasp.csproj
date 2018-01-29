@@ -162,17 +162,9 @@
     </Compile>
     <Compile Include="InteractDB\MuseuInteractDB.cs" />
     <Compile Include="InteractDB\StateDB.cs" />
-    <Compile Include="Migrations\201801231759106_tabelas.cs" />
-    <Compile Include="Migrations\201801231759106_tabelas.Designer.cs">
-      <DependentUpon>201801231759106_tabelas.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201801241208034_seed.cs" />
-    <Compile Include="Migrations\201801241208034_seed.Designer.cs">
-      <DependentUpon>201801241208034_seed.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201801261136501_extrainfo_useraccountexp.cs" />
-    <Compile Include="Migrations\201801261136501_extrainfo_useraccountexp.Designer.cs">
-      <DependentUpon>201801261136501_extrainfo_useraccountexp.cs</DependentUpon>
+    <Compile Include="Migrations\201801291935396_tabelas_disp.cs" />
+    <Compile Include="Migrations\201801291935396_tabelas_disp.Designer.cs">
+      <DependentUpon>201801291935396_tabelas_disp.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Disponibilidade.cs" />
@@ -283,14 +275,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201801231759106_tabelas.resx">
-      <DependentUpon>201801231759106_tabelas.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201801241208034_seed.resx">
-      <DependentUpon>201801241208034_seed.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201801261136501_extrainfo_useraccountexp.resx">
-      <DependentUpon>201801261136501_extrainfo_useraccountexp.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201801291935396_tabelas_disp.resx">
+      <DependentUpon>201801291935396_tabelas_disp.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -3,7 +3,7 @@ namespace exemploasp.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class tabelas : DbMigration
+    public partial class tabelas_disp : DbMigration
     {
         public override void Up()
         {
@@ -21,23 +21,17 @@ namespace exemploasp.Migrations
                 .PrimaryKey(t => t.ExposicaoID);
             
             CreateTable(
-                "dbo.Marcacao",
+                "dbo.Disponibilidade",
                 c => new
                     {
-                        MarcacaoID = c.Int(nullable: false, identity: true),
-                        NomeRequerente = c.String(nullable: false),
-                        Idade = c.Int(nullable: false),
-                        NumTelefoneRequerente = c.Int(nullable: false),
-                        Data = c.DateTime(nullable: false),
-                        HoraDeInicio = c.DateTime(nullable: false),
-                        HoraDeFim = c.DateTime(nullable: false),
-                        NumPessoas = c.Int(nullable: false),
+                        DisponibilidadeID = c.Int(nullable: false, identity: true),
+                        DataDisponibilidade = c.DateTime(nullable: false),
                         ExposicaoID = c.Int(nullable: false),
-                        UserAccountID = c.Int(),
+                        UserAccountID = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.MarcacaoID)
+                .PrimaryKey(t => t.DisponibilidadeID)
                 .ForeignKey("dbo.Exposicao", t => t.ExposicaoID, cascadeDelete: true)
-                .ForeignKey("dbo.UserAccount", t => t.UserAccountID)
+                .ForeignKey("dbo.UserAccount", t => t.UserAccountID, cascadeDelete: true)
                 .Index(t => t.ExposicaoID)
                 .Index(t => t.UserAccountID);
             
@@ -61,16 +55,25 @@ namespace exemploasp.Migrations
                 .Index(t => t.TipoUtilizadorID);
             
             CreateTable(
-                "dbo.Disponibilidade",
+                "dbo.Marcacao",
                 c => new
                     {
-                        DisponibilidadeID = c.Int(nullable: false, identity: true),
-                        DataDisponibilidade = c.DateTime(nullable: false),
-                        UserAccount_UserAccountID = c.Int(),
+                        MarcacaoID = c.Int(nullable: false, identity: true),
+                        NomeRequerente = c.String(nullable: false),
+                        Idade = c.Int(nullable: false),
+                        NumTelefoneRequerente = c.Int(nullable: false),
+                        Data = c.DateTime(nullable: false),
+                        HoraDeInicio = c.DateTime(nullable: false),
+                        HoraDeFim = c.DateTime(nullable: false),
+                        NumPessoas = c.Int(nullable: false),
+                        ExposicaoID = c.Int(nullable: false),
+                        UserAccountID = c.Int(),
                     })
-                .PrimaryKey(t => t.DisponibilidadeID)
-                .ForeignKey("dbo.UserAccount", t => t.UserAccount_UserAccountID)
-                .Index(t => t.UserAccount_UserAccountID);
+                .PrimaryKey(t => t.MarcacaoID)
+                .ForeignKey("dbo.Exposicao", t => t.ExposicaoID, cascadeDelete: true)
+                .ForeignKey("dbo.UserAccount", t => t.UserAccountID)
+                .Index(t => t.ExposicaoID)
+                .Index(t => t.UserAccountID);
             
             CreateTable(
                 "dbo.Tema",
@@ -98,6 +101,7 @@ namespace exemploasp.Migrations
                         UserAccountID = c.Int(nullable: false),
                         ExposicaoID = c.Int(nullable: false),
                         Assigned = c.Int(nullable: false),
+                        InformacaoExtra = c.String(),
                     })
                 .PrimaryKey(t => new { t.UserAccountID, t.ExposicaoID })
                 .ForeignKey("dbo.Exposicao", t => t.ExposicaoID, cascadeDelete: true)
@@ -143,26 +147,28 @@ namespace exemploasp.Migrations
             DropForeignKey("dbo.TemaExposicao", "Exposicao_ExposicaoID", "dbo.Exposicao");
             DropForeignKey("dbo.TemaExposicao", "Tema_TemaID", "dbo.Tema");
             DropForeignKey("dbo.Marcacao", "UserAccountID", "dbo.UserAccount");
-            DropForeignKey("dbo.Disponibilidade", "UserAccount_UserAccountID", "dbo.UserAccount");
             DropForeignKey("dbo.Marcacao", "ExposicaoID", "dbo.Exposicao");
+            DropForeignKey("dbo.Disponibilidade", "UserAccountID", "dbo.UserAccount");
+            DropForeignKey("dbo.Disponibilidade", "ExposicaoID", "dbo.Exposicao");
             DropIndex("dbo.TemaUserAccount", new[] { "UserAccount_UserAccountID" });
             DropIndex("dbo.TemaUserAccount", new[] { "Tema_TemaID" });
             DropIndex("dbo.TemaExposicao", new[] { "Exposicao_ExposicaoID" });
             DropIndex("dbo.TemaExposicao", new[] { "Tema_TemaID" });
             DropIndex("dbo.UserAccountExposicao", new[] { "ExposicaoID" });
             DropIndex("dbo.UserAccountExposicao", new[] { "UserAccountID" });
-            DropIndex("dbo.Disponibilidade", new[] { "UserAccount_UserAccountID" });
-            DropIndex("dbo.UserAccount", new[] { "TipoUtilizadorID" });
             DropIndex("dbo.Marcacao", new[] { "UserAccountID" });
             DropIndex("dbo.Marcacao", new[] { "ExposicaoID" });
+            DropIndex("dbo.UserAccount", new[] { "TipoUtilizadorID" });
+            DropIndex("dbo.Disponibilidade", new[] { "UserAccountID" });
+            DropIndex("dbo.Disponibilidade", new[] { "ExposicaoID" });
             DropTable("dbo.TemaUserAccount");
             DropTable("dbo.TemaExposicao");
             DropTable("dbo.UserAccountExposicao");
             DropTable("dbo.TipoUtilizador");
             DropTable("dbo.Tema");
-            DropTable("dbo.Disponibilidade");
-            DropTable("dbo.UserAccount");
             DropTable("dbo.Marcacao");
+            DropTable("dbo.UserAccount");
+            DropTable("dbo.Disponibilidade");
             DropTable("dbo.Exposicao");
         }
     }
