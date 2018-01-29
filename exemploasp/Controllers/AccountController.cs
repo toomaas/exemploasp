@@ -25,8 +25,8 @@ namespace exemploasp.Controllers
         // GET: Account
         public ActionResult Index()
 		{
-			    var user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas);
-                return View(user.ToList());
+			var user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas);
+            return View(user.ToList());
 		}
 
 	    private void PopulateAssignedTemaData(UserAccount userAccount)
@@ -85,11 +85,6 @@ namespace exemploasp.Controllers
 			return View();
 		}
 
-
-
-		public DataProtectionScope Scope { get; set; }
-
-
 		//Login
 		public ActionResult Login()
 		{
@@ -99,22 +94,16 @@ namespace exemploasp.Controllers
 		[HttpPost]
 		public ActionResult Login(UserAccount user)
 		{
-			using (OurDBContext db = new OurDBContext())
+			var encrypt = museuDB.Encrypt(user.Password);
+            var usr = db.UserAccount.FirstOrDefault(u => u.Email == user.Email && u.Password == encrypt);
+			if (usr != null)
 			{
-			    var encrypt = museuDB.Encrypt(user.Password);
-                var usr = db.UserAccount.FirstOrDefault(u => u.Email == user.Email && u.Password == encrypt);
-				if (usr != null)
-				{
-					Session["UserAccountID"] = usr.UserAccountID.ToString();
-					Session["Username"] = usr.Nome.ToString();
-					Session["TipoUtilizador"] = usr.TipoUtilizador.Tipo.ToString();
-					return RedirectToAction("LoggedIn");
-				}
-				else
-				{
-					ModelState.AddModelError("", "username ou a pass estao mal");
-				}
+				Session["UserAccountID"] = usr.UserAccountID.ToString();
+				Session["Username"] = usr.Nome.ToString();
+				Session["TipoUtilizador"] = usr.TipoUtilizador.Tipo.ToString();
+				return RedirectToAction("LoggedIn");
 			}
+			ModelState.AddModelError("", "username ou a pass estao mal");
 			return View();
 		}
 
@@ -124,10 +113,7 @@ namespace exemploasp.Controllers
 			{
 				return View();
 			}
-			else
-			{
-				return RedirectToAction("Login");
-			}
+			return RedirectToAction("Login");
 		}
 
 		public ActionResult Logout()
@@ -135,8 +121,6 @@ namespace exemploasp.Controllers
 			if (Session["UserAccountID"] != null)
 			{
 				Session["UserAccountID"] = null;
-
-
 			}
 			return RedirectToAction("LoggedIn");
 		}
@@ -144,18 +128,14 @@ namespace exemploasp.Controllers
 	    //"int? id" signfica que o parametro id pode ter um valor inteiro ou pode receber um valor null
         public ActionResult PerfilUser(int? id)
 		{
-
-		        UserAccount user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas).SingleOrDefault(u => u.UserAccountID == id);
-		        if (id == null || user == null)
-		        {
-		            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-		        }
-
-		        if(TempData["Message"] != null) ViewBag.Message = TempData["Message"].ToString();
-		        //PopulateAssignedTemaData(user);
-		        ViewBag.Temas = museuDB.PopulateAssignedTemaData(user);
-                return View(user);
-		    
+		    UserAccount user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas).SingleOrDefault(u => u.UserAccountID == id);
+		    if (id == null || user == null)
+		    {
+		        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+		    }
+		    if(TempData["Message"] != null) ViewBag.Message = TempData["Message"].ToString();
+		    ViewBag.Temas = museuDB.PopulateAssignedTemaData(user);
+            return View(user);
 		}
 
         [HttpPost]
@@ -163,8 +143,7 @@ namespace exemploasp.Controllers
 	    {
             if(id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-	        var userAccountToUpdate = db.UserAccount
-	            .Include(u => u.Temas).Single(u => u.UserAccountID == id);
+	        var userAccountToUpdate = db.UserAccount.Include(u => u.Temas).Single(u => u.UserAccountID == id);
             if (TryUpdateModel(userAccountToUpdate, "",
 	            new string[] {"Nome,Morada,Idade,Sexo,NumTelefone,Email,Password,ConfirmPassword,TipoUtilizadorID"}))
 	        {
@@ -177,43 +156,10 @@ namespace exemploasp.Controllers
                 {
                     ModelState.AddModelError("", "Nao foi possivel atualizar o user");
                 }
-	        }
-	       
+	        }       
             ViewBag.Temas = museuDB.PopulateAssignedTemaData(userAccountToUpdate);
             return View(userAccountToUpdate);
         }
-
-
-		/*private void UpdateTemas(string[] selectedTemas, UserAccount userAccount)
-		{
-			if (selectedTemas == null)
-			{
-				userAccount.Temas = new List<Tema>();
-				return;
-			}
-			var selectedTemasHS = new HashSet<string>(selectedTemas);
-			var userAccountTemas = new HashSet<int>(userAccount.Temas.Select(t => t.TemaID));
-			foreach (var tema in db.Tema)
-			{
-				if (selectedTemasHS.Contains(tema.TemaID.ToString()))
-				{
-					if (!userAccountTemas.Contains(tema.TemaID))
-					{
-						userAccount.Temas.Add(tema);
-
-					}
-				}
-				else
-				{
-					if (userAccountTemas.Contains(tema.TemaID))
-					{
-						userAccount.Temas.Remove(tema);
-					}
-				}
-
-			}
-
-		}*/
 
 		public ActionResult Edit(int? id)
 	    {
@@ -222,7 +168,6 @@ namespace exemploasp.Controllers
 	        {
 	            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 	        }
-	        //PopulateAssignedTemaData(user);
 	        ViewBag.Temas = museuDB.PopulateAssignedTemaData(user);
             return View(user);   
 	    }
@@ -232,8 +177,6 @@ namespace exemploasp.Controllers
 	    {
 	        if (id == null)
 	            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-
 	        var userAccountToUpdate = db.UserAccount.Include(u => u.Temas).SingleOrDefault(u => u.UserAccountID == id);
             if (TryUpdateModel(museuDB.EditUser(userAccountToUpdate, nome, morada, numTelefone), "",
 	            new string[] { "Nome,Morada,Idade,Sexo,NumTelefone,Email,Password,ConfirmPassword,TipoUtilizadorID" }))
@@ -260,7 +203,6 @@ namespace exemploasp.Controllers
 	        {
 	            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 	        }
-	        //PopulateAssignedTemaData(userAccountToUpdate);
 	        ViewBag.Temas = museuDB.PopulateAssignedTemaData(userAccountToUpdate);
             return View(userAccountToUpdate);
 	    }
@@ -283,17 +225,14 @@ namespace exemploasp.Controllers
                 return RedirectToAction("PerfilUser", new { id });
             }
 	        ModelState.AddModelError("", "Nao foi possivel atualizar a password");
-            //PopulateAssignedTemaData(user);
 	        ViewBag.Temas = museuDB.PopulateAssignedTemaData(user);
             return View(user);
 	    }
 
 		public ActionResult Funcao()
 		{
-
 			UserAccountDropdownList();
 			TipoUtilizadorDropdownList();
-
 			var users = db.UserAccount.Include(t => t.TipoUtilizador);
 			return View(users.ToList());
 		}
@@ -302,23 +241,18 @@ namespace exemploasp.Controllers
 		public ActionResult Funcao(int userAccountID, int tipoUtilizadorID)
 		{
 			museuDB.userAccountUpdate(userAccountID, tipoUtilizadorID);
-
 			if (ModelState.IsValid)
             {
-                     db.Entry(museuDB.userAccountUpdate(userAccountID, tipoUtilizadorID)).State = EntityState.Modified;
-                     db.SaveChanges();
-                     return RedirectToAction("Index");
+                db.Entry(museuDB.userAccountUpdate(userAccountID, tipoUtilizadorID)).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
-
             UserAccountDropdownList();
             TipoUtilizadorDropdownList();
-
             var users = db.UserAccount.Include(t => t.TipoUtilizador);
             ModelState.AddModelError("", "Erro ao alterar função");
             return View(users.ToList());
-
         }
-
 
 		private void UserAccountDropdownList(object userAccount = null)
 		{
@@ -329,6 +263,5 @@ namespace exemploasp.Controllers
 		{
 			ViewBag.TipoUtilizadorID = new SelectList(museuDB.TiposUtilizadores(), "TipoUtilizadorID", "Tipo", tipoUtilizador);
 		}
-
 	}
 }
