@@ -263,6 +263,8 @@
     <Content Include="Views\UserAccountExposicao\Index.cshtml" />
     <Content Include="Views\UserAccountExposicao\GestaoCandidaturas.cshtml" />
     <Content Include="Views\Exposicao\Edit.cshtml" />
+    <Content Include="Views\UserAccountExposicao\CandidaturasAceites.cshtml" />
+    <Content Include="Views\UserAccountExposicao\CandidaturasRejeitadas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
