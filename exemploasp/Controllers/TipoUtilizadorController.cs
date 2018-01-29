@@ -19,6 +19,7 @@ namespace exemploasp.Controllers
 		{
 			using (OurDBContext db = new OurDBContext())
 			{
+				if (TempData["Message"] != null) ViewBag.Message = TempData["Message"].ToString();
 				return View(db.TipoUtilizador.ToList());
 			}
 		}
@@ -58,28 +59,23 @@ namespace exemploasp.Controllers
 
 		// GET: TipoUtilizador/Delete/5
 
-		public ActionResult Delete(int id)
+		public ActionResult Delete(int? id)
         {
 
 	        TipoUtilizador tipoUtilizador = db.TipoUtilizador.Find(id);
-
-	        if (tipoUtilizador == null)
+			if (tipoUtilizador != null)
 	        {
-		        return HttpNotFound();
-	        }
+				db.TipoUtilizador.Remove(tipoUtilizador);
+				db.SaveChanges();
+		        TempData["Message"] = tipoUtilizador.Tipo + " removido com sucesso";
+			}
+			else
+			{
+				TempData["Message"] = "erro ao remover o tipo de utilizador";
+			}
 
-	        return View(tipoUtilizador);
+	        return RedirectToAction("Index");
         }
 
-        // POST: TipoUtilizador/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-		        TipoUtilizador tipo = db.TipoUtilizador.Find(id);
-		        db.TipoUtilizador.Remove(tipo);
-				db.SaveChanges();
-
-			return RedirectToAction("Index");
-		}
     }
 }
