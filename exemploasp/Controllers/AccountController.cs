@@ -102,7 +102,7 @@ namespace exemploasp.Controllers
 			using (OurDBContext db = new OurDBContext())
 			{
 			    var encrypt = museuDB.Encrypt(user.Password);
-                var usr = db.UserAccount.Where(u => u.Email == user.Email && u.Password == encrypt).FirstOrDefault();
+                var usr = db.UserAccount.FirstOrDefault(u => u.Email == user.Email && u.Password == encrypt);
 				if (usr != null)
 				{
 					Session["UserAccountID"] = usr.UserAccountID.ToString();
@@ -152,8 +152,9 @@ namespace exemploasp.Controllers
 		        }
 
 		        if(TempData["Message"] != null) ViewBag.Message = TempData["Message"].ToString();
-		        PopulateAssignedTemaData(user);
-		        return View(user);
+		        //PopulateAssignedTemaData(user);
+		        ViewBag.Temas = museuDB.PopulateAssignedTemaData(user);
+                return View(user);
 		    
 		}
 
@@ -163,15 +164,13 @@ namespace exemploasp.Controllers
             if(id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 	        var userAccountToUpdate = db.UserAccount
-	            .Include(u => u.Temas).Single(u => u.UserAccountID == id);	        
+	            .Include(u => u.Temas).Single(u => u.UserAccountID == id);
             if (TryUpdateModel(userAccountToUpdate, "",
 	            new string[] {"Nome,Morada,Idade,Sexo,NumTelefone,Email,Password,ConfirmPassword,TipoUtilizadorID"}))
 	        {
 	            try
 	            {
-	                UpdateTemas(selectedTemas, userAccountToUpdate);
-	                db.Entry(userAccountToUpdate).State = EntityState.Modified;
-	                db.SaveChanges();
+	                museuDB.UpdateTemas(selectedTemas, userAccountToUpdate,db);
 	                return RedirectToAction("PerfilUser");
                 }
 	            catch (RetryLimitExceededException /* dex */)
@@ -179,12 +178,13 @@ namespace exemploasp.Controllers
                     ModelState.AddModelError("", "Nao foi possivel atualizar o user");
                 }
 	        }
-            PopulateAssignedTemaData(userAccountToUpdate);
-	        return View(userAccountToUpdate);
+	       
+            ViewBag.Temas = museuDB.PopulateAssignedTemaData(userAccountToUpdate);
+            return View(userAccountToUpdate);
         }
 
 
-		private void UpdateTemas(string[] selectedTemas, UserAccount userAccount)
+		/*private void UpdateTemas(string[] selectedTemas, UserAccount userAccount)
 		{
 			if (selectedTemas == null)
 			{
@@ -213,7 +213,7 @@ namespace exemploasp.Controllers
 
 			}
 
-		}
+		}*/
 
 		public ActionResult Edit(int? id)
 	    {
@@ -222,8 +222,9 @@ namespace exemploasp.Controllers
 	        {
 	            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 	        }
-	        PopulateAssignedTemaData(user);
-	        return View(user);   
+	        //PopulateAssignedTemaData(user);
+	        ViewBag.Temas = museuDB.PopulateAssignedTemaData(user);
+            return View(user);   
 	    }
 
 	    [HttpPost]
@@ -231,15 +232,16 @@ namespace exemploasp.Controllers
 	    {
 	        if (id == null)
 	            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-			
 
 
-	        if (TryUpdateModel(museuDB.EditUser(id, nome, morada, numTelefone), "",
+	        var userAccountToUpdate = db.UserAccount.Include(u => u.Temas).SingleOrDefault(u => u.UserAccountID == id);
+            if (TryUpdateModel(museuDB.EditUser(userAccountToUpdate, nome, morada, numTelefone), "",
 	            new string[] { "Nome,Morada,Idade,Sexo,NumTelefone,Email,Password,ConfirmPassword,TipoUtilizadorID" }))
 	        {
 	            try
 	            {
-	                db.Entry(museuDB.EditUser(id, nome, morada, numTelefone)).State = EntityState.Modified;
+	                //UserAccount userToEdit = museuDB.EditUser(id, nome, morada, numTelefone);
+                    db.Entry(museuDB.EditUser(userAccountToUpdate, nome, morada, numTelefone)).State = EntityState.Modified;
 	                db.SaveChanges();
 	                return RedirectToAction("PerfilUser", new {  id });
 	            }
@@ -248,7 +250,7 @@ namespace exemploasp.Controllers
 	                ModelState.AddModelError("", "Nao foi possivel atualizar o user");
 	            }
 	        }
-	        return View(museuDB.EditUser(id, nome, morada, numTelefone));
+	        return View(museuDB.EditUser(userAccountToUpdate, nome, morada, numTelefone));
 	    }
 
 	    public ActionResult AlterarPassword(int? id)
@@ -258,8 +260,9 @@ namespace exemploasp.Controllers
 	        {
 	            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 	        }
-	        PopulateAssignedTemaData(userAccountToUpdate);
-	        return View(userAccountToUpdate);
+	        //PopulateAssignedTemaData(userAccountToUpdate);
+	        ViewBag.Temas = museuDB.PopulateAssignedTemaData(userAccountToUpdate);
+            return View(userAccountToUpdate);
 	    }
 
         [HttpPost]
@@ -280,8 +283,9 @@ namespace exemploasp.Controllers
                 return RedirectToAction("PerfilUser", new { id });
             }
 	        ModelState.AddModelError("", "Nao foi possivel atualizar a password");
-            PopulateAssignedTemaData(user);
-	        return View(user);
+            //PopulateAssignedTemaData(user);
+	        ViewBag.Temas = museuDB.PopulateAssignedTemaData(user);
+            return View(user);
 	    }
 
 		public ActionResult Funcao()
