@@ -50,7 +50,8 @@ namespace exemploasp.Controllers
         public ActionResult Index(int id)
         {
             List<Exposicao> listaExposicoes = ExposicoesUtilizador(id);
-            ViewBag.ExposicaoID = new SelectList(listaExposicoes, "ExposicaoID", "Nome");
+            if (listaExposicoes.Count != 0)
+                ViewBag.ExposicaoID = new SelectList(listaExposicoes, "ExposicaoID", "Nome");
             ViewBag.UserID = id.ToString();
             return View(db.UserAccountExposicao.Where(u => u.UserAccountID == id).Include(u => u.Exposicao).Include(u => u.UserAccount).ToList());
         }
