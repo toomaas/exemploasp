@@ -119,5 +119,15 @@ namespace exemploasp.Controllers
             }
             return RedirectToAction("GestaoCandidaturas", "UserAccountExposicao");
         }
+
+        public ActionResult CandidaturasAceites()
+        {
+            return View(db.UserAccountExposicao.Where(ue => ue.Assigned == 4).Include(u => u.UserAccount).Include(e => e.Exposicao).ToList());
+        }
+
+        public ActionResult CandidaturasRejeitadas()
+        {
+            return View(db.UserAccountExposicao.Where(ue => ue.Assigned == 1).Include(u => u.UserAccount).Include(e => e.Exposicao).ToList());
+        }
     }
 }

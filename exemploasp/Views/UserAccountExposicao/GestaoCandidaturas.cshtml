@@ -4,126 +4,141 @@
     ViewBag.Title = "GestaoCandidaturas";
 }
 
-<h4>Candidaturas a verificar</h4>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Exposicao.Nome)
-        </th>
-        <th>
-            Candidato
-        </th>
-        <th></th>
-    </tr>
 
-    @foreach (var item in Model)
+@{
+    if (Model.Any(u => u.Assigned == 2))
     {
-        if (item.Assigned == 2)
-        {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Exposicao.Nome)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserAccount.Nome)
-        </td>
-        <td>
-            @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-        @Html.Hidden("UserID", item.UserAccountID)
-        @Html.Hidden("ExposicaoID", item.ExposicaoID)
-        @Html.Hidden("Evento", "Aceitar")
-        <input type="submit" value="Aceitar" class="btn btn-default" />
-}
-        </td>
-        <td>
-            @using (Html.BeginForm())
-            {
-                @Html.AntiForgeryToken()
-                @Html.Hidden("UserID", item.UserAccountID)
-                @Html.Hidden("ExposicaoID", item.ExposicaoID)
-                @Html.Hidden("Evento", "Rejeitar")
-                        <input type="submit" value="Rejeitar" class="btn btn-default" />
-            }
-        </td>
-        <td>
-            @using (Html.BeginForm())
-            {
-                @Html.AntiForgeryToken()
-                @Html.Hidden("UserID", item.UserAccountID)
-                @Html.Hidden("ExposicaoID", item.ExposicaoID)
-                @Html.Hidden("Evento", "ExtraInfo")
-                        <input type="submit" value="Pedir Informação adicional" class="btn btn-default" />
-            }
-        </td>
-    </tr>
-        }
-    }
-
-</table>
-<br><hr>
-<h4>Candidaturas com informação adicional</h4>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Exposicao.Nome)
-        </th>
-        <th>
-            Candidato
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Assigned)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.InformacaoExtra)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        if (item.Assigned == 3 && item.InformacaoExtra != null)
-        {
+        <h4>Candidaturas a verificar</h4>
+        <table class="table">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Exposicao.Nome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserAccount.Nome)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Assigned)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.InformacaoExtra)
-                </td>
-                <td>
-                    @using (Html.BeginForm())
-                    {
-                        @Html.AntiForgeryToken()
-                        @Html.Hidden("UserID", item.UserAccountID)
-                        @Html.Hidden("ExposicaoID", item.ExposicaoID)
-                        @Html.Hidden("Evento", "Aceitar")
-                        <input type="submit" value="Aceitar" class="btn btn-default" />
-                    }
-                </td>
-                <td>
-                    @using (Html.BeginForm())
-                    {
-                        @Html.AntiForgeryToken()
-                        @Html.Hidden("UserID", item.UserAccountID)
-                        @Html.Hidden("ExposicaoID", item.ExposicaoID)
-                        @Html.Hidden("Evento", "Rejeitar")
-                        <input type="submit" value="Rejeitar" class="btn btn-default" />
-                    }
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Exposicao.Nome)
+                </th>
+                <th>
+                    Candidato
+                </th>
+                <th></th>
             </tr>
-        }
-    }
 
-</table>
-<hr />
-@Html.ActionLink("Ver Candidaturas Aceites", "CandidaturasAceites", "UserAccountExposicao")
-<hr />
-@Html.ActionLink("Ver Candidaturas Rejeitadas", "CandidaturasRejeitadas", "UserAccountExposicao")
+            @foreach (var item in Model)
+            {
+                if (item.Assigned == 2)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Exposicao.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserAccount.Nome)
+                        </td>
+                        <td>
+                            @using (Html.BeginForm())
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Hidden("UserID", item.UserAccountID)
+                                @Html.Hidden("ExposicaoID", item.ExposicaoID)
+                                @Html.Hidden("Evento", "Aceitar")
+                                <input type="submit" value="Aceitar" class="btn btn-default" />
+                            }
+                        </td>
+                        <td>
+                            @using (Html.BeginForm())
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Hidden("UserID", item.UserAccountID)
+                                @Html.Hidden("ExposicaoID", item.ExposicaoID)
+                                @Html.Hidden("Evento", "Rejeitar")
+                                <input type="submit" value="Rejeitar" class="btn btn-default" />
+                            }
+                        </td>
+                        <td>
+                            @using (Html.BeginForm())
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Hidden("UserID", item.UserAccountID)
+                                @Html.Hidden("ExposicaoID", item.ExposicaoID)
+                                @Html.Hidden("Evento", "ExtraInfo")
+                                <input type="submit" value="Pedir Informação adicional" class="btn btn-default" />
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+
+        </table>
+    }
+    else
+    {
+        <h4>Não existem candidaturas por verificar.</h4>
+    }
+}
+
+<br><hr>
+@{
+    if (Model.Any(u => u.Assigned == 3))
+    {
+        <h4>Candidaturas por verificar com informação adicional</h4>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Exposicao.Nome)
+                </th>
+                <th>
+                    Candidato
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.InformacaoExtra)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                if (item.Assigned == 3 && item.InformacaoExtra != null)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Exposicao.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserAccount.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.InformacaoExtra)
+                        </td>
+                        <td>
+                            @using (Html.BeginForm())
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Hidden("UserID", item.UserAccountID)
+                                @Html.Hidden("ExposicaoID", item.ExposicaoID)
+                                @Html.Hidden("Evento", "Aceitar")
+                                <input type="submit" value="Aceitar" class="btn btn-default"/>
+                            }
+                        </td>
+                        <td>
+                            @using (Html.BeginForm())
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Hidden("UserID", item.UserAccountID)
+                                @Html.Hidden("ExposicaoID", item.ExposicaoID)
+                                @Html.Hidden("Evento", "Rejeitar")
+                                <input type="submit" value="Rejeitar" class="btn btn-default"/>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+
+        </table>
+    }
+    else
+    {
+        <h4>Não existem candidaturas por verificar com informação adicional.</h4>
+    }
+    
+}
+    <hr />
+        @Html.ActionLink("Ver Candidaturas Aceites", "CandidaturasAceites", "UserAccountExposicao")
+        <hr />
+        @Html.ActionLink("Ver Candidaturas Rejeitadas", "CandidaturasRejeitadas", "UserAccountExposicao")

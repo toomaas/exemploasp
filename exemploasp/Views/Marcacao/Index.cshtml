@@ -83,7 +83,7 @@
             else
             {
 
-                <h1>Ainda não existem exposições.</h1>
+                <h1>Ainda não existem marcações.</h1>
                 <h4><a href="@Url.Action("Create", "Marcacao")">Adicionar Nova Marcação</a></h4>
 
             }
@@ -96,7 +96,7 @@
 </div>
 <script type="text/javaScript">
     function say_hi(idt) {
-        var hi = confirm("Quer mesmo apagar esta exposição?");
+        var hi = confirm("Quer mesmo apagar esta marcacao ("+idt+")?");
         if (hi == true) {
             window.location.href = "/Marcacao/Delete/" + idt;
         }

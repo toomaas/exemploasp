@@ -13,20 +13,21 @@
 <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
 <div class="container">
     <h4 class="message">@ViewBag.Message</h4>
+    
     <div class="row">
 
         @{
         if (Model.Any())
         {
-
-
+            
             <div class="col-md-12">
+                
                 <div class="table-responsive">
-                    <p data-placement="top" data-toggle="tooltip" title="Adicionar Exposição">
-                        <a href=" @Url.Action("Create", "Exposicao") " class="table-add glyphicon glyphicon-plus  btn-lg pull-right"></a>
-                    </p>
+                    
                     <table id="mytable" class="table table-bordred table-striped">
-
+                        <p data-placement="top" data-toggle="tooltip" title="Adicionar Exposição">
+                            <a href=" @Url.Action("Create", "Exposicao") " class="table-add glyphicon glyphicon-plus btn-lg pull-left"></a>
+                        </p>
                         <tr>
 
 
@@ -38,34 +39,36 @@
                             <th>Editar</th>
                             <th>Eliminar</th>
                             <th></th>
+                            <th></th>
 
                         </tr>
 
 
 
                         @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>@Html.DisplayFor(modelItem => item.Nome)</td>
-                            <td>@Html.DisplayFor(modelItem => item.DataInicial)</td>
-                            <td>@Html.DisplayFor(modelItem => item.DataFinal)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Duracao)</td>
-                            <td>@Html.DisplayFor(modelItem => item.NrItens)</td>
-                            <td>
-                                <p data-placement="top" data-toggle="tooltip" title="Editar">
-                                    <a href=" @Url.Action("Edit", new {id = item.ExposicaoID}) " class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"></span></a>
-                                </p>
-                            </td>
-                            <td>
-                                <p data-placement="top" data-toggle="tooltip" title="Eliminar">
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.Nome)</td>
+                                <td>@Html.DisplayFor(modelItem => item.DataInicial)</td>
+                                <td>@Html.DisplayFor(modelItem => item.DataFinal)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Duracao)</td>
+                                <td>@Html.DisplayFor(modelItem => item.NrItens)</td>
+                                <td>
+                                    <p data-placement="top" data-toggle="tooltip" title="Editar">
+                                        <a href=" @Url.Action("Edit", new {id = item.ExposicaoID}) " class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"></span></a>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p data-placement="top" data-toggle="tooltip" title="Eliminar">
 
 
-                                    <a onclick="say_hi(@item.ExposicaoID)" href="#" class="btn btn-danger btn-sm"> <span class="glyphicon glyphicon-trash"> </span> </a>
-                                </p>
-                            </td>
-                        </tr>
+                                        <a onclick="say_hi(@item.ExposicaoID)" href="#" class="btn btn-danger btn-sm"> <span class="glyphicon glyphicon-trash"> </span> </a>
+                                    </p>
+                                </td>
+                            </tr>
 
-                }
+                        }
+
                     </table>
 
                 </div>
@@ -89,7 +92,7 @@
     
     <script type="text/javaScript">
         function say_hi(idt) {
-            var hi = confirm("Quer mesmo apagar esta exposição?");
+            var hi = confirm("Quer mesmo apagar esta exposição ("+idt+")?");
             if (hi == true) {
                 window.location.href = "/Exposicao/Delete/" + idt;
             }
