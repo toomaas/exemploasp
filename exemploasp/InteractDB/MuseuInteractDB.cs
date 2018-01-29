@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using System.Web.Query.Dynamic;
 using exemploasp.Controllers;
 using exemploasp.Models;
+using exemploasp.ViewModels;
 
 namespace exemploasp.InteractDB
 {
@@ -75,42 +76,41 @@ namespace exemploasp.InteractDB
 			return userAccountToUpdate;
 		}
 
-		public void UpdateTemas(string[] selectedTemas, UserAccount userAccount )
+	    public void UpdateTemas(string[] selectedTemas, ITabelas tabela, OurDBContext dbContext)
+	    {
+	        if (selectedTemas == null)
+	        {
+	            return;
+	        }
+	        var selectedTemasHS = new HashSet<string>(selectedTemas);
+	        var userAccountTemas = new HashSet<int>(tabela.Temas.Select(t => t.TemaID));
+	        foreach (var tema in dbContext.Tema)
+	        {
+	            if (selectedTemasHS.Contains(tema.TemaID.ToString()))
+	            {
+	                if (!userAccountTemas.Contains(tema.TemaID))
+	                {
+	                    tabela.Temas.Add(tema);
+
+	                }
+	            }
+	            else
+	            {
+	                if (userAccountTemas.Contains(tema.TemaID))
+	                {
+	                    tabela.Temas.Remove(tema);
+	                }
+	            }
+
+	        }
+	        dbContext.Entry(tabela).State = EntityState.Modified;
+	        dbContext.SaveChanges();
+        }
+
+
+        public UserAccount EditUser(UserAccount userAccountToUpdate, string nome, string morada, int numTelefone)
 		{
-			if (selectedTemas == null)
-			{
-				userAccount.Temas = new List<Tema>();
-				return;
-			}
-			var selectedTemasHS = new HashSet<string>(selectedTemas);
-			var userAccountTemas = new HashSet<int>(userAccount.Temas.Select(t => t.TemaID));
-			foreach (var tema in db.Tema)
-			{
-				if (selectedTemasHS.Contains(tema.TemaID.ToString()))
-				{
-					if (!userAccountTemas.Contains(tema.TemaID))
-					{
-						userAccount.Temas.Add(tema);
-						
-					}
-				}
-				else
-				{
-					if (userAccountTemas.Contains(tema.TemaID))
-					{
-						userAccount.Temas.Remove(tema);
-					}
-				}
-
-			}
-
-		}
-
-
-		public UserAccount EditUser(int? id, string nome, string morada, int numTelefone)
-		{
-			var userAccountToUpdate = db.UserAccount
-				.Include(u => u.Temas).Single(u => u.UserAccountID == id);
+			//var userAccountToUpdate = db.UserAccount.Include(u => u.Temas).Single(u => u.UserAccountID == id);
 			userAccountToUpdate.Morada = morada;
 			userAccountToUpdate.NumTelefone = numTelefone;
 			userAccountToUpdate.Nome = nome;
@@ -133,5 +133,17 @@ namespace exemploasp.InteractDB
 			return hash; //System.Text.Encoding.UTF8.GetString(encrypted);//Convert.ToBase64String(encrypted);
 
 		}
-	}
+
+	    public List<AssignedTemaData> PopulateAssignedTemaData(ITabelas tabela)
+	    {
+	        var allTemas = db.Tema;
+	        var tabelaTemas = new HashSet<int>(tabela.Temas.Select(t => t.TemaID));
+	        var viewModel = new List<AssignedTemaData>();
+	        foreach (var tema in allTemas)
+	        {
+	            viewModel.Add(new AssignedTemaData { TemaID = tema.TemaID, Nome = tema.Nome, Assigned = tabelaTemas.Contains(tema.TemaID) });
+	        }
+	        return viewModel;
+	    }
+    }
 }
