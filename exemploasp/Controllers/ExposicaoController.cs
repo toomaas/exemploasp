@@ -87,7 +87,7 @@ namespace exemploasp.Controllers
 
 
 	    [HttpPost]
-		public ActionResult Edit(int? id, string[] selectedTemas)
+		public ActionResult Edit(int? id,string Nome, DateTime DataInicial, DateTime DataFinal, DateTime Duracao, int NrItens, string[] selectedTemas)
 	    {
 			if (id == null)
 				return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -97,9 +97,12 @@ namespace exemploasp.Controllers
 		    {
 			    try
 			    {
+			        exposicaoUpdate.Nome = Nome;
+			        exposicaoUpdate.DataInicial = DataInicial;
+			        exposicaoUpdate.DataFinal = DataFinal;
+			        exposicaoUpdate.Duracao = Duracao;
+			        exposicaoUpdate.NrItens = NrItens;
 				    museuDB.UpdateTemas(selectedTemas, exposicaoUpdate, db);
-				    db.Entry(exposicaoUpdate).State = EntityState.Modified;
-				    db.SaveChanges();
 				    return RedirectToAction("Index");
 			    }
 			    catch (RetryLimitExceededException /* dex */)
