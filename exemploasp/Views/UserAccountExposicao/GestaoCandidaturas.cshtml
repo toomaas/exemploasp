@@ -1,4 +1,5 @@
-﻿@model IEnumerable<exemploasp.Models.UserAccountExposicao>
+﻿@using System.Activities.Expressions
+@model IEnumerable<exemploasp.Models.UserAccountExposicao>
 
 @{
     ViewBag.Title = "GestaoCandidaturas";
@@ -73,7 +74,7 @@
     }
 }
 
-<br><hr>
+<hr>
 @{
     if (Model.Any(u => u.Assigned == 3))
     {
@@ -113,7 +114,7 @@
                                 @Html.Hidden("UserID", item.UserAccountID)
                                 @Html.Hidden("ExposicaoID", item.ExposicaoID)
                                 @Html.Hidden("Evento", "Aceitar")
-                                <input type="submit" value="Aceitar" class="btn btn-default"/>
+                                <input type="submit" value="Aceitar" class="btn btn-default" />
                             }
                         </td>
                         <td>
@@ -123,7 +124,7 @@
                                 @Html.Hidden("UserID", item.UserAccountID)
                                 @Html.Hidden("ExposicaoID", item.ExposicaoID)
                                 @Html.Hidden("Evento", "Rejeitar")
-                                <input type="submit" value="Rejeitar" class="btn btn-default"/>
+                                <input type="submit" value="Rejeitar" class="btn btn-default" />
                             }
                         </td>
                     </tr>
@@ -136,9 +137,48 @@
     {
         <h4>Não existem candidaturas por verificar com informação adicional.</h4>
     }
-    
+
 }
-    <hr />
-        @Html.ActionLink("Ver Candidaturas Aceites", "CandidaturasAceites", "UserAccountExposicao")
-        <hr />
-        @Html.ActionLink("Ver Candidaturas Rejeitadas", "CandidaturasRejeitadas", "UserAccountExposicao")
+        <hr>
+@{
+    if (Model.Where(u => u.Assigned == 3).Any(u => u.InformacaoExtra == null))
+    {
+        <h2>Candidaturas à espera de informação adicional</h2>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Exposicao.Nome)
+                </th>
+                <th>
+                    Candidato
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                if (item.Assigned == 3 && item.InformacaoExtra == null)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Exposicao.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserAccount.Nome)
+                        </td>
+                    </tr>
+                }
+            }
+
+        </table>
+    }
+    else
+    {
+        <h4>Não existem candidaturas à espera de informação adicional.</h4>
+    }
+}
+
+<hr />
+@Html.ActionLink("Ver Candidaturas Aceites", "CandidaturasAceites", "UserAccountExposicao")
+<hr />
+@Html.ActionLink("Ver Candidaturas Rejeitadas", "CandidaturasRejeitadas", "UserAccountExposicao")

@@ -78,12 +78,22 @@ namespace exemploasp.InteractDB
 
 	    public void UpdateTemas(string[] selectedTemas, ITabelas tabela, OurDBContext dbContext)
 	    {
-	        if (selectedTemas == null)
-	        {
-	            return;
-	        }
-	        var selectedTemasHS = new HashSet<string>(selectedTemas);
 	        var userAccountTemas = new HashSet<int>(tabela.Temas.Select(t => t.TemaID));
+            if (selectedTemas == null)
+	        {
+	            if (tabela.Temas.Count != 0)
+	            {
+	                foreach (var tema in dbContext.Tema)
+	                {
+                        if(tabela.Temas.Contains(tema))
+	                    tabela.Temas.Remove(tema);
+	                }
+	            }
+	            dbContext.Entry(tabela).State = EntityState.Modified;
+	            dbContext.SaveChanges();
+                return;
+	        }
+	        var selectedTemasHS = new HashSet<string>(selectedTemas);     
 	        foreach (var tema in dbContext.Tema)
 	        {
 	            if (selectedTemasHS.Contains(tema.TemaID.ToString()))
