@@ -12,80 +12,78 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
 <div class="container">
+    <a href="@Url.Action("Create", "Exposicao")" class="btn btn-success btn-md">
+        <span class="glyphicon glyphicon-plus"></span> Adicionar Exposição
+    </a>
     <h4 class="message">@ViewBag.Message</h4>
     
     <div class="row">
 
         @{
-        if (Model.Any())
-        {
-            
-            <div class="col-md-12">
-                
-                <div class="table-responsive">
-                    
-                    <table id="mytable" class="table table-bordred table-striped">
-                        <p data-placement="top" data-toggle="tooltip" title="Adicionar Exposição">
-                            <a href=" @Url.Action("Create", "Exposicao") " class="table-add glyphicon glyphicon-plus btn-lg pull-left"></a>
-                        </p>
-                        <tr>
+            if (Model.Any())
+            {
 
 
-                            <th>@Html.DisplayNameFor(model => model.Nome)</th>
-                            <th>@Html.DisplayNameFor(model => model.DataInicial)</th>
-                            <th>@Html.DisplayNameFor(model => model.DataFinal)</th>
-                            <th>@Html.DisplayNameFor(model => model.Duracao)</th>
-                            <th>@Html.DisplayNameFor(model => model.NrItens)</th>
-                            <th>Editar</th>
-                            <th>Eliminar</th>
-                            <th></th>
-                            <th></th>
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table id="mytable" class="table table-bordred table-striped">
 
-                        </tr>
-
-
-
-                        @foreach (var item in Model)
-                        {
                             <tr>
-                                <td>@Html.DisplayFor(modelItem => item.Nome)</td>
-                                <td>@Html.DisplayFor(modelItem => item.DataInicial)</td>
-                                <td>@Html.DisplayFor(modelItem => item.DataFinal)</td>
-                                <td>@Html.DisplayFor(modelItem => item.Duracao)</td>
-                                <td>@Html.DisplayFor(modelItem => item.NrItens)</td>
-                                <td>
-                                    <p data-placement="top" data-toggle="tooltip" title="Editar">
-                                        <a href=" @Url.Action("Edit", new {id = item.ExposicaoID}) " class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"></span></a>
-                                    </p>
-                                </td>
-                                <td>
-                                    <p data-placement="top" data-toggle="tooltip" title="Eliminar">
 
 
-                                        <a onclick="say_hi(@item.ExposicaoID)" href="#" class="btn btn-danger btn-sm"> <span class="glyphicon glyphicon-trash"> </span> </a>
-                                    </p>
-                                </td>
+                                <th>@Html.DisplayNameFor(model => model.Nome)</th>
+                                <th>@Html.DisplayNameFor(model => model.DataInicial)</th>
+                                <th>@Html.DisplayNameFor(model => model.DataFinal)</th>
+                                <th>@Html.DisplayNameFor(model => model.Duracao)</th>
+                                <th>@Html.DisplayNameFor(model => model.NrItens)</th>
+                                <th>Editar</th>
+                                <th>Eliminar</th>
+                                <th></th>
+
                             </tr>
 
-                        }
 
-                    </table>
 
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.Nome)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.DataInicial)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.DataFinal)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Duracao)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.NrItens)</td>
+                                    <td>
+                                        <p data-placement="top" data-toggle="tooltip" title="Editar">
+                                            <a href=" @Url.Action("Edit", new {id = item.ExposicaoID}) " class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"></span></a>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p data-placement="top" data-toggle="tooltip" title="Eliminar">
+
+
+                                            <a onclick="say_hi(@item.ExposicaoID)" href="#" class="btn btn-danger btn-sm"> <span class="glyphicon glyphicon-trash"> </span> </a>
+                                        </p>
+                                    </td>
+                                </tr>
+
+                            }
+                        </table>
+
+                    </div>
                 </div>
-            </div>
 
 
-    }
-    else
-    {
+            }
+            else
+            {
 
-        <h1>Ainda não existem exposições.</h1>
-        <h4><a href="@Url.Action("Create", "Exposicao")">Adicionar Nova Exposição</a></h4>
+                <h1>Ainda não existem exposições.</h1>
+                <h4><a href="@Url.Action("Create", "Exposicao")">Adicionar Nova Exposição</a></h4>
 
-    }
+            }
 
 
-}
+        }
 
 
     </div>
