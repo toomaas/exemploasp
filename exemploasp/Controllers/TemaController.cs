@@ -49,7 +49,7 @@ namespace exemploasp.Controllers
 						db.Tema.Add(tema);
 		                db.SaveChanges();
 
-	                    TempData["Message"] = tema.Nome + "criado com sucesso";
+	                    TempData["Message"] = tema.Nome + " criado com sucesso";
 	                }
 	                else
 	                {

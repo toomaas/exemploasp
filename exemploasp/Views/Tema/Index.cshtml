@@ -1,56 +1,77 @@
-﻿@using System.Runtime.Remoting.Messaging
+﻿
 @model IEnumerable<exemploasp.Models.Tema>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Temas";
 }
 
+<h2>Temas</h2>
+<hr />
+<link rel="stylesheet" href="/Content/css/app.css" media="screen" type="text/css" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
+<div class="container">
+    <h4 class="message">@ViewBag.Message</h4>
+    <div class="row">
 
-<body>
-
-<h5 style="color: red">@ViewBag.Message</h5>
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Nome)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Descricao)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descricao)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.TemaID }) |
-                @Html.ActionLink("Details", "Details", new { id=item.TemaID }) |
-                <p onClick="say_hi(@item.TemaID)"><a href="#">Delete</a></p>
-            </td>
-        </tr>
-    }
-
-</table>
+        @{
+            if (Model.Any())
+            {
 
 
-        <script type="text/javaScript">
-            function say_hi(idt) {
-                var hi= confirm("Quer mesmo apagar este tema?");
-                if (hi == true) {
-                    window.location.href = "/Tema/Delete/"+idt;
-                }
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <p data-placement="top" data-toggle="tooltip" title="Adicionar Tema">
+                            <a href=" @Url.Action("Create", "Tema") " class="table-add glyphicon glyphicon-plus  btn-lg pull-right"></a>
+                        </p>
+                        <table id="mytable" class="table table-bordred table-striped">
+
+                            <tr>
+
+
+                                <th>@Html.DisplayNameFor(model => model.Nome)</th>
+                                <th>@Html.DisplayNameFor(model => model.Descricao)</th>
+                                <th>Eliminar</th>
+                        
+                            </tr>
+
+
+
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.Nome)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Descricao)</td>
+                                    <td>
+                                        <p data-placement="top" data-toggle="tooltip" title="Eliminar">
+
+
+                                            <a onclick="say_hi(@item.TemaID)" href="#" class="btn btn-danger btn-sm"> <span class="glyphicon glyphicon-trash"> </span> </a>
+                                        </p>
+                                    </td>
+                                </tr>
+
+                            }
+                        </table>
+
+                    </div>
+                </div>
             }
-        </script>
+            else
+            {
+                <h1>Ainda não existem temas.</h1>
+                <h4><a href="@Url.Action("Create", "Tema")">Adicionar Novo Tema</a></h4>
+            }
+        }
+    </div>
+    
+    <script type="text/javaScript">
+        function say_hi(idt) {
+            var hi = confirm("Quer mesmo apagar este tema?");
+            if (hi == true) {
+                window.location.href = "/Tema/Delete/" + idt;
+            }
+        }
+    </script>
+</div>
 
-       
-
-</body>

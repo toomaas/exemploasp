@@ -1,17 +1,16 @@
 ﻿@model exemploasp.Models.Exposicao
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Editar Exposição";
 }
 
-<h2>Edit</h2>
+<h2>Editar Exposição</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Exposicao</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.ExposicaoID)
@@ -84,7 +83,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default"/>
+                <input type="submit" value="Guardar" class="btn btn-default"/>
             </div>
         </div>
     </div>
@@ -92,5 +91,5 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Voltar as Exposições", "Index")
 </div>
