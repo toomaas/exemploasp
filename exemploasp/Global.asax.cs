@@ -18,7 +18,5 @@ namespace exemploasp
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 			
         }
-
-		public void ConfigureServices( )
     }
 }
