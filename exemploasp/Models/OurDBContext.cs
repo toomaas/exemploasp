@@ -21,9 +21,12 @@ namespace exemploasp.Models
 
         public DbSet<UserAccountExposicao> UserAccountExposicao { get; set; }
 
+        public System.Data.Entity.DbSet<exemploasp.Models.Disponibilidade> Disponibilidade { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
 	    {
 		    modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 	    }
+
     }
 }

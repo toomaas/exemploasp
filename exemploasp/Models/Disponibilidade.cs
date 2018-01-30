@@ -13,6 +13,7 @@ namespace exemploasp.Models
         [Key]
         public int DisponibilidadeID { get; set; }
 
+        [Display(Name = "Data")]
         [Required (ErrorMessage = "Dia Disponível")]
         [DataType(DataType.Date)]
         public DateTime DataDisponibilidade { get; set; }

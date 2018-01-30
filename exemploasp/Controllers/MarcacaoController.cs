@@ -41,13 +41,23 @@ namespace exemploasp.Controllers
 			ViewBag.UserAccountID = new SelectList(dbMuseu.Utilizadores(), "UserAccountID", "Nome", userAccount);
 		}
 
-		private void ExposicaoDropdownList(object Exposicao = null)
+        private void UserAccountDropdownListMarcacao(int exposicaoID,int marcacaoID, UserAccount userAccount = null)
+        {
+            if (userAccount == null)
+            {
+                UserAccount userAccountEmpty = new UserAccount();
+                ViewBag.UserAccountID = new SelectList(dbMuseu.UtilizadoresMarcacao(exposicaoID, marcacaoID), "UserAccountID", "Nome", userAccountEmpty.UserAccountID);
+                return;
+            }
+            ViewBag.UserAccountID = new SelectList(dbMuseu.UtilizadoresMarcacao(exposicaoID, marcacaoID), "UserAccountID", "Nome", userAccount.UserAccountID);
+        }
+
+        private void ExposicaoDropdownList(object Exposicao = null)
 		{
             ViewBag.ExposicaoID = new SelectList(dbMuseu.ListaExposicao(), "ExposicaoID", "Nome", Exposicao);
 	    }
 
 		// POST: Marcacao/Create
-
 		[HttpPost]
         public ActionResult Create([Bind(Include = "MarcacaoID, NomeRequerente, Idade, NumTelefoneRequerente, Data,HoraDeInicio,HoraDeFim,NumPessoas,ExposicaoID, UserAccountID")]Marcacao marcacao)
         {
@@ -78,10 +88,10 @@ namespace exemploasp.Controllers
 
 		public ActionResult Edit(int id)
         {
-            Marcacao marcacao = db.Marcacao.Find(id);
+            Marcacao marcacao = db.Marcacao.SingleOrDefault(m => m.MarcacaoID == id);
             if(marcacao == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            UserAccountDropdownList();
+            UserAccountDropdownListMarcacao(marcacao.ExposicaoID, id, marcacao.UserAccount);
             return View(marcacao);
         }
 
@@ -99,18 +109,17 @@ namespace exemploasp.Controllers
                     marcacao.HoraDeFim = marcacao.HoraDeInicio.Add(dur);
                     db.Entry(marcacao).State = EntityState.Modified;
                     db.SaveChanges();
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Edit", "Marcacao", new {id = marcacao.MarcacaoID});
                 }
                     ModelState.AddModelError("Data", "Esta Exposição occore de " + exposicao.DataInicial.ToShortDateString() + " a " + exposicao.DataFinal.ToShortDateString());
-                    UserAccountDropdownList();
-                    return View(marcacao);
+                    //UserAccountDropdownListMarcacao(marcacao.ExposicaoID, marcacao.MarcacaoID, marcacao.UserAccount);
+                     //return View(marcacao);
             }
-            UserAccountDropdownList();
+            UserAccountDropdownListMarcacao(marcacao.ExposicaoID, marcacao.MarcacaoID, marcacao.UserAccount);
             return View(marcacao);
         }
 
 		// GET: Marcacao/Delete/5
-
 		public ActionResult Delete(int id)
         {
             var marcacaoToDelete = db.Marcacao.SingleOrDefault(m => m.MarcacaoID == id);
@@ -125,6 +134,12 @@ namespace exemploasp.Controllers
                 TempData["Message"] = "Erro ao remover Marcação";
             }
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Arquivo()
+        {
+            List<Marcacao> marcacaos = db.Marcacao.Where(m => m.Data < DateTime.Now).ToList();
+            return View(marcacaos);
         }
     }
 }

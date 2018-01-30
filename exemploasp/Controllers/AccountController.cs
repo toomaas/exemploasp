@@ -107,7 +107,7 @@ namespace exemploasp.Controllers
 				Session["Username"] = usr.Nome.ToString();
 				Session["TipoUtilizador"] = usr.TipoUtilizador.Tipo.ToString();
 				
-				return RedirectToAction("LoggedIn");
+				return RedirectToAction("Index","Home");
 			}
 			ModelState.AddModelError("", "username ou a pass estao mal");
 			return View();
@@ -117,7 +117,7 @@ namespace exemploasp.Controllers
 		{
 			if (Session["UserAccountID"] != null)
 			{
-				return View();
+				return RedirectToAction("Index","Home");
 			}
 			return RedirectToAction("Login");
 		}
@@ -134,7 +134,7 @@ namespace exemploasp.Controllers
 		//"int? id" signfica que o parametro id pode ter um valor inteiro ou pode receber um valor null
 		public ActionResult PerfilUser(int? id)
 		{
-		    UserAccount user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas).Include(a => a.UserAccountExposicaos.Select(e=>e.Exposicao)).SingleOrDefault(u => u.UserAccountID == id);
+		    UserAccount user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas).Include(u => u.Disponibilidades).Include(a => a.UserAccountExposicaos.Select(e=>e.Exposicao)).SingleOrDefault(u => u.UserAccountID == id);
 
 
 			var exp = db.Exposicao.Where(a=>a.UserAccountExposicaos.Any(c=>c.UserAccountID ==id && c.Assigned==4)).ToList();
@@ -146,7 +146,7 @@ namespace exemploasp.Controllers
 		    }
 		    if(TempData["Message"] != null) ViewBag.Message = TempData["Message"].ToString();
 		    ViewBag.Temas = museuDB.PopulateAssignedTemaData(user);
-			ViewBag.Exp = exp;
+			//ViewBag.Exp = exp;
             return View(user);
 		}
 

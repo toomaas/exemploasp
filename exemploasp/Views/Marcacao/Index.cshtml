@@ -1,5 +1,4 @@
-﻿
-@model IEnumerable<exemploasp.Models.Marcacao>
+﻿@model IEnumerable<exemploasp.Models.Marcacao>
 
 @{
     ViewBag.Title = "Marcações";
@@ -16,9 +15,13 @@
     <h4 class="message">@ViewBag.Message</h4>
 
     <div class="row">
-
+        <a href="@Url.Action("Create", "Marcacao")" class="btn btn-success btn-md">
+            <span class="glyphicon glyphicon-plus"></span> Adicionar Marcação
+        </a>
         @{
-            if (Model.Any())
+        if (Model.Any())
+        {
+            if (Model.Count(m => m.Data >= DateTime.Today) != 0)
             {
 
                 <a href="@Url.Action("Create", "Marcacao")" class="btn btn-success btn-md">
@@ -49,6 +52,8 @@
 
 
                             @foreach (var item in Model)
+                        {
+                            if (item.Data >= DateTime.Today)
                             {
                                 <tr>
                                     <td>@Html.DisplayFor(modelItem => item.UserAccount.Nome)</td>
@@ -62,7 +67,7 @@
                                     <td>@Html.DisplayFor(modelItem => item.NumPessoas)</td>
                                     <td>
                                         <p data-placement="top" data-toggle="tooltip" title="Editar">
-                                            <a href=" @Url.Action("Edit", new {id = item.ExposicaoID}) " class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"></span></a>
+                                            <a href=" @Url.Action("Edit", new {id = item.MarcacaoID}) " class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"></span></a>
                                         </p>
                                     </td>
                                     <td>
@@ -73,29 +78,36 @@
                                         </p>
                                     </td>
                                 </tr>
-
-                            }
+                        }
+                    }
                         </table>
 
                     </div>
                 </div>
-
-
-            }
+        }
             else
             {
-
-                <h1>Ainda não existem marcações.</h1>
-                <h4><a href="@Url.Action("Create", "Marcacao")">Adicionar Nova Marcação</a></h4>
-
+                <h4>Neste momento não existem marcações futuras</h4>     
             }
 
+    }
+    else
+    {
+
+        <h1>Ainda não existem marcações.</h1>
+        <h4><a href="@Url.Action("Create", "Marcacao")">Adicionar Nova Marcação</a></h4>
+
+}
+if (Model.Count(m => m.Data < DateTime.Now) != 0)
+{
+    <h4><a href="@Url.Action("Arquivo", "Marcacao")">Arquivo</a></h4>
+}
 
         }
 
         <script type="text/javaScript">
             function say_hi(idt) {
-                var hi = confirm("Quer mesmo apagar esta exposição?");
+                var hi = confirm("Quer mesmo apagar esta marcação?");
                 if (hi == true) {
                     window.location.href = "/Marcacao/Delete/" + idt;
                 }

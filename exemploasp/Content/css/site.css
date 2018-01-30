@@ -23,7 +23,7 @@
 	float:left; 
 	border-radius:20% 50%; 
 	margin-bottom:50px; 
-	margin-top:10px;";
+	margin-top:10px;
 }
 
 body {
@@ -285,7 +285,7 @@ div.menu{
 
 .menu h3{
   color: #b7bec9;
-  padding-bottom: px;
+  padding-bottom: 0px;
   font-weight: 700;
   font-family: Arial;
 }
@@ -319,7 +319,7 @@ audio {
 .musica-artista{
   color:#009FD4;
   font-size: 16px;
-  font-weight: 900px;
+  font-weight: bold;
 }
 .musica-artista:hover{
   color:#009FD4;
