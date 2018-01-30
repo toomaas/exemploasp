@@ -19,8 +19,9 @@ namespace exemploasp.Controllers
     {
         OurDBContext db = new OurDBContext();
 		MuseuInteractDB museuDB = new MuseuInteractDB();
-        // GET: Exposicao
-        public ActionResult Index()
+		// GET: Exposicao
+
+		public ActionResult Index()
         {
 	        using (OurDBContext db = new OurDBContext())
 	        {
@@ -29,8 +30,9 @@ namespace exemploasp.Controllers
 	        }
         }
 
-        // GET: Exposicao/Create
-        public ActionResult Create()
+		// GET: Exposicao/Create
+
+		public ActionResult Create()
         {
             var exposicao = new Exposicao();
             exposicao.Temas = new List<Tema>();
@@ -38,8 +40,9 @@ namespace exemploasp.Controllers
             return View();
         }
 
-        // POST: Exposicao/Create
-        [HttpPost]
+		// POST: Exposicao/Create
+
+		[HttpPost]
         public ActionResult Create([Bind(Include = "Nome,DataInicial,DataFinal,Duracao,NrItens")]Exposicao exposicao, string[] selectedTemas)
         {
 	        if (ModelState.IsValid)
@@ -74,7 +77,7 @@ namespace exemploasp.Controllers
             return RedirectToAction("Index");
         }
 
-	    public ActionResult Edit(int? id)
+		public ActionResult Edit(int? id)
 	    {
 		    Exposicao exposicao = db.Exposicao.Include(t => t.Temas).SingleOrDefault(u => u.ExposicaoID == id);
 		    if (exposicao == null || id == null)
@@ -85,8 +88,7 @@ namespace exemploasp.Controllers
             return View(exposicao);
 	    }
 
-
-	    [HttpPost]
+		[HttpPost]
 		public ActionResult Edit(int? id,string Nome, DateTime DataInicial, DateTime DataFinal, DateTime Duracao, int NrItens, string[] selectedTemas)
 	    {
 			if (id == null)

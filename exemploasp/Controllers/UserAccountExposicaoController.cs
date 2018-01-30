@@ -46,8 +46,9 @@ namespace exemploasp.Controllers
             return newList;
         }
 
-        //GET: UserAccountExposicao/Index/id
-        public ActionResult Index(int id)
+		//GET: UserAccountExposicao/Index/id
+
+		public ActionResult Index(int id)
         {
             List<Exposicao> listaExposicoes = ExposicoesUtilizador(id);
             if (listaExposicoes.Count != 0)
@@ -58,7 +59,8 @@ namespace exemploasp.Controllers
 
         // POST: UserAccountExposicao/Index
         [HttpPost]
-        public ActionResult Index(string UserID, string ExposicaoID)
+
+		public ActionResult Index(string UserID, string ExposicaoID)
         {
             UserAccountExposicao userAccountExposicao = new UserAccountExposicao();
             if (ExposicaoID != "")
@@ -78,7 +80,8 @@ namespace exemploasp.Controllers
 
         // POST: UserAccountExposicao/Index/..extrainfo
         [HttpPost]
-        public ActionResult ExtraInfo(string UserID, int ExposicaoID, string InformacaoExtra)
+
+		public ActionResult ExtraInfo(string UserID, int ExposicaoID, string InformacaoExtra)
         {
             int uID = Int32.Parse(UserID);
             
@@ -92,12 +95,13 @@ namespace exemploasp.Controllers
             return RedirectToAction("Index","UserAccountExposicao", new {id = UserID});
         }
 
-        public ActionResult GestaoCandidaturas()
+		public ActionResult GestaoCandidaturas()
         {
             return View(db.UserAccountExposicao.Include(u => u.Exposicao).Include(u => u.UserAccount).ToList());
         }
 
-        [HttpPost]
+
+		[HttpPost]
         public ActionResult GestaoCandidaturas(int UserID, int ExposicaoID, string Evento )
         {
             UserAccountExposicao userAccountExposicaoToUpdate = db.UserAccountExposicao.Find(UserID, ExposicaoID);
@@ -121,7 +125,7 @@ namespace exemploasp.Controllers
             return RedirectToAction("GestaoCandidaturas", "UserAccountExposicao");
         }
 
-        public ActionResult CandidaturasAceites()
+		public ActionResult CandidaturasAceites()
         {
             return View(db.UserAccountExposicao.Where(ue => ue.Assigned == 4).Include(u => u.UserAccount).Include(e => e.Exposicao).ToList());
         }

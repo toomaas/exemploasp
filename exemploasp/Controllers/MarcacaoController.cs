@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Data.Entity.Infrastructure;
 using System.Net;
+using System.Security.Permissions;
 using System.Web.Mvc;
 using exemploasp.InteractDB;
 using exemploasp.Models;
@@ -16,15 +18,19 @@ namespace exemploasp.Controllers
     {
 		OurDBContext db = new OurDBContext();
         MuseuInteractDB dbMuseu = new MuseuInteractDB();
-        // GET: Marcacao
-        public ActionResult Index()
+		// GET: Marcacao
+
+		public ActionResult Index()
         {
+	
+
 			var marcacoes = db.Marcacao.Include(a => a.UserAccount).Include(e => e.Exposicao);
             return View(marcacoes.ToList());
         }
 
-        // GET: Marcacao/Create
-        public ActionResult Create()
+		// GET: Marcacao/Create
+
+		public ActionResult Create()
         {
 	        ExposicaoDropdownList();
             return View();
@@ -41,6 +47,7 @@ namespace exemploasp.Controllers
 	    }
 
 		// POST: Marcacao/Create
+
 		[HttpPost]
         public ActionResult Create([Bind(Include = "MarcacaoID, NomeRequerente, Idade, NumTelefoneRequerente, Data,HoraDeInicio,HoraDeFim,NumPessoas,ExposicaoID, UserAccountID")]Marcacao marcacao)
         {
@@ -67,8 +74,9 @@ namespace exemploasp.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: Marcacao/Edit/5
-        public ActionResult Edit(int id)
+		// GET: Marcacao/Edit/5
+
+		public ActionResult Edit(int id)
         {
             Marcacao marcacao = db.Marcacao.Find(id);
             if(marcacao == null)
@@ -77,8 +85,9 @@ namespace exemploasp.Controllers
             return View(marcacao);
         }
 
-        // POST: Marcacao/Edit/5
-        [HttpPost]
+		// POST: Marcacao/Edit/5
+
+		[HttpPost]
         public ActionResult Edit([Bind(Include="MarcacaoID,NomeRequerente,Idade,NumTelefoneRequerente,Data,HoraDeInicio,HoraDeFim,NumPessoas,ExposicaoID,UserAccountID")] Marcacao marcacao)
         {
             if (ModelState.IsValid)
@@ -100,8 +109,9 @@ namespace exemploasp.Controllers
             return View(marcacao);
         }
 
-        // GET: Marcacao/Delete/5
-        public ActionResult Delete(int id)
+		// GET: Marcacao/Delete/5
+
+		public ActionResult Delete(int id)
         {
             var marcacaoToDelete = db.Marcacao.SingleOrDefault(m => m.MarcacaoID == id);
             if (marcacaoToDelete != null)

@@ -12,8 +12,9 @@ namespace exemploasp.Controllers
     public class TemaController : Controller
     {
         private OurDBContext db = new OurDBContext();
-        // GET: Tema
-        public ActionResult Index()
+		// GET: Tema
+
+		public ActionResult Index()
         {
             using (OurDBContext db = new OurDBContext())
             {
@@ -22,21 +23,17 @@ namespace exemploasp.Controllers
             }
         }
 
-        // GET: Tema/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+		// GET: Tema/Create
 
-        // GET: Tema/Create
-        public ActionResult Create()
+		public ActionResult Create()
         {
                 return View();
         }
 
 
-        // POST: Tema/Create
-        [HttpPost]
+		// POST: Tema/Create
+
+		[HttpPost]
         public ActionResult Create(Tema tema)
         {
             try
@@ -68,30 +65,9 @@ namespace exemploasp.Controllers
             }
         }
 
-        // GET: Tema/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+		// GET: Tema/Delete/5
 
-        // POST: Tema/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Tema/Delete/5
-          public ActionResult Delete(int? id)
+		public ActionResult Delete(int? id)
           {
               var temaToDelete = db.Tema.SingleOrDefault(t => t.TemaID == id);
               if (temaToDelete != null)

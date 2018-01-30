@@ -10,6 +10,7 @@ using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
 using System.Web;
+using System.Web.ApplicationServices;
 using System.Web.Mvc;
 using exemploasp.InteractDB;
 using exemploasp.Models;
@@ -23,12 +24,16 @@ namespace exemploasp.Controllers
 		MuseuInteractDB museuDB = new MuseuInteractDB();
 
         // GET: Account
+		
         public ActionResult Index()
 		{
 			var user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas);
-            return View(user.ToList());
+
+		
+			return View(user.ToList());
 		}
 
+		
 	    private void PopulateAssignedTemaData(UserAccount userAccount)
 	    {
 	        var allTemas = db.Tema;
@@ -101,6 +106,7 @@ namespace exemploasp.Controllers
 				Session["UserAccountID"] = usr.UserAccountID.ToString();
 				Session["Username"] = usr.Nome.ToString();
 				Session["TipoUtilizador"] = usr.TipoUtilizador.Tipo.ToString();
+				
 				return RedirectToAction("LoggedIn");
 			}
 			ModelState.AddModelError("", "username ou a pass estao mal");
@@ -125,8 +131,8 @@ namespace exemploasp.Controllers
 			return RedirectToAction("LoggedIn");
 		}
 
-	    //"int? id" signfica que o parametro id pode ter um valor inteiro ou pode receber um valor null
-        public ActionResult PerfilUser(int? id)
+		//"int? id" signfica que o parametro id pode ter um valor inteiro ou pode receber um valor null
+		public ActionResult PerfilUser(int? id)
 		{
 		    UserAccount user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas).Include(u => u.Disponibilidades).Include(a => a.UserAccountExposicaos.Select(e=>e.Exposicao)).SingleOrDefault(u => u.UserAccountID == id);
 
@@ -144,7 +150,7 @@ namespace exemploasp.Controllers
             return View(user);
 		}
 
-        [HttpPost]
+		[HttpPost]
 	    public ActionResult PerfilUser(int? id, string[] selectedTemas)
 	    {
             if(id == null)
@@ -178,7 +184,7 @@ namespace exemploasp.Controllers
             return View(user);   
 	    }
 
-	    [HttpPost]
+		[HttpPost]
 	    public ActionResult Edit(int? id, string nome, string morada, int numTelefone)
 	    {
 	        if (id == null)
@@ -213,7 +219,7 @@ namespace exemploasp.Controllers
             return View(userAccountToUpdate);
 	    }
 
-        [HttpPost]
+		[HttpPost]
 	    public ActionResult AlterarPassword(int?id,string pwAntiga, string Password, string confpw)
 	    {
 	        UserAccount user = db.UserAccount.SingleOrDefault(u => u.UserAccountID == id);
