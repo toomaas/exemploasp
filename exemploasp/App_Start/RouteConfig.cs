@@ -18,6 +18,12 @@ namespace exemploasp
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Account", action = "Login", id = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+                name: "Disponibilidade",
+                url: "Disponibilidade/Definir/{id}/{exp}",
+                defaults: new { controller = "Disponibilidade", action = "Definir", id = UrlParameter.Optional, exp = UrlParameter.Optional }
+            );
         }
     }
 }
