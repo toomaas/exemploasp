@@ -1,0 +1,74 @@
+﻿@model IEnumerable<exemploasp.Models.Marcacao>
+
+@{
+    ViewBag.Title = "Arquivo";
+}
+
+<h2>Arquivo de marcações</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Exposicao.Nome)
+        </th>
+        <th>
+            Guia
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NomeRequerente)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Idade)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NumTelefoneRequerente)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Data)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HoraDeInicio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HoraDeFim)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NumPessoas)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Exposicao.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserAccount.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NomeRequerente)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Idade)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NumTelefoneRequerente)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Data)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HoraDeInicio)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HoraDeFim)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NumPessoas)
+        </td>
+    </tr>
+}
+
+</table>
+<h4><a href="@Url.Action("Index", "Marcacao")">Voltar a marcações</a></h4>

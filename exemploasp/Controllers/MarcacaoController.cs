@@ -135,5 +135,11 @@ namespace exemploasp.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        public ActionResult Arquivo()
+        {
+            List<Marcacao> marcacaos = db.Marcacao.Where(m => m.Data < DateTime.Now).ToList();
+            return View(marcacaos);
+        }
     }
 }

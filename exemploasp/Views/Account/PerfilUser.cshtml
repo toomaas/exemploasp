@@ -58,13 +58,8 @@
                                 </tr>  
                                 <tr>
                                     <th>Temas:</th>
-
-                                </tr>
-                                </tbody>
-                            </table>
-                            <div class=" col-md-12 col-lg-12 ">
-                            
-                                @using (Html.BeginForm())
+                                    <td>
+                                        @using (Html.BeginForm())
                                 {
                                     @Html.AntiForgeryToken()
 
@@ -107,6 +102,13 @@
 
                                     </div>
                                  }
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class=" col-md-12 col-lg-12 ">
+                            
+                                
                             
                             </div>
                         </div>
