@@ -233,7 +233,6 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
@@ -257,6 +256,7 @@
     <Content Include="Views\Exposicao\Edit.cshtml" />
     <Content Include="Views\UserAccountExposicao\CandidaturasAceites.cshtml" />
     <Content Include="Views\UserAccountExposicao\CandidaturasRejeitadas.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
