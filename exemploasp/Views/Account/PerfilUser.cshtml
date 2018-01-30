@@ -28,99 +28,98 @@
                         <div class=" col-md-9 col-lg-9 ">
                             <table class="table table-user-information">
                                 <tbody>
-                                    <tr>
-                                        <th>@Html.DisplayNameFor(model => model.Idade):</th>
-                                        <td>@Html.DisplayFor(model => model.Idade)</td>
-                                    </tr>
-                                    <tr>
-                                        <th>@Html.DisplayNameFor(model => model.Email):</th>
-                                        <td>@Html.DisplayFor(model => model.Email)</td>
-                                    </tr>
-                                    <tr>
-                                        <th>@Html.DisplayNameFor(model => model.Morada):</th>
-                                        <td>@Html.DisplayFor(model => model.Morada)</td>
-                                    </tr>
-
-                                    <tr>
-                                        <th>@Html.DisplayNameFor(model => model.Sexo):</th>
-                                        <td>@Html.DisplayFor(model => model.Sexo)</td>
-                                    </tr>
-
-                                  <tr>
-                                      <th>@Html.DisplayNameFor(model => model.NumTelefone):</th>
-                                      <td>
-                                          @Html.DisplayFor(model => model.NumTelefone)
-                                      </td>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(model => model.Idade):</th>
+                                    <td>@Html.DisplayFor(model => model.Idade)</td>
                                 </tr>
                                 <tr>
-                                    <th>@Html.DisplayNameFor(model => model.TipoUtilizadorID)</th>
-                                    <td>@Html.DisplayFor(model => model.TipoUtilizadorID)</td>
-                                </tr>        
-                                    
-                            </tbody>
-                            </table>
+                                    <th>@Html.DisplayNameFor(model => model.Email):</th>
+                                    <td>@Html.DisplayFor(model => model.Email)</td>
+                                </tr>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(model => model.Morada):</th>
+                                    <td>@Html.DisplayFor(model => model.Morada)</td>
+                                </tr>
 
-                            <a href="@Url.Action("Create", "Marcacao")" class="btn btn-primary">As Minhas Exposições</a>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(model => model.Sexo):</th>
+                                    <td>@Html.DisplayFor(model => model.Sexo)</td>
+                                </tr>
+
+                                <tr>
+                                    <th>@Html.DisplayNameFor(model => model.NumTelefone):</th>
+                                    <td>
+                                        @Html.DisplayFor(model => model.NumTelefone)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>@Html.DisplayNameFor(model => model.TipoUtilizador.Tipo):</th>
+                                    <td>@Html.DisplayFor(model => model.TipoUtilizador.Tipo)</td>
+                                </tr>  
+                                <tr>
+                                    <th>Temas:</th>
+
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class=" col-md-12 col-lg-12 ">
+                            
+                                @using (Html.BeginForm())
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    <div class="form-horizontal">
+                                        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+                                        @Html.HiddenFor(model => model.UserAccountID)
+
+                                        <div class="form-group">
+                       
+                                            <table>
+                                                <tr>
+                                                @{
+                                                    int cnt = 0;
+                                                    List<exemploasp.ViewModels.AssignedTemaData> temas = ViewBag.Temas;
+
+                                                    foreach (var tema in temas)
+                                                    {
+                                                        if (cnt++ % 3 == 0)
+                                                        {
+                                                            @:</tr><tr>
+                                                        }
+                                                        @:<td>
+                                                        <input type="checkbox" name="selectedTemas" value="@tema.TemaID"
+                                                               @(Html.Raw(tema.Assigned ? "checked=\"checked\"" : ""))/>
+                                                        @tema.TemaID
+                                                        @: @tema.Nome
+                                                        @:</td>
+                                                    }
+                                                    @:</tr>
+                                                }
+
+                                            </table>
+                       
+                                        </div>
+                                        <div class="form-group">
+                       
+                                            <input type="submit" value="Dominar temas" class="btn btn-primary"/>
+                    
+                                        </div>
+
+                                    </div>
+                                 }
+                            
+                            </div>
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
 
         <div class="col-sm-6">
             
-            <h3> Os meus temas</h3>
-            <hr/>
-
-            @using (Html.BeginForm())
-            {
-                @Html.AntiForgeryToken()
-
-                    <div class="form-horizontal">
-                        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
-                        @Html.HiddenFor(model => model.UserAccountID)
-
-                        <div class="form-group">
-                       
-                            <table>
-                                <tr>
-                                @{
-                                    int cnt = 0;
-                                    List<exemploasp.ViewModels.AssignedTemaData> temas = ViewBag.Temas;
-
-                                    foreach (var tema in temas)
-                                    {
-                                        if (cnt++ % 3 == 0)
-                                        {
-                                            @:</tr><tr>
-                                        }
-                                        @:<td>
-                                        <input type="checkbox" name="selectedTemas" value="@tema.TemaID"
-                                               @(Html.Raw(tema.Assigned ? "checked=\"checked\"" : ""))/>
-                                        @tema.TemaID
-                                        @: @tema.Nome
-                                        @:</td>
-                                    }
-                                    @:</tr>
-                                }
-                            </table>
-                       
-                        </div>
-                        <div class="form-group">
-                       
-                            <input type="submit" value="Dominar temas" class="btn btn-default"/>
-                    
-                        </div>
-
-                    </div>
-                   
-                    }
-            
             <h3> As Minhas Exposições</h3>
-            
-            
-            
+           
             <div class="table-responsive">
                 <table id="mytable" class="table table-bordred table-striped">
                     @{
