@@ -8,6 +8,7 @@
     <title>@ViewBag.Title - Guider Management</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <!---<link rel="stylesheet" href="/Content/css/style.css" />-->
 </head>
 <body>
     @{
@@ -81,6 +82,45 @@
         @if (Session["UserAccountId"] != null)
         {
         <hr />
+            
+        /*<footer>
+                        <div class="container">
+                            <div class="col-md-4">
+                                <h3>Sobre</h3>
+                                <p>
+                                    A Quinta das Cruzes é uma das quintas com maior tradição histórica do Funchal, ligada à família dos primeiros capitães donatários, uma vez que foi nestas imediações que a mesma estabeleceu a sua segunda residência. Permaneceu na família Câmara até meados do século XVII, transitando para a família Lomelino até finais do século XIX.
+                                    Esta propriedade sofreu várias alterações ao longo dos séculos transformando-se, a partir do século XVIII, numa emblemática "Quinta Madeirense".
+                                </p>
+                            </div>
+
+                            <div class="col-md-4">
+                                <h3>Localização</h3>
+                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2895.699109653478!2d-16.914756666744758!3d32.64983895100193!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xc605fe23cfcb4c7%3A0x734b5f191feed738!2sMuseu+da+Quinta+das+Cruzes!5e1!3m2!1spt-PT!2sjo!4v1516985784059" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+                                <p>&copy; @DateTime.Now.Year - Guider Management</p>
+                            </div>
+                            <div class="col-md-4">
+                                <h3>Contatos</h3>
+                                <ul>
+                                    <li><b><u><i class="glyphicon glyphicon-earphone"></i></u></b> 291 740 670</li>
+                                    <li><b><u><i class="glyphicon glyphicon-envelope"></i></u></b> quintadascruzes.suporte@gmail.com</li>
+                                </ul>
+                                <br />
+                                <ul>
+                                    <li>
+                                        <b><i class="glyphicon glyphicon-time"></i></b>
+                                        <u>Terça-feira a Domingo</u> 10:00 - 12:30 e das 14:00 -17:30
+                                    </li>
+
+                                </ul>
+                                <ul class="sm">
+                                    <li><a href="https://www.facebook.com/pages/Museu-Quinta-das-Cruzes/334315393326469"><img src="~/Content/images/footer/facebook_round.png" class="img-responsive"></a></li>
+                                    <li><a href="https://www.instagram.com/"><img src="~/Content/images/footer/instagram_round.png" class="img-responsive"></a></li>
+                                    <li><a href="https://twitter.com/"><img src="~/Content/images/footer/twitter_round.png" class="img-responsive"></a></li>
+                                    <li><a href="https://www.youtube.com/"><img src="~/Content/images/footer/youtube_round.png" class="img-responsive"></a></li>
+                                </ul>
+                            </div>
+                        </div>
+         </footer>*/
 
         <footer>
             <p>&copy; @DateTime.Now.Year - Guider Management</p>
