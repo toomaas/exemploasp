@@ -26,8 +26,19 @@ namespace exemploasp.InteractDB
 				select u;
 		}
 
-		// Lista de exposiçoes
-		public List<Exposicao> ListaExposicao()
+	    //query para obter os utilizadores
+	    public IOrderedQueryable<UserAccount> UtilizadoresMarcacao(int exposicaoID, int marcacaoID)
+	    {
+	        Marcacao marcacao = db.Marcacao.Find(marcacaoID);
+	        return from u in db.UserAccount
+                where u.UserAccountExposicaos.FirstOrDefault(m => m.ExposicaoID == exposicaoID).Assigned == 4
+                   where u.Disponibilidades.Where(d => d.ExposicaoID == exposicaoID).Any(d => d.DataDisponibilidade == marcacao.Data)
+	            orderby u.Nome
+	            select u;
+	    }
+
+        // Lista de exposiçoes
+        public List<Exposicao> ListaExposicao()
 		{
 
 			var exposicoesQuery = from e in db.Exposicao

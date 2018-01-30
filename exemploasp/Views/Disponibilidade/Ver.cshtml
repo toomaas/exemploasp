@@ -1,19 +1,16 @@
-﻿@model IEnumerable<exemploasp.Models.Disponibilidade>
+﻿@using System.Web.Razor.Generator
+@model IEnumerable<exemploasp.Models.Disponibilidade>
 
 @{
     ViewBag.Title = "Ver";
 }
-
-<h2>Ver</h2>
+@{
+    var culture = new System.Globalization.CultureInfo("pt-PT");
+}
+<h2>Disponibilidade da exposicao: @ViewBag.NomeExposicao</h2>
 
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Exposicao.Nome)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserAccount.Nome)
-        </th>
         <th>
             @Html.DisplayNameFor(model => model.DataDisponibilidade)
         </th>
@@ -23,13 +20,8 @@
     @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Exposicao.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserAccount.Nome)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.DataDisponibilidade)
+                @culture.DateTimeFormat.GetDayName(item.DataDisponibilidade.DayOfWeek)
             </td>
         </tr>
     }

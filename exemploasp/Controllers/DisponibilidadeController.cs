@@ -35,18 +35,22 @@ namespace exemploasp.Controllers
             UserAccountExposicao userAccountExposicao = db.UserAccountExposicao.Find(id, exp);
             if (userAccountExposicao != null)
             {
-                foreach (var data in selectedDatas)
+                if (selectedDatas != null)
                 {
-                    Disponibilidade disponibilidade = new Disponibilidade
+                    foreach (var data in selectedDatas)
                     {
-                        DataDisponibilidade = data,
-                        ExposicaoID = exp,
-                        UserAccountID = id
-                    };
-                    db.Disponibilidade.Add(disponibilidade);
+                        Disponibilidade disponibilidade = new Disponibilidade
+                        {
+                            DataDisponibilidade = data,
+                            ExposicaoID = exp,
+                            UserAccountID = id
+                        };
+                        db.Disponibilidade.Add(disponibilidade);
+                    }
+                    db.SaveChanges();
+                    return RedirectToAction("PerfilUser", "Account", new {id = id});
                 }
-                db.SaveChanges();
-                return RedirectToAction("PerfilUser","Account", new {id = id});
+                return RedirectToAction("Definir", new { id = id, exp=exp });
             }
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
@@ -54,7 +58,13 @@ namespace exemploasp.Controllers
         //GET: Disponibilidade/Definir/id?exp=exp
         public ActionResult Ver(int id, int exp)
         {
+            Exposicao exposicao = db.Exposicao.Find(exp);
             List<Disponibilidade> disponibilidades = db.Disponibilidade.Where(d => d.ExposicaoID == exp).Where(d => d.UserAccountID == id).Include(d => d.Exposicao).Include(d => d.UserAccount).ToList();
+            if (exposicao != null)
+            {
+                ViewBag.NomeExposicao = exposicao.Nome;
+                
+            }
             return View(disponibilidades);
         }
 
