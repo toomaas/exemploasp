@@ -88,10 +88,10 @@ namespace exemploasp.Controllers
 
 		public ActionResult Edit(int id)
         {
-            Marcacao marcacao = db.Marcacao.Include(m => m.UserAccount).SingleOrDefault(m => m.MarcacaoID == id);
+            Marcacao marcacao = db.Marcacao.SingleOrDefault(m => m.MarcacaoID == id);
             if(marcacao == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                UserAccountDropdownListMarcacao(marcacao.ExposicaoID, id, marcacao.UserAccount);
+            UserAccountDropdownListMarcacao(marcacao.ExposicaoID, id, marcacao.UserAccount);
             return View(marcacao);
         }
 

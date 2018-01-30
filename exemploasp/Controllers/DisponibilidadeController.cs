@@ -13,6 +13,7 @@ namespace exemploasp.Controllers
     public class DisponibilidadeController : Controller
     {
         OurDBContext db = new OurDBContext();
+        
         //GET: Disponibilidade/Definir/id?exp=exp
         public ActionResult Definir(int id, int exp)
         {
