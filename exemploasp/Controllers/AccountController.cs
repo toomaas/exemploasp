@@ -107,7 +107,7 @@ namespace exemploasp.Controllers
 				Session["Username"] = usr.Nome.ToString();
 				Session["TipoUtilizador"] = usr.TipoUtilizador.Tipo.ToString();
 				
-				return RedirectToAction("LoggedIn");
+				return RedirectToAction("Index","Home");
 			}
 			ModelState.AddModelError("", "username ou a pass estao mal");
 			return View();
@@ -117,7 +117,7 @@ namespace exemploasp.Controllers
 		{
 			if (Session["UserAccountID"] != null)
 			{
-				return View();
+				return RedirectToAction("Index","Home");
 			}
 			return RedirectToAction("Login");
 		}

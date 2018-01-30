@@ -34,35 +34,40 @@
         </th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Nome)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Morada)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Idade)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Sexo)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NumTelefone)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TipoUtilizador.Tipo)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.UserAccountID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.UserAccountID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.UserAccountID })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Morada)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Idade)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sexo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumTelefone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoUtilizador.Tipo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.UserAccountID })
+            </td>
+        </tr>
+    }
 
 </table>
+
+<br/><hr/>
+     <div>
+         <a href="@Url.Action("Index", "TipoUtilizador")" class="btn btn-warning btn-md">
+             <span class="glyphicon glyphicon-user"></span> Gestão de tipo de utilizador
+         </a>
+     </div>
