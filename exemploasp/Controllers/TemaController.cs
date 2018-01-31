@@ -6,14 +6,15 @@ using System.Web.Mvc;
 using exemploasp.Models;
 using System.Data.Entity;
 using System.Web.Services.Description;
+using exemploasp.Patterns.TemplateMethod;
 
 namespace exemploasp.Controllers
 {
     public class TemaController : Controller
     {
         private OurDBContext db = new OurDBContext();
-		// GET: Tema
-
+		
+        // GET: Tema
 		public ActionResult Index()
         {
             using (OurDBContext db = new OurDBContext())
@@ -24,49 +25,33 @@ namespace exemploasp.Controllers
         }
 
 		// GET: Tema/Create
-
 		public ActionResult Create()
         {
-                return View();
+            return View();
         }
 
-
 		// POST: Tema/Create
-
 		[HttpPost]
         public ActionResult Create(Tema tema)
         {
-            try
+            ObjetoMuseu oTema = new ObjTema(tema);
+            if (ModelState.IsValid)
             {
-                // TODO: Add insert logic here
-                using (OurDBContext db = new OurDBContext())
+                if (oTema.Validar() == null)
                 {
-	                if (!db.Tema.Any(n => n.Nome == tema.Nome))
-	                {
-						db.Tema.Add(tema);
-		                db.SaveChanges();
-
-	                    TempData["Message"] = tema.Nome + " criado com sucesso";
-	                }
-	                else
-	                {
-	                    TempData["Message"] = tema.Nome + " já existente";
-                    }
-;
+                    oTema.SalvarBd(db);
+                    TempData["Message"] = tema.Nome + " criado com sucesso";
                 }
-                ModelState.Clear();
-
-
-	            return RedirectToAction("Index");
+                else
+                {
+                    TempData["Message"] = oTema.Validar();
+                }
             }
-            catch
-            {
-                return View();
-            }
+            ModelState.Clear();
+	        return RedirectToAction("Index");          
         }
 
 		// GET: Tema/Delete/5
-
 		public ActionResult Delete(int? id)
           {
               var temaToDelete = db.Tema.SingleOrDefault(t => t.TemaID == id);

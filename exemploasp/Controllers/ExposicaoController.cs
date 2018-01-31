@@ -11,7 +11,9 @@ using System.Web.Mvc;
 using exemploasp.InteractDB;
 using exemploasp.Models;
 using exemploasp.Patterns;
+using exemploasp.Patterns.TemplateMethod;
 using exemploasp.ViewModels;
+using Exposicao = exemploasp.Models.Exposicao;
 
 namespace exemploasp.Controllers
 {
@@ -47,32 +49,23 @@ namespace exemploasp.Controllers
         {
 	        if (ModelState.IsValid)
 	        {
-		        using (OurDBContext db = new OurDBContext())
-		        {
-		            if (exposicao.DataInicial >= DateTime.Now && exposicao.DataInicial < exposicao.DataFinal)
-		            {
-		                if (selectedTemas != null)
-		                {
-		                    exposicao.Temas = new List<Tema>();
-		                    foreach (var tema in selectedTemas)
-		                    {
-		                        var temaToAdd = db.Tema.Find(int.Parse(tema));
-		                        exposicao.Temas.Add(temaToAdd);
-		                    }
-		                    db.Exposicao.Add(exposicao);
-		                    db.SaveChanges();
-		                }
-		            }
-		            else
-		            {
-		                exposicao.Temas = new List<Tema>();
-		                ViewBag.Temas = museuDB.PopulateAssignedTemaData(exposicao);
-                        ModelState.AddModelError("", "Datas inválidas");
-		                return View();
-		            }
-		        }
-				ModelState.Clear();
-	            TempData["Message"] = exposicao.Nome + " adicionado com sucesso";
+                ObjetoMuseu oExposicao = new ObjExposicao(exposicao);
+	            if (oExposicao.Validar() == null)
+	            {
+	                oExposicao.SalvarBd(db);
+	                var exposicaoUpdate = db.Exposicao.Include(t => t.Temas).Single(e => e.ExposicaoID == exposicao.ExposicaoID);
+                    museuDB.UpdateTemas(selectedTemas, exposicaoUpdate, db);
+                }
+	            else
+	            {
+	                exposicao.Temas = new List<Tema>();
+	                ViewBag.Temas = museuDB.PopulateAssignedTemaData(exposicao);
+	                ModelState.AddModelError("", oExposicao.Validar());
+	                return View();
+
+                }
+	            ModelState.Clear();
+	            TempData["Message"] = exposicao.Nome + " adicionado com sucesso"; 
             }
             return RedirectToAction("Index");
         }

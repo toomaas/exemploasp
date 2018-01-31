@@ -9,8 +9,5 @@ namespace exemploasp.Models
 	public interface ITabelas
 	{
 		ICollection<Tema> Temas { get; set; }
-
-
-
 	}
 }

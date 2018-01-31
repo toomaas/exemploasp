@@ -184,6 +184,11 @@
     <Compile Include="Patterns\State\IState.cs" />
     <Compile Include="Patterns\State\State.cs" />
     <Compile Include="Patterns\State\VerificarCandidatura.cs" />
+    <Compile Include="Patterns\TemplateMethod\ObjExposicao.cs" />
+    <Compile Include="Patterns\TemplateMethod\ObjetoMuseu.cs" />
+    <Compile Include="Patterns\TemplateMethod\ObjMarcacao.cs" />
+    <Compile Include="Patterns\TemplateMethod\ObjTema.cs" />
+    <Compile Include="Patterns\TemplateMethod\ObjUserAccount.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AssignedTemaData.cs" />
     <Compile Include="ViewModels\DataExposicao.cs" />

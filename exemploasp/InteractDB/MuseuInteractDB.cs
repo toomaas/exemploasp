@@ -26,6 +26,7 @@ namespace exemploasp.InteractDB
 				select u;
 		}
 
+
 	    //query para obter os utilizadores
 	    public IOrderedQueryable<UserAccount> UtilizadoresMarcacao(int exposicaoID, int marcacaoID)
 	    {

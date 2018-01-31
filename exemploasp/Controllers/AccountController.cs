@@ -14,6 +14,7 @@ using System.Web.ApplicationServices;
 using System.Web.Mvc;
 using exemploasp.InteractDB;
 using exemploasp.Models;
+using exemploasp.Patterns.TemplateMethod;
 using exemploasp.ViewModels;
 
 namespace exemploasp.Controllers
@@ -23,17 +24,13 @@ namespace exemploasp.Controllers
 	    OurDBContext db = new OurDBContext();
 		MuseuInteractDB museuDB = new MuseuInteractDB();
 
-        // GET: Account
-		
+        // GET: Account		
         public ActionResult Index()
 		{
 			var user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas);
-
-		
 			return View(user.ToList());
 		}
-
-		
+	
 	    private void PopulateAssignedTemaData(UserAccount userAccount)
 	    {
 	        var allTemas = db.Tema;
@@ -54,39 +51,51 @@ namespace exemploasp.Controllers
 		[HttpPost]
 		public ActionResult Register(UserAccount account)
 		{
-			if (ModelState.IsValid)
+		    //var firstWord = s.Substring(0, s.IndexOf(" "));
+            ObjetoMuseu oUserAccount = new ObjUserAccount(account);
+            if (ModelState.IsValid)
 			{
-				using (OurDBContext db = new OurDBContext())
-				{
-				    DateTime data18 = DateTime.Now;
-				    data18 = data18.AddYears(-18);
-				    if (account.Idade < data18)
-                    {
-                        if (!db.UserAccount.Any(n => n.Email == account.Email))
-                        {
-                            var encrypt = museuDB.Encrypt(account.Password);
-                            account.Password = encrypt;
-                            encrypt = museuDB.Encrypt(account.ConfirmPassword);
-                            account.ConfirmPassword = encrypt;
-                            db.UserAccount.Add(account);
-                            db.SaveChanges();
-                        }
-                        else
-                        {
-                            ModelState.AddModelError("Email", "Email já existente.");
-                            return View();
-                        }
-                    }
-				    else
-				    {
-				        ModelState.AddModelError("Idade", "Idade não permitida.");
-				        return View();
-				    }
+			    if (oUserAccount.Validar() == null)
+			    {
+			        oUserAccount.SalvarBd(db);
+			    }
+			    else
+			    {
+                    var firstWord = oUserAccount.Validar().Substring(0, oUserAccount.Validar().IndexOf(" "));
+                    ModelState.AddModelError(firstWord, oUserAccount.Validar());
+			        return View();
                 }
+			    ModelState.Clear();
+			    ViewBag.Message = account.Nome + " registado";
+			    return RedirectToAction("Login");
+                /*DateTime data18 = DateTime.Now;
+				data18 = data18.AddYears(-18);
+				if (account.Idade < data18)
+                {
+                    if (!db.UserAccount.Any(n => n.Email == account.Email))
+                    {
+                        var encrypt = museuDB.Encrypt(account.Password);
+                        account.Password = encrypt;
+                        encrypt = museuDB.Encrypt(account.ConfirmPassword);
+                        account.ConfirmPassword = encrypt;
+                        db.UserAccount.Add(account);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Email", "Email já existente.");
+                        return View();
+                    }
+                }
+				else
+				{
+				    ModelState.AddModelError("Idade", "Idade não permitida.");
+				    return View();
+				}              
 				ModelState.Clear();
 				ViewBag.Message = account.Nome + " registado";
-				return RedirectToAction("Login");
-			}
+				return RedirectToAction("Login");*/
+            }
 			return View();
 		}
 
@@ -135,18 +144,13 @@ namespace exemploasp.Controllers
 		public ActionResult PerfilUser(int? id)
 		{
 		    UserAccount user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas).Include(u => u.Disponibilidades).Include(a => a.UserAccountExposicaos.Select(e=>e.Exposicao)).SingleOrDefault(u => u.UserAccountID == id);
-
-
 			var exp = db.Exposicao.Where(a=>a.UserAccountExposicaos.Any(c=>c.UserAccountID ==id && c.Assigned==4)).ToList();
-			
-
 			if (id == null || user == null)
 		    {
 		        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 		    }
 		    if(TempData["Message"] != null) ViewBag.Message = TempData["Message"].ToString();
 		    ViewBag.Temas = museuDB.PopulateAssignedTemaData(user);
-			//ViewBag.Exp = exp;
             return View(user);
 		}
 
@@ -195,7 +199,6 @@ namespace exemploasp.Controllers
 	        {
 	            try
 	            {
-	                //UserAccount userToEdit = museuDB.EditUser(id, nome, morada, numTelefone);
                     db.Entry(museuDB.EditUser(userAccountToUpdate, nome, morada, numTelefone)).State = EntityState.Modified;
 	                db.SaveChanges();
 	                return RedirectToAction("PerfilUser", new {  id });

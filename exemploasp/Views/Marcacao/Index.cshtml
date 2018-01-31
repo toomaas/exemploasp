@@ -106,8 +106,8 @@ if (Model.Count(m => m.Data < DateTime.Now) != 0)
 
         <script type="text/javaScript">
             function say_hi(idt) {
-                var hi = confirm("Quer mesmo apagar esta marcação?");
-                if (hi == true) {
+                var hi = confirm("Quer mesmo apagar esta marcação ("+idt+")?");
+                if (hi === true) {
                     window.location.href = "/Marcacao/Delete/" + idt;
                 }
             }

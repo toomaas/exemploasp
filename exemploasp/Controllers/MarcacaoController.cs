@@ -10,6 +10,7 @@ using System.Security.Permissions;
 using System.Web.Mvc;
 using exemploasp.InteractDB;
 using exemploasp.Models;
+using exemploasp.Patterns.TemplateMethod;
 using Microsoft.Ajax.Utilities;
 
 namespace exemploasp.Controllers
@@ -18,12 +19,10 @@ namespace exemploasp.Controllers
     {
 		OurDBContext db = new OurDBContext();
         MuseuInteractDB dbMuseu = new MuseuInteractDB();
-		// GET: Marcacao
-
+		
+        // GET: Marcacao
 		public ActionResult Index()
         {
-	
-
 			var marcacoes = db.Marcacao.Include(a => a.UserAccount).Include(e => e.Exposicao);
             return View(marcacoes.ToList());
         }
@@ -63,29 +62,27 @@ namespace exemploasp.Controllers
         {
             if (ModelState.IsValid)
             {
-                    DateTime hoje = DateTime.Now;
+                ObjetoMuseu oMarcacao = new ObjMarcacao(marcacao);
+                if (oMarcacao.Validar() == null)
+                {
+                    oMarcacao.SalvarBd(db);
+                    ViewBag.Message = "Marcação de " + marcacao.NomeRequerente + " criada com sucesso!";
+                }
+                else
+                {
                     var exp = db.Exposicao.FirstOrDefault(e => e.ExposicaoID == marcacao.ExposicaoID);
-                    if (dbMuseu.DataExposicaoMarcacao(marcacao.Data, exp.DataInicial, exp.DataFinal))
-                    {
-                        TimeSpan dur = TimeSpan.Parse(exp.Duracao.Hour+":"+exp.Duracao.Minute);
-                        marcacao.HoraDeFim = marcacao.HoraDeInicio.Add(dur);                       
-                        db.Marcacao.Add(marcacao);
-                        db.SaveChanges();
-                        ViewBag.Message = "Marcação de " + marcacao.NomeRequerente + " criada com sucesso!";
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("Data", "Esta Exposição occore de "+exp.DataInicial.ToShortDateString()+" a "+exp.DataFinal.ToShortDateString());
-                        UserAccountDropdownList();
-                        ExposicaoDropdownList();
-                        return View();
-                    }  
+                    if(exp != null)
+                        ModelState.AddModelError("Data", oMarcacao.Validar());
+                    UserAccountDropdownList();
+                    ExposicaoDropdownList();
+                    return View();
+                }
+                ModelState.Clear();
             }
             return RedirectToAction("Index");
         }
 
 		// GET: Marcacao/Edit/5
-
 		public ActionResult Edit(int id)
         {
             Marcacao marcacao = db.Marcacao.SingleOrDefault(m => m.MarcacaoID == id);
@@ -96,7 +93,6 @@ namespace exemploasp.Controllers
         }
 
 		// POST: Marcacao/Edit/5
-
 		[HttpPost]
         public ActionResult Edit([Bind(Include="MarcacaoID,NomeRequerente,Idade,NumTelefoneRequerente,Data,HoraDeInicio,HoraDeFim,NumPessoas,ExposicaoID,UserAccountID")] Marcacao marcacao)
         {
@@ -112,8 +108,6 @@ namespace exemploasp.Controllers
                     return RedirectToAction("Edit", "Marcacao", new {id = marcacao.MarcacaoID});
                 }
                     ModelState.AddModelError("Data", "Esta Exposição occore de " + exposicao.DataInicial.ToShortDateString() + " a " + exposicao.DataFinal.ToShortDateString());
-                    //UserAccountDropdownListMarcacao(marcacao.ExposicaoID, marcacao.MarcacaoID, marcacao.UserAccount);
-                     //return View(marcacao);
             }
             UserAccountDropdownListMarcacao(marcacao.ExposicaoID, marcacao.MarcacaoID, marcacao.UserAccount);
             return View(marcacao);
