@@ -207,6 +207,7 @@
     <Content Include="Content\images\footer\twitter_round.png" />
     <Content Include="Content\images\footer\youtube_round.png" />
     <Content Include="Content\images\museu_login.jpg" />
+    <Content Include="Content\css\teste.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

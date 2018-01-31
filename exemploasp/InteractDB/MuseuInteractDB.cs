@@ -80,13 +80,6 @@ namespace exemploasp.InteractDB
 				select u;
 		}
 
-		public UserAccount userAccountUpdate(int userAccountID, int tipoUtilizadorID)
-		{
-			var userAccountToUpdate = db.UserAccount.Single(u => u.UserAccountID == userAccountID);
-			userAccountToUpdate.TipoUtilizadorID = tipoUtilizadorID;
-
-			return userAccountToUpdate;
-		}
 
 	    public void UpdateTemas(string[] selectedTemas, ITabelas tabela, OurDBContext dbContext)
 	    {

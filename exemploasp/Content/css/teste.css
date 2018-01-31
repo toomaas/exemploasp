@@ -1,0 +1,23 @@
+@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
+@import url('https://fonts.googleapis.com/css?family=Libre+Baskerville:400,700');
+
+h2{float:left; width:100%; color:#000; margin-bottom:40px; font-size: 14px; position:relative; z-index:3; margin-top:30px}
+h2 span{font-family: 'Libre Baskerville', serif; display:block; font-size:45px; text-transform:none; margin-bottom:20px; margin-top:30px; font-weight:700}
+h2 a{color:#fff; font-weight:bold;}
+
+
+.head{float:left;width:100%;}
+.search-box{width:95%; margin:0 auto 40px; box-shadow:20px 20px 0 rgba(0,0,0,0.2);}
+.listing-block{background:#fff; height:500px; padding-top:20px; overflow-y:scroll;}
+.media { position:relative; margin-bottom:15px; margin: auto; font-size: 0.7em;}
+.media img{width:200px;margin:0; height:136px;}
+.media-body{border:1px solid #bcbcbc;  height: fit-content; margin-top: 2%}
+.media .titulo{margin-left: 5px; width:100%; font-size:25px;font-weight:600; color:#4765AB;}
+.media .titulo small{display:block; font-size:15px; color:#232323;}
+.media .datas{margin-left: 5px; width:100%; margin-top:10px;}
+.media .datas span{ margin-right:10px; font-size:13px;}
+.media .datas span i{ margin-right:7px; color:#4765AB;}
+.media .address{margin-left: -7px; width:100%;font-size:14px; margin-top:5px; color:#888;}
+.media .botao{ position: absolute; right:1%; bottom: 3%; color:#E74C3C; margin-right: 5px;}
+
+.map-box{background-color:#A3CCFF;}

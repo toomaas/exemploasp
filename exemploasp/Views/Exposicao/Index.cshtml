@@ -15,20 +15,20 @@
     
     <h4 class="message">@ViewBag.Message</h4>
     
-    <div class="row">
-    <a href="@Url.Action("Create", "Exposicao")" class="btn btn-success btn-md">
-        <span class="glyphicon glyphicon-plus"></span> Adicionar Exposição
-    </a>
+
         @{
             if (Model.Any())
             {
                 if (Model.Count(m => m.DataFinal >= DateTime.Today) != 0)
                 {
 
-
-                    <div class="col-md-12">
-                        <div class="table-responsive">
-                            <table id="mytable" class="table table-bordred table-striped">
+                <a href="@Url.Action("Create", "Exposicao")" class="btn btn-success btn-md">
+                    <span class="glyphicon glyphicon-plus"></span> Adicionar Exposição
+                </a>
+                <h4></h4>
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table id="mytable" class="table table-bordred table-striped">
 
                                 <tr>
 
@@ -108,4 +108,4 @@
         }
     </script>
 
-</div>
+

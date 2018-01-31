@@ -56,28 +56,32 @@
             </div>
         </div>
         
+
         <div class="form-group">
+            
             <div class="col-md-offset-2 col-md-10">
+
                 <table>
                     <tr>
-                        @{
-                            int cnt = 0;
-                            List<exemploasp.ViewModels.AssignedTemaData> temas = ViewBag.Temas;
+                    @{
+                        int cnt = 0;
+                        List<exemploasp.ViewModels.AssignedTemaData> temas = ViewBag.Temas;
 
-                            foreach (var tema in temas)
+                        foreach (var tema in temas)
+                        {
+                            if (cnt++ % 3 == 0)
                             {
-                                if (cnt++ % 3 == 0)
-                                {
-                                    @:</tr><tr>
-                                }
-                                @:<td>
-                                <input type="checkbox" name="selectedTemas" value="@tema.TemaID"
-                                       @(Html.Raw(tema.Assigned ? "checked=\"checked\"" : "")) required="required"/>
-                                @tema.TemaID @: @tema.Nome
-                                @:</td>
+                                @:</tr><tr>
                             }
-                            @:</tr>
+                            @:<td>
+                            <input type="checkbox" name="selectedTemas" value="@tema.TemaID"
+                                   @(Html.Raw(tema.Assigned ? "checked=\"checked\"" : "")) required="required"/>
+                            @tema.TemaID
+                            @: @tema.Nome
+                            @:</td>
                         }
+                        @:</tr>
+                    }
                 </table>
             </div>
         </div>
