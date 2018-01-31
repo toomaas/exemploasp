@@ -77,13 +77,15 @@ namespace exemploasp.Controllers
                 decisorCandidatura.EstadoActual = decisorCandidatura.BuscarEstadoAtual();
                 decisorCandidatura.Submeter();
             }
-            List<Exposicao> listaExposicoes = ExposicoesUtilizador(Int32.Parse(UserID));
+            /*List<Exposicao> listaExposicoes = ExposicoesUtilizador(Int32.Parse(UserID));
             //ViewBag.ExposicaoID = new SelectList(listaExposicoes, "ExposicaoID", "Nome");
 	        ViewBag.Exposicoes = listaExposicoes;
 			ViewBag.UserID = UserID;
 
             int id = Int32.Parse(UserID);
             return View(db.UserAccountExposicao.Where(u => u.UserAccountID == id).Include(u => u.Exposicao).Include(u => u.UserAccount).ToList());
+    */
+            return RedirectToAction("Index");
         }
 
         // POST: UserAccountExposicao/Index/..extrainfo

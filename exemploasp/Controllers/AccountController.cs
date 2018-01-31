@@ -70,33 +70,6 @@ namespace exemploasp.Controllers
 			    ModelState.Clear();
 			    ViewBag.Message = account.Nome + " registado";
 			    return RedirectToAction("Login");
-                /*DateTime data18 = DateTime.Now;
-				data18 = data18.AddYears(-18);
-				if (account.Idade < data18)
-                {
-                    if (!db.UserAccount.Any(n => n.Email == account.Email))
-                    {
-                        var encrypt = museuDB.Encrypt(account.Password);
-                        account.Password = encrypt;
-                        encrypt = museuDB.Encrypt(account.ConfirmPassword);
-                        account.ConfirmPassword = encrypt;
-                        db.UserAccount.Add(account);
-                        db.SaveChanges();
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("Email", "Email já existente.");
-                        return View();
-                    }
-                }
-				else
-				{
-				    ModelState.AddModelError("Idade", "Idade não permitida.");
-				    return View();
-				}              
-				ModelState.Clear();
-				ViewBag.Message = account.Nome + " registado";
-				return RedirectToAction("Login");*/
             }
 			return View();
 		}
