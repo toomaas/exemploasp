@@ -1,14 +1,15 @@
 ﻿@model IEnumerable<exemploasp.Models.UserAccount>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Lista de utilizadores";
 }
 
-<h2>Index</h2>
+<h2>Lista de utilizadores</h2>
 
-<p>
-    @Html.ActionLink("Registar novo utilizador", "Register")
-</p>
+<a href="@Url.Action("Register", "Account")" class="btn btn-success btn-md">
+    <span class="glyphicon glyphicon-plus"></span> Registar utilizador
+</a>
+<h4></h4>
 <table class="table">
     <tr>
         <th>
@@ -31,6 +32,10 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            Editar
+
         </th>
     </tr>
 
@@ -58,7 +63,9 @@
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.UserAccountID })
+                <p data-placement="top" data-toggle="tooltip" title="Editar">
+                    <a href=" @Url.Action("Edit", new {id = item.UserAccountID}) " class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"></span></a>
+                </p>
             </td>
         </tr>
     }

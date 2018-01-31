@@ -21,6 +21,7 @@ namespace exemploasp.Models
 		[Required(ErrorMessage = "A morada é óbrigatória")]
 		public string Morada { get; set; }
 
+		[Display(Name = "Data de Nascimento")]
 		[Required(ErrorMessage = "A idade é óbrigatória")]
 		[DataType(DataType.Date)]
 		public DateTime Idade { get; set; }

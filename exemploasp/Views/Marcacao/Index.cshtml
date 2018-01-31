@@ -15,9 +15,6 @@
     <h4 class="message">@ViewBag.Message</h4>
 
     <div class="row">
-        <a href="@Url.Action("Create", "Marcacao")" class="btn btn-success btn-md">
-            <span class="glyphicon glyphicon-plus"></span> Adicionar Marcação
-        </a>
         @{
         if (Model.Any())
         {
@@ -44,8 +41,7 @@
                                 <th>@Html.DisplayNameFor(model => model.NumPessoas)</th>
                                 <th>Editar</th>
                                 <th>Eliminar</th>
-                                <th></th>
-                                <th></th>
+
 
                             </tr>
 

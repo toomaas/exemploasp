@@ -48,12 +48,16 @@ namespace exemploasp.Controllers
 
         public ActionResult Register()
 		{
+			Session.Remove("UserAccountID");
+			Session.Remove("Username");
 			return View();
 		}
 
 		[HttpPost]
 		public ActionResult Register(UserAccount account)
 		{
+
+
 			if (ModelState.IsValid)
 			{
 				using (OurDBContext db = new OurDBContext())
@@ -252,10 +256,10 @@ namespace exemploasp.Controllers
 		[HttpPost]
 		public ActionResult Funcao(int userAccountID, int tipoUtilizadorID)
 		{
-			museuDB.userAccountUpdate(userAccountID, tipoUtilizadorID);
+			userAccountUpdate(userAccountID, tipoUtilizadorID);
 			if (ModelState.IsValid)
             {
-                db.Entry(museuDB.userAccountUpdate(userAccountID, tipoUtilizadorID)).State = EntityState.Modified;
+                db.Entry(userAccountUpdate(userAccountID, tipoUtilizadorID)).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -265,6 +269,14 @@ namespace exemploasp.Controllers
             ModelState.AddModelError("", "Erro ao alterar função");
             return View(users.ToList());
         }
+
+		public UserAccount userAccountUpdate(int userAccountID, int tipoUtilizadorID)
+		{
+			var userAccountToUpdate = db.UserAccount.Single(u => u.UserAccountID == userAccountID);
+			userAccountToUpdate.TipoUtilizadorID = tipoUtilizadorID;
+
+			return userAccountToUpdate;
+		}
 
 		private void UserAccountDropdownList(object userAccount = null)
 		{

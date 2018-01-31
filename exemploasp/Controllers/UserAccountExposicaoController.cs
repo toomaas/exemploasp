@@ -41,7 +41,11 @@ namespace exemploasp.Controllers
                 newList.Add(new Exposicao
                 {
                     ExposicaoID = member.ExposicaoID,
-                    Nome = member.Nome + " de " + member.DataInicial.ToShortDateString() + " a " + member.DataFinal.ToShortDateString() + " DUR: " + member.Duracao.ToShortTimeString()
+                    Nome = member.Nome,
+					DataInicial = member.DataInicial,
+					DataFinal = member.DataFinal,
+					Duracao = member.Duracao,
+					Temas = member.Temas
                 });
             return newList;
         }
@@ -51,8 +55,10 @@ namespace exemploasp.Controllers
 		public ActionResult Index(int id)
         {
             List<Exposicao> listaExposicoes = ExposicoesUtilizador(id);
-            if (listaExposicoes.Count != 0)
-                ViewBag.ExposicaoID = new SelectList(listaExposicoes, "ExposicaoID", "Nome");
+	        if (listaExposicoes.Count != 0)
+		        //ViewBag.ExposicaoID = new SelectList(listaExposicoes, "ExposicaoID", "Nome");
+
+		    ViewBag.Exposicoes = listaExposicoes;
             ViewBag.UserID = id.ToString();
             return View(db.UserAccountExposicao.Where(u => u.UserAccountID == id).Include(u => u.Exposicao).Include(u => u.UserAccount).ToList());
         }
@@ -72,8 +78,10 @@ namespace exemploasp.Controllers
                 decisorCandidatura.Submeter();
             }
             List<Exposicao> listaExposicoes = ExposicoesUtilizador(Int32.Parse(UserID));
-            ViewBag.ExposicaoID = new SelectList(listaExposicoes, "ExposicaoID", "Nome");
-            ViewBag.UserID = UserID;
+            //ViewBag.ExposicaoID = new SelectList(listaExposicoes, "ExposicaoID", "Nome");
+	        ViewBag.Exposicoes = listaExposicoes;
+			ViewBag.UserID = UserID;
+
             int id = Int32.Parse(UserID);
             return View(db.UserAccountExposicao.Where(u => u.UserAccountID == id).Include(u => u.Exposicao).Include(u => u.UserAccount).ToList());
         }
