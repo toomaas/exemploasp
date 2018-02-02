@@ -8,9 +8,10 @@
 <link rel="stylesheet" href="/Content/css/style.css" media="screen" type="text/css" />
 <body class="img_login">
 <div class="login-card">
-    <h2>Registo</h2>
-
-
+    <img src="/Content/images/27591551_1587296401348469_1181103596_n.png" style="display: table-cell;  width: 40%; height: 40%; position: relative; margin-left: auto; margin-right: auto;" />
+    <hr/>
+    <h3 style="text-align: center;">Registo</h3>
+    <br />
 
 
     @using (Html.BeginForm())
@@ -19,7 +20,7 @@
 
 
         <div class="form-horizontal">
-            <hr />
+
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @if (ViewBag.Message != null)
             {
