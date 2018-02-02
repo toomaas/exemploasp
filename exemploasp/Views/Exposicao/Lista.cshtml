@@ -1,0 +1,71 @@
+﻿@using exemploasp.Models
+@model IEnumerable<exemploasp.Models.Exposicao>
+@{
+    ViewBag.Title = "Exposições";
+}
+
+<link rel="stylesheet" href="/Content/css/teste.css" media="screen" type="text/css" />
+<div class="container">
+    <div class="row">
+
+            @{
+                if (Model != null)
+                {
+                    <h3>Lista de Exposições: </h3>
+
+                    foreach (Exposicao exposicao in Model)
+                    {
+                        <div class="media">
+                            <div class="media-body">
+                                <div class="titulo">
+                                    @exposicao.Nome
+                                    <small> Duração: @exposicao.Duracao.TimeOfDay.ToString()</small>
+                                </div>
+
+                                <div class="datas">
+                                    <span><i class="glyphicon glyphicon-calendar"></i><b>De: </b>@exposicao.DataInicial.ToShortDateString()</span>
+                                    <span><i class="glyphicon glyphicon-calendar"></i><b>Até: </b>@exposicao.DataFinal.ToShortDateString()</span>
+                                </div>
+
+                                <div class="address">
+                                    <div class="col-sm-8">
+                                        @{
+                                            foreach (Tema tema in exposicao.Temas)
+                                            {
+                                                UserAccount userAccount = ViewBag.UserAccount;
+                                                if (userAccount.Temas.Contains(tema))
+                                                {<i style="color:green"> #@tema.Nome</i> }
+                                            else
+                                            {
+                                                <i style="color:red"> #@tema.Nome</i>
+                                            }
+
+
+                                        }
+
+                                        }
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    }
+                    <br/>
+                   <p>Para que seja possível candidatar-se a uma exposição, necessita de <text style="color:green"><b>dominar</b></text> todos os temas dessa exposição.</p>
+
+                }
+                else
+                {
+                    <h4>Não existem exposições.</h4>
+                }
+            }
+        </div>
+            
+
+            @section Scripts {
+                @Scripts.Render("~/bundles/jqueryval")
+            }
+
+        </div>

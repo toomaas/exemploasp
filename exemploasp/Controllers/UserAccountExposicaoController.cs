@@ -33,7 +33,11 @@ namespace exemploasp.Controllers
                 }
                 if (!temasExp.Contains(false))
                 {
-                    exposicoesAUsar.Add(exp);
+                    //if (db.UserAccountExposicao.Where(u => u.UserAccountID == idUser).Where(u => u.Assigned == 1).SingleOrDefault(u => u.ExposicaoID == exp.ExposicaoID) != null)
+                    //{
+                        exposicoesAUsar.Add(exp);
+                    //}
+ 
                 }
             }
             List<Exposicao> newList = new List<Exposicao>();
@@ -50,23 +54,18 @@ namespace exemploasp.Controllers
             return newList;
         }
 
-		//GET: UserAccountExposicao/Index/id
-
-		public ActionResult Index(int id)
+        //GET: UserAccountExposicao/Candidatura/id
+        public ActionResult Candidatura(int id)
         {
             List<Exposicao> listaExposicoes = ExposicoesUtilizador(id);
-	        if (listaExposicoes.Count != 0)
-		        //ViewBag.ExposicaoID = new SelectList(listaExposicoes, "ExposicaoID", "Nome");
-
-		    ViewBag.Exposicoes = listaExposicoes;
+            ViewBag.Exposicoes = listaExposicoes;
             ViewBag.UserID = id.ToString();
             return View(db.UserAccountExposicao.Where(u => u.UserAccountID == id).Include(u => u.Exposicao).Include(u => u.UserAccount).ToList());
         }
 
-        // POST: UserAccountExposicao/Index
+        // POST: UserAccountExposicao/Candidatura
         [HttpPost]
-
-		public ActionResult Index(string UserID, string ExposicaoID)
+        public ActionResult Candidatura(string UserID, string ExposicaoID)
         {
             UserAccountExposicao userAccountExposicao = new UserAccountExposicao();
             if (ExposicaoID != "")
@@ -77,20 +76,11 @@ namespace exemploasp.Controllers
                 decisorCandidatura.EstadoActual = decisorCandidatura.BuscarEstadoAtual();
                 decisorCandidatura.Submeter();
             }
-            /*List<Exposicao> listaExposicoes = ExposicoesUtilizador(Int32.Parse(UserID));
-            //ViewBag.ExposicaoID = new SelectList(listaExposicoes, "ExposicaoID", "Nome");
-	        ViewBag.Exposicoes = listaExposicoes;
-			ViewBag.UserID = UserID;
-
-            int id = Int32.Parse(UserID);
-            return View(db.UserAccountExposicao.Where(u => u.UserAccountID == id).Include(u => u.Exposicao).Include(u => u.UserAccount).ToList());
-    */
-            return RedirectToAction("Index");
+            return RedirectToAction("Candidatura");
         }
 
         // POST: UserAccountExposicao/Index/..extrainfo
         [HttpPost]
-
 		public ActionResult ExtraInfo(string UserID, int ExposicaoID, string InformacaoExtra)
         {
             int uID = Int32.Parse(UserID);
@@ -102,14 +92,13 @@ namespace exemploasp.Controllers
                 db.Entry(userAccountExposicaoToUpdate).State = EntityState.Modified;
                 db.SaveChanges();
             }
-            return RedirectToAction("Index","UserAccountExposicao", new {id = UserID});
+            return RedirectToAction("Candidatura","UserAccountExposicao", new {id = UserID});
         }
 
 		public ActionResult GestaoCandidaturas()
         {
             return View(db.UserAccountExposicao.Include(u => u.Exposicao).Include(u => u.UserAccount).ToList());
         }
-
 
 		[HttpPost]
         public ActionResult GestaoCandidaturas(int UserID, int ExposicaoID, string Evento )

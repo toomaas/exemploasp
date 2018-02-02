@@ -1,7 +1,7 @@
 ﻿@using exemploasp.Models
 @model IEnumerable<exemploasp.Models.UserAccountExposicao>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Candidatura";
 }
 
 <link rel="stylesheet" href="/Content/css/teste.css" media="screen" type="text/css" />
@@ -52,10 +52,9 @@
                                         @{
                                             foreach (Tema tema in exposicao.Temas)
                                             {
-
-                                                <i> #@tema.Nome </i>
-
-                                            }
+                                                <i>#@tema.Nome</i>
+                                         
+                                        }
 
                                         }
                                     </div>
@@ -257,4 +256,3 @@
         </div>
     </div>
 </div>
-

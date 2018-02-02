@@ -32,9 +32,17 @@ namespace exemploasp.Controllers
 	        }
         }
 
-		// GET: Exposicao/Create
+        //Lista para users
+        public ActionResult Lista()
+        {
+            int id = Convert.ToInt32(Session["UserAccountID"]);
+            UserAccount userAccount = db.UserAccount.Where(u => u.UserAccountID == id).Include(u => u.Temas).SingleOrDefault();
+            ViewBag.UserAccount = userAccount;
+            return View(db.Exposicao.Include(e => e.Temas).ToList());
+        }
 
-		public ActionResult Create()
+        // GET: Exposicao/Create
+        public ActionResult Create()
         {
             var exposicao = new Exposicao();
             exposicao.Temas = new List<Tema>();
@@ -43,7 +51,6 @@ namespace exemploasp.Controllers
         }
 
 		// POST: Exposicao/Create
-
 		[HttpPost]
         public ActionResult Create([Bind(Include = "Nome,DataInicial,DataFinal,Duracao,NrItens")]Exposicao exposicao, string[] selectedTemas)
         {

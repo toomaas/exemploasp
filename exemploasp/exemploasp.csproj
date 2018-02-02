@@ -258,7 +258,6 @@
     <Content Include="Views\Account\Funcao.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Account\AlterarPassword.cshtml" />
-    <Content Include="Views\UserAccountExposicao\Index.cshtml" />
     <Content Include="Views\UserAccountExposicao\GestaoCandidaturas.cshtml" />
     <Content Include="Views\Exposicao\Edit.cshtml" />
     <Content Include="Views\UserAccountExposicao\CandidaturasAceites.cshtml" />
@@ -268,6 +267,8 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Marcacao\Arquivo.cshtml" />
     <Content Include="Views\Exposicao\Arquivo.cshtml" />
+    <Content Include="Views\UserAccountExposicao\Candidatura.cshtml" />
+    <Content Include="Views\Exposicao\Lista.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
