@@ -1,6 +1,7 @@
 ﻿@using exemploasp.Models
 @model IEnumerable<exemploasp.Models.Exposicao>
 @{
+    UserAccount userAccount = ViewBag.UserAccount;
     ViewBag.Title = "Exposições";
 }
 
@@ -15,42 +16,56 @@
 
                     foreach (Exposicao exposicao in Model)
                     {
-                        <div class="media">
-                            <div class="media-body">
-                                <div class="titulo">
-                                    @exposicao.Nome
-                                    <small> Duração: @exposicao.Duracao.TimeOfDay.ToString()</small>
-                                </div>
-
-                                <div class="datas">
-                                    <span><i class="glyphicon glyphicon-calendar"></i><b>De: </b>@exposicao.DataInicial.ToShortDateString()</span>
-                                    <span><i class="glyphicon glyphicon-calendar"></i><b>Até: </b>@exposicao.DataFinal.ToShortDateString()</span>
-                                </div>
-
-                                <div class="address">
-                                    <div class="col-sm-8">
+                        <div class="media">                   
                                         @{
-                                            foreach (Tema tema in exposicao.Temas)
+                                            if (userAccount.UserAccountExposicaos.Where(u => u.ExposicaoID == exposicao.ExposicaoID).SingleOrDefault(u => u.Assigned == 4) != null)
                                             {
-                                                UserAccount userAccount = ViewBag.UserAccount;
-                                                if (userAccount.Temas.Contains(tema))
-                                                {<i style="color:green"> #@tema.Nome</i> }
-                                            else
-                                            {
-                                                <i style="color:red"> #@tema.Nome</i>
+                                                <div class="botao">
+                                                    <div class="form-group">
+                                                        <p data-placement="top" data-toggle="tooltip" title="Apto para realizar visitas guiadas">
+                                                            <a><span class="glyphicon glyphicon-ok btn-lg" style="color: green"></span></a>
+                                                        </p>
+                                                    </div>
+                                                </div>
                                             }
+                                        }                              
+                                <div class="media-body">
+
+                                    <div class="titulo">
+                                        @exposicao.Nome
+                                        <small> Duração: @exposicao.Duracao.TimeOfDay.ToString()</small>
+                                    </div>
+
+                                    <div class="datas">
+                                        <span><i class="glyphicon glyphicon-calendar"></i><b>De: </b>@exposicao.DataInicial.ToShortDateString()</span>
+                                        <span><i class="glyphicon glyphicon-calendar"></i><b>Até: </b>@exposicao.DataFinal.ToShortDateString()</span>
+                                    </div>
+
+                                    <div class="address">
+                                        <div class="col-sm-8">
+                                            @{
+                    foreach (Tema tema in exposicao.Temas)
+                    {
+                        //UserAccount userAccount = ViewBag.UserAccount;
+                        if (userAccount.Temas.Contains(tema))
+                        {<i style="color: green"> #@tema.Nome</i>
+}
+else
+{
+                            <i style="color: red"> #@tema.Nome</i>
+}
 
 
-                                        }
+}
 
-                                        }
+                                            }
+                                        </div>
+
                                     </div>
 
                                 </div>
 
                             </div>
-
-                        </div>
                     }
                     <br/>
                    <p>Para que seja possível candidatar-se a uma exposição, necessita de <text style="color:green"><b>dominar</b></text> todos os temas dessa exposição.</p>

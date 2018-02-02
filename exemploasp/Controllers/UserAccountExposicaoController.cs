@@ -33,10 +33,10 @@ namespace exemploasp.Controllers
                 }
                 if (!temasExp.Contains(false))
                 {
-                    //if (db.UserAccountExposicao.Where(u => u.UserAccountID == idUser).Where(u => u.Assigned == 1).SingleOrDefault(u => u.ExposicaoID == exp.ExposicaoID) != null)
-                    //{
+                    if (db.UserAccountExposicao.Where(u => u.UserAccountID == idUser).Where(u => u.Assigned == 1).SingleOrDefault(u => u.ExposicaoID == exp.ExposicaoID) != null || db.UserAccountExposicao.Where(u => u.UserAccountID == idUser).SingleOrDefault(u => u.ExposicaoID == exp.ExposicaoID) == null)
+                    {
                         exposicoesAUsar.Add(exp);
-                    //}
+                    }
  
                 }
             }
@@ -58,7 +58,10 @@ namespace exemploasp.Controllers
         public ActionResult Candidatura(int id)
         {
             List<Exposicao> listaExposicoes = ExposicoesUtilizador(id);
-            ViewBag.Exposicoes = listaExposicoes;
+            if (listaExposicoes.Count != 0)
+            {
+                ViewBag.Exposicoes = listaExposicoes;
+            }
             ViewBag.UserID = id.ToString();
             return View(db.UserAccountExposicao.Where(u => u.UserAccountID == id).Include(u => u.Exposicao).Include(u => u.UserAccount).ToList());
         }
