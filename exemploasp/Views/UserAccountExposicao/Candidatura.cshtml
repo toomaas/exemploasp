@@ -217,37 +217,7 @@
                     <h4>Não tem candidaturas Rejeitadas</h4>
                 }
             }
-            <table><tr><th>&nbsp;</th></tr></table>
-            @{
-                if (Model.Any(u => u.Assigned == 4))
-                {
-                    <h4>Candidaturas Aceites/apto para realizar visitas guiadas</h4>
-                    <table class="table">
-                        <tr>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Exposicao.Nome)
-                            </th>
-                        </tr>
-
-                        @foreach (var item in Model)
-                        {
-                            if (item.Assigned == 4)
-                            {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Exposicao.Nome)
-                                    </td>
-                                </tr>
-                            }
-                        }
-
-                    </table>
-                }
-                else
-                {
-                    <h4>Não tem candidaturas aceites/apto para realizar visitas guiadas</h4>
-                }
-            }
+           
 
             @section Scripts {
                 @Scripts.Render("~/bundles/jqueryval")

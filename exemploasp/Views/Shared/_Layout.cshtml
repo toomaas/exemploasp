@@ -28,8 +28,6 @@
                         <ul class="nav navbar-nav">
                             <li>@Html.ActionLink("Candidaturas", "Candidatura", "UserAccountExposicao", new { id = Session["UserAccountID"] }, null)</li>
                             <li>@Html.ActionLink("Exposições", "Lista", "Exposicao", new { id = Session["UserAccountID"] }, null)</li>
-                            <li>@Html.ActionLink("Contactos", "Contact", "Home")</li>
-
                             @{
                                 if ((string)Session["TipoUtilizador"] == "Administrador")
                                 {

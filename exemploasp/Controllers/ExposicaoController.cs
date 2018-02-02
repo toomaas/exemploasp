@@ -36,7 +36,7 @@ namespace exemploasp.Controllers
         public ActionResult Lista()
         {
             int id = Convert.ToInt32(Session["UserAccountID"]);
-            UserAccount userAccount = db.UserAccount.Where(u => u.UserAccountID == id).Include(u => u.Temas).SingleOrDefault();
+            UserAccount userAccount = db.UserAccount.Where(u => u.UserAccountID == id).Include(u => u.Temas).Include(u => u.UserAccountExposicaos).SingleOrDefault();
             ViewBag.UserAccount = userAccount;
             return View(db.Exposicao.Include(e => e.Temas).ToList());
         }
