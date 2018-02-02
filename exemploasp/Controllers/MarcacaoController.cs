@@ -19,8 +19,9 @@ namespace exemploasp.Controllers
     {
 		OurDBContext db = new OurDBContext();
         MuseuInteractDB dbMuseu = new MuseuInteractDB();
-		
-        // GET: Marcacao
+
+		// GET: Marcacao
+	    [Authorize]
 		public ActionResult Index()
         {
 			var marcacoes = db.Marcacao.Include(a => a.UserAccount).Include(e => e.Exposicao);
@@ -28,7 +29,7 @@ namespace exemploasp.Controllers
         }
 
 		// GET: Marcacao/Create
-
+	    [Authorize]
 		public ActionResult Create()
         {
 	        ExposicaoDropdownList();
@@ -57,6 +58,7 @@ namespace exemploasp.Controllers
 	    }
 
 		// POST: Marcacao/Create
+	    [Authorize]
 		[HttpPost]
         public ActionResult Create([Bind(Include = "MarcacaoID, NomeRequerente, Idade, NumTelefoneRequerente, Data,HoraDeInicio,HoraDeFim,NumPessoas,ExposicaoID, UserAccountID")]Marcacao marcacao)
         {
@@ -83,6 +85,7 @@ namespace exemploasp.Controllers
         }
 
 		// GET: Marcacao/Edit/5
+	    [Authorize]
 		public ActionResult Edit(int id)
         {
             Marcacao marcacao = db.Marcacao.SingleOrDefault(m => m.MarcacaoID == id);
@@ -93,6 +96,7 @@ namespace exemploasp.Controllers
         }
 
 		// POST: Marcacao/Edit/5
+	    [Authorize]
 		[HttpPost]
         public ActionResult Edit([Bind(Include="MarcacaoID,NomeRequerente,Idade,NumTelefoneRequerente,Data,HoraDeInicio,HoraDeFim,NumPessoas,ExposicaoID,UserAccountID")] Marcacao marcacao)
         {
@@ -114,6 +118,7 @@ namespace exemploasp.Controllers
         }
 
 		// GET: Marcacao/Delete/5
+	    [Authorize]
 		public ActionResult Delete(int id)
         {
             var marcacaoToDelete = db.Marcacao.SingleOrDefault(m => m.MarcacaoID == id);

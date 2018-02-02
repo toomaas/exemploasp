@@ -54,8 +54,9 @@ namespace exemploasp.Controllers
             return newList;
         }
 
-        //GET: UserAccountExposicao/Candidatura/id
-        public ActionResult Candidatura(int id)
+		//GET: UserAccountExposicao/Candidatura/id
+		[Authorize]
+		public ActionResult Candidatura(int id)
         {
             List<Exposicao> listaExposicoes = ExposicoesUtilizador(id);
             if (listaExposicoes.Count != 0)
@@ -66,8 +67,9 @@ namespace exemploasp.Controllers
             return View(db.UserAccountExposicao.Where(u => u.UserAccountID == id).Include(u => u.Exposicao).Include(u => u.UserAccount).ToList());
         }
 
-        // POST: UserAccountExposicao/Candidatura
-        [HttpPost]
+		// POST: UserAccountExposicao/Candidatura
+		[Authorize]
+		[HttpPost]
         public ActionResult Candidatura(string UserID, string ExposicaoID)
         {
             UserAccountExposicao userAccountExposicao = new UserAccountExposicao();
@@ -82,8 +84,9 @@ namespace exemploasp.Controllers
             return RedirectToAction("Candidatura");
         }
 
-        // POST: UserAccountExposicao/Index/..extrainfo
-        [HttpPost]
+		// POST: UserAccountExposicao/Index/..extrainfo
+		[Authorize]
+		[HttpPost]
 		public ActionResult ExtraInfo(string UserID, int ExposicaoID, string InformacaoExtra)
         {
             int uID = Int32.Parse(UserID);
@@ -98,11 +101,13 @@ namespace exemploasp.Controllers
             return RedirectToAction("Candidatura","UserAccountExposicao", new {id = UserID});
         }
 
+	    [Authorize]
 		public ActionResult GestaoCandidaturas()
         {
             return View(db.UserAccountExposicao.Include(u => u.Exposicao).Include(u => u.UserAccount).ToList());
         }
 
+	    [Authorize]
 		[HttpPost]
         public ActionResult GestaoCandidaturas(int UserID, int ExposicaoID, string Evento )
         {
@@ -127,12 +132,14 @@ namespace exemploasp.Controllers
             return RedirectToAction("GestaoCandidaturas", "UserAccountExposicao");
         }
 
+	    [Authorize]
 		public ActionResult CandidaturasAceites()
         {
             return View(db.UserAccountExposicao.Where(ue => ue.Assigned == 4).Include(u => u.UserAccount).Include(e => e.Exposicao).ToList());
         }
 
-        public ActionResult CandidaturasRejeitadas()
+	    [Authorize]
+		public ActionResult CandidaturasRejeitadas()
         {
             return View(db.UserAccountExposicao.Where(ue => ue.Assigned == 1).Include(u => u.UserAccount).Include(e => e.Exposicao).ToList());
         }

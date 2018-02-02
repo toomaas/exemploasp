@@ -199,11 +199,11 @@
     <Content Include="Content\css\app.css" />
     <Content Include="Content\css\site.css" />
     <Content Include="Content\css\style.css" />
-    <Content Include="Content\images\27591551_1587296401348469_1181103596_n.png" />
+    <Content Include="Content\images\logo_nav.png" />
+    <Content Include="Content\images\logo_inicio.png" />
     <Content Include="Content\images\Carousel\img1.jpg" />
     <Content Include="Content\images\Carousel\img2.jpg" />
     <Content Include="Content\images\Carousel\img3.jpg" />
-    <Content Include="Content\images\Final.png" />
     <Content Include="Content\images\footer\facebook_round.png" />
     <Content Include="Content\images\footer\instagram_round.png" />
     <Content Include="Content\images\footer\twitter_round.png" />

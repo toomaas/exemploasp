@@ -13,25 +13,12 @@ namespace exemploasp.Controllers
     public class HomeController : Controller
     {
         OurDBContext db = new OurDBContext();
-        public ActionResult Index()
+	    [Authorize]
+		public ActionResult Index()
         {
             int id = Int32.Parse(Session["UserAccountID"].ToString());
             List<Marcacao> marcacaos = db.Marcacao.Where(m => m.UserAccountID == id).ToList();
             return View(marcacaos);
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-		
-        public ActionResult Contact()
-        {
-
-            return View();
         }
 	}
 }

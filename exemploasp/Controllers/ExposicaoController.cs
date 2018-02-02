@@ -23,6 +23,7 @@ namespace exemploasp.Controllers
 		MuseuInteractDB museuDB = new MuseuInteractDB();
 		// GET: Exposicao
 
+	    [Authorize]
 		public ActionResult Index()
         {
 	        using (OurDBContext db = new OurDBContext())
@@ -32,8 +33,9 @@ namespace exemploasp.Controllers
 	        }
         }
 
-        //Lista para users
-        public ActionResult Lista()
+		//Lista para users
+		[Authorize]
+		public ActionResult Lista()
         {
             int id = Convert.ToInt32(Session["UserAccountID"]);
             UserAccount userAccount = db.UserAccount.Where(u => u.UserAccountID == id).Include(u => u.Temas).Include(u => u.UserAccountExposicaos).SingleOrDefault();
@@ -41,8 +43,9 @@ namespace exemploasp.Controllers
             return View(db.Exposicao.Include(e => e.Temas).ToList());
         }
 
-        // GET: Exposicao/Create
-        public ActionResult Create()
+		// GET: Exposicao/Create
+		[Authorize]
+		public ActionResult Create()
         {
             var exposicao = new Exposicao();
             exposicao.Temas = new List<Tema>();
@@ -51,6 +54,7 @@ namespace exemploasp.Controllers
         }
 
 		// POST: Exposicao/Create
+	    [Authorize]
 		[HttpPost]
         public ActionResult Create([Bind(Include = "Nome,DataInicial,DataFinal,Duracao,NrItens")]Exposicao exposicao, string[] selectedTemas)
         {
@@ -77,6 +81,7 @@ namespace exemploasp.Controllers
             return RedirectToAction("Index");
         }
 
+	    [Authorize]
 		public ActionResult Edit(int? id)
 	    {
 		    Exposicao exposicao = db.Exposicao.Include(t => t.Temas).SingleOrDefault(u => u.ExposicaoID == id);
@@ -88,6 +93,7 @@ namespace exemploasp.Controllers
             return View(exposicao);
 	    }
 
+	    [Authorize]
 		[HttpPost]
 		public ActionResult Edit(int? id,string Nome, DateTime DataInicial, DateTime DataFinal, DateTime Duracao, int NrItens, string[] selectedTemas)
 	    {
@@ -115,6 +121,8 @@ namespace exemploasp.Controllers
             return View(exposicaoUpdate);
 	    }
 
+
+	    [Authorize]
 		public ActionResult Delete(int? id)
 	    {
 		    var exposicaoToDelete = db.Exposicao.SingleOrDefault(e => e.ExposicaoID == id);

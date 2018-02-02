@@ -72,6 +72,8 @@
 
 </table>
 
+<h2>Welcome @(Request.IsAuthenticated ? HttpContext.Current.User.Identity.Name : "Administrador" ) - Isto é para autorizado</h2>
+
 <br/><hr/>
      <div>
          <a href="@Url.Action("Index", "TipoUtilizador")" class="btn btn-warning btn-md">

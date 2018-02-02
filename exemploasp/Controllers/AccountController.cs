@@ -12,6 +12,7 @@ using System.Text;
 using System.Web;
 using System.Web.ApplicationServices;
 using System.Web.Mvc;
+using System.Web.Security;
 using exemploasp.InteractDB;
 using exemploasp.Models;
 using exemploasp.Patterns.TemplateMethod;
@@ -24,7 +25,8 @@ namespace exemploasp.Controllers
 	    OurDBContext db = new OurDBContext();
 		MuseuInteractDB museuDB = new MuseuInteractDB();
 
-        // GET: Account		
+        // GET: Account
+		[Authorize]
         public ActionResult Index()
 		{
 			var user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas);
@@ -42,8 +44,8 @@ namespace exemploasp.Controllers
 	        }
 	        ViewBag.Temas = viewModel;
 	    }
-
-        public ActionResult Register()
+		[AllowAnonymous]
+		public ActionResult Register()
 		{
 			Session.Remove("UserAccountID");
 			Session.Remove("Username");
@@ -74,6 +76,7 @@ namespace exemploasp.Controllers
 			return View();
 		}
 
+		[AllowAnonymous]
 		//Login
 		public ActionResult Login()
 		{
@@ -87,6 +90,9 @@ namespace exemploasp.Controllers
             var usr = db.UserAccount.FirstOrDefault(u => u.Email == user.Email && u.Password == encrypt);
 			if (usr != null)
 			{
+			
+				FormsAuthentication.SetAuthCookie(usr.TipoUtilizador.Tipo, true);
+
 				Session["UserAccountID"] = usr.UserAccountID.ToString();
 				Session["Username"] = usr.Nome.ToString();
 				Session["TipoUtilizador"] = usr.TipoUtilizador.Tipo.ToString();
@@ -110,12 +116,14 @@ namespace exemploasp.Controllers
 		{
 			if (Session["UserAccountID"] != null)
 			{
+				FormsAuthentication.SignOut();
 				Session["UserAccountID"] = null;
 			}
 			return RedirectToAction("LoggedIn");
 		}
 
 		//"int? id" signfica que o parametro id pode ter um valor inteiro ou pode receber um valor null
+		[Authorize]
 		public ActionResult PerfilUser(int? id)
 		{
 		    UserAccount user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas).Include(u => u.Disponibilidades).Include(a => a.UserAccountExposicaos.Select(e=>e.Exposicao)).SingleOrDefault(u => u.UserAccountID == id);
@@ -129,8 +137,9 @@ namespace exemploasp.Controllers
             return View(user);
 		}
 
+		[Authorize]
 		[HttpPost]
-	    public ActionResult PerfilUser(int? id, string[] selectedTemas)
+		public ActionResult PerfilUser(int? id, string[] selectedTemas)
 	    {
             if(id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -152,6 +161,7 @@ namespace exemploasp.Controllers
             return View(userAccountToUpdate);
         }
 
+		[Authorize]
 		public ActionResult Edit(int? id)
 	    {
 	        UserAccount user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas).SingleOrDefault(u => u.UserAccountID == id);
@@ -162,7 +172,7 @@ namespace exemploasp.Controllers
 	        ViewBag.Temas = museuDB.PopulateAssignedTemaData(user);
             return View(user);   
 	    }
-
+		[Authorize]
 		[HttpPost]
 	    public ActionResult Edit(int? id, string nome, string morada, int numTelefone)
 	    {
@@ -185,8 +195,8 @@ namespace exemploasp.Controllers
 	        }
 	        return View(museuDB.EditUser(userAccountToUpdate, nome, morada, numTelefone));
 	    }
-
-	    public ActionResult AlterarPassword(int? id)
+		[Authorize]
+		public ActionResult AlterarPassword(int? id)
 	    {
 	        var userAccountToUpdate = db.UserAccount.SingleOrDefault(u => u.UserAccountID == id);
             if (id == null || userAccountToUpdate == null)
@@ -196,7 +206,7 @@ namespace exemploasp.Controllers
 	        ViewBag.Temas = museuDB.PopulateAssignedTemaData(userAccountToUpdate);
             return View(userAccountToUpdate);
 	    }
-
+		[Authorize]
 		[HttpPost]
 	    public ActionResult AlterarPassword(int?id,string pwAntiga, string Password, string confpw)
 	    {
@@ -218,7 +228,7 @@ namespace exemploasp.Controllers
 	        ViewBag.Temas = museuDB.PopulateAssignedTemaData(user);
             return View(user);
 	    }
-
+		[Authorize]
 		public ActionResult Funcao()
 		{
 			UserAccountDropdownList();
@@ -227,6 +237,7 @@ namespace exemploasp.Controllers
 			return View(users.ToList());
 		}
 
+		[Authorize]
 		[HttpPost]
 		public ActionResult Funcao(int userAccountID, int tipoUtilizadorID)
 		{
@@ -243,7 +254,7 @@ namespace exemploasp.Controllers
             ModelState.AddModelError("", "Erro ao alterar função");
             return View(users.ToList());
         }
-
+		[Authorize]
 		public UserAccount userAccountUpdate(int userAccountID, int tipoUtilizadorID)
 		{
 			var userAccountToUpdate = db.UserAccount.Single(u => u.UserAccountID == userAccountID);

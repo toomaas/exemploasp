@@ -13,9 +13,10 @@ namespace exemploasp.Controllers
     public class DisponibilidadeController : Controller
     {
         OurDBContext db = new OurDBContext();
-        
-        //GET: Disponibilidade/Definir/id?exp=exp
-        public ActionResult Definir(int id, int exp)
+
+		//GET: Disponibilidade/Definir/id?exp=exp
+		[Authorize]
+		public ActionResult Definir(int id, int exp)
         {
             UserAccountExposicao userAccountExposicao = db.UserAccountExposicao.Find(id, exp);  
             if (userAccountExposicao != null)
@@ -29,8 +30,8 @@ namespace exemploasp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
         }
-
-        [HttpPost]
+	    [Authorize]
+		[HttpPost]
         public ActionResult Definir(int id, int exp, DateTime[] selectedDatas)
         {
             UserAccountExposicao userAccountExposicao = db.UserAccountExposicao.Find(id, exp);
@@ -56,8 +57,9 @@ namespace exemploasp.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
-        //GET: Disponibilidade/Definir/id?exp=exp
-        public ActionResult Ver(int id, int exp)
+		//GET: Disponibilidade/Definir/id?exp=exp
+		[Authorize]
+		public ActionResult Ver(int id, int exp)
         {
             Exposicao exposicao = db.Exposicao.Find(exp);
             List<Disponibilidade> disponibilidades = db.Disponibilidade.Where(d => d.ExposicaoID == exp).Where(d => d.UserAccountID == id).Include(d => d.Exposicao).Include(d => d.UserAccount).ToList();

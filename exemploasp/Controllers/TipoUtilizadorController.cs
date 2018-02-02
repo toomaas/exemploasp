@@ -15,7 +15,7 @@ namespace exemploasp.Controllers
 		OurDBContext db = new OurDBContext();
 
 		// GET: TipoUtilizador
-
+		[Authorize]
 		public ActionResult Index()
 		{
 			using (OurDBContext db = new OurDBContext())
@@ -38,6 +38,7 @@ namespace exemploasp.Controllers
 
 		// POST: TipoUtilizador/Create
 
+		[Authorize]
 		[HttpPost]
 		public ActionResult Create(TipoUtilizador tipoUtilizador)
 		{
@@ -61,7 +62,7 @@ namespace exemploasp.Controllers
 		}
 
 		// GET: TipoUtilizador/Delete/5
-
+		[Authorize]
 		public ActionResult Delete(int? id)
         {
 
