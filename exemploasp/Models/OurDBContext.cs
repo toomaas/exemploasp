@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Web.Security;
+using System.Web.UI.WebControls;
 
 namespace exemploasp.Models
 {

@@ -1,7 +1,7 @@
 ﻿@model exemploasp.Models.UserAccount
 
 @{
-    ViewBag.Title = "Editar";
+    ViewBag.Title = "Editar Perfil";
 }
 
 <h2>Editar perfil</h2>
@@ -68,7 +68,7 @@
 
 </div>
     }
-@Html.ActionLink("Alterar Password", "AlterarPassword", "Account", new { id = Model.UserAccountID }, null)
+@Html.ActionLink("Alterar Password", "AlterarPassword", "Account")
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

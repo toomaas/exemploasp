@@ -39,6 +39,10 @@
                                     <div class="datas">
                                         <span><i class="glyphicon glyphicon-calendar"></i><b>De: </b>@exposicao.DataInicial.ToShortDateString()</span>
                                         <span><i class="glyphicon glyphicon-calendar"></i><b>Até: </b>@exposicao.DataFinal.ToShortDateString()</span>
+                                        @if (exposicao.DataFinal < DateTime.Now)
+                                        {
+                                            <span data-toggle="tooltip" title="Esta exposição terminou" class="glyphicon glyphicon-ban-circle" style="color: red">Terminada</span>
+                                        }
                                     </div>
 
                                     <div class="address">

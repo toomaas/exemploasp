@@ -8,221 +8,145 @@
 <div class="container">
     <div class="row">
 
-        <div class="col-md-5 listing-block">
 
-            @{
-                if (ViewBag.Exposicoes != null)
-                {
-                    <h3>Lista de Exposições a candidatar: </h3>
 
-                    foreach (Exposicao exposicao in ViewBag.Exposicoes)
+        @{
+        if (ViewBag.Exposicoes != null)
+        {
+            <div class="col-md-5 listing-block">
+        
+                <h3>Lista de Exposições a candidatar: </h3>
+                @foreach (Exposicao exposicao in ViewBag.Exposicoes)
+            {
+                <div class="media">
+                    <div class="botao">
+
+
+                        @using (Html.BeginForm())
                     {
-                        <div class="media">
-                            <div class="botao">
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("UserID", (string)ViewBag.UserID)
+                        @Html.Hidden("ExposicaoID", exposicao.ExposicaoID)
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Candidatar" class="btn btn-success btn-sm" />
+                            </div>
+                        </div>
+                }
+                    </div>
 
 
-                                @using (Html.BeginForm())
+                    <div class="media-body">
+                        <div class="titulo">
+                            @exposicao.Nome
+                            <small> Duração: @exposicao.Duracao.TimeOfDay.ToString()</small>
+                        </div>
+
+                        <div class="datas">
+                            <span><i class="glyphicon glyphicon-calendar"></i><b>De: </b>@exposicao.DataInicial.ToShortDateString()</span>
+                            <span><i class="glyphicon glyphicon-calendar"></i><b>Até: </b>@exposicao.DataFinal.ToShortDateString()</span>
+                        </div>
+
+                        <div class="address">
+                            <div class="col-sm-8">
+                                @{
+                                foreach (Tema tema in exposicao.Temas)
                                 {
-                                    @Html.AntiForgeryToken()
-                                    @Html.Hidden("UserID", (string)ViewBag.UserID)
-                                    @Html.Hidden("ExposicaoID", exposicao.ExposicaoID)
+                                    <i>#@tema.Nome</i>
 
-                                    <div class="form-group">
-                                        <div class="col-md-offset-2 col-md-10">
-                                            <input type="submit" value="Candidatar" class="btn btn-success btn-sm" />
-                                        </div>
-                                    </div>
+                            }
+
                                 }
                             </div>
 
-
-                            <div class="media-body">
-                                <div class="titulo">
-                                    @exposicao.Nome
-                                    <small> Duração: @exposicao.Duracao.TimeOfDay.ToString()</small>
-                                </div>
-
-                                <div class="datas">
-                                    <span><i class="glyphicon glyphicon-calendar"></i><b>De: </b>@exposicao.DataInicial.ToShortDateString()</span>
-                                    <span><i class="glyphicon glyphicon-calendar"></i><b>Até: </b>@exposicao.DataFinal.ToShortDateString()</span>
-                                </div>
-
-                                <div class="address">
-                                    <div class="col-sm-8">
-                                        @{
-                                            foreach (Tema tema in exposicao.Temas)
-                                            {
-                                                <i>#@tema.Nome</i>
-                                         
-                                        }
-
-                                        }
-                                    </div>
-
-                                </div>
-
-                            </div>
-
                         </div>
-                    }
 
-                }
-                else
-                {
-                    <h4>Não existem exposições que se possa candidatar</h4>
-                }
-            }
-        </div>
+                    </div>
+
+                </div>
+        }
+
+            </div>
 
 
-        <div class="col-md-7 listing-block">
-            <table><tr><th>&nbsp;</th></tr></table>
-            @{
-                if (Model.Any(u => u.Assigned == 2))
-                {
-                    <h4>Candidaturas à espera de verificação</h4>
+    }
+    else
+    {
+        <h4>Não existem exposições que se possa candidatar</h4>
+}
+        }
+            <div class="col-md-7 listing-block">
+                <table><tr><th>&nbsp;</th></tr></table>
+                @{
                     <table class="table">
                         <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.Exposicao.Nome)
+                                Exposição
                             </th>
-                        </tr>
-
-                        @foreach (var item in Model)
-                        {
-                            if (item.Assigned == 2)
-                            {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Exposicao.Nome)
-                                    </td>
-                                </tr>
-                            }
-                        }
-
-                    </table>
-                }
-                else
-                {
-                    <h4>Não tem candidaturas à espera de verificação</h4>
-                }
-            }
-            <table><tr><th>&nbsp;</th></tr></table>
-            @{
-                if (Model.Where(u => u.Assigned == 3).Any(u => u.InformacaoExtra != null))
-                {
-                    <h4>Candidaturas à espera de verificação depois de enviar dados adicionais</h4>
-                    <table class="table">
-                        <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.Exposicao.Nome)
-                            </th>
-                        </tr>
-
-                        @foreach (var item in Model)
-                        {
-                            if (item.Assigned == 3 && item.InformacaoExtra != null)
-                            {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Exposicao.Nome)
-                                    </td>
-                                </tr>
-                            }
-                        }
-
-                    </table>
-                }
-                else
-                {
-                    <h4>Não tem candidaturas à espera de verificação depois de enviar dados adicionais</h4>
-                }
-            }
-            <table><tr><th>&nbsp;</th></tr></table>
-            @{
-                if (Model.Where(u => u.Assigned == 3).Any(u => u.InformacaoExtra == null))
-                {
-                    <h4>Candidaturas à espera de informação adicional</h4>
-                    <table class="table">
-                        <tr>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Exposicao.Nome)
+                                Estado
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.InformacaoExtra)
                             </th>
                         </tr>
-
                         @foreach (var item in Model)
                         {
-                            if (item.Assigned == 3 && item.InformacaoExtra == null)
-                            {
-                                <tr>
+                            <tr>
+                                @if (item.Assigned != 4)
+                                {
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Exposicao.Nome)
                                     </td>
+                                }
+
+
+                                @if (item.Assigned == 1)
+                                {
                                     <td>
-                                        @using (Html.BeginForm("ExtraInfo", "UserAccountExposicao"))
-                                        {
+                                        <text><i class="glyphicon glyphicon-remove-sign" style="color: red"></i> Rejeitada</text>
+                                    </td>
+                                }
+                                else if (item.Assigned == 2)
+                                {
+                                    <td> <text><i class="glyphicon glyphicon-circle-arrow-right" style="color: green"></i> Submetido</text> </td>
+                                }
+                                else if (item.Assigned == 3 && item.InformacaoExtra == null)
+                                {
+
+                                    using (Html.BeginForm("ExtraInfo", "UserAccountExposicao"))
+                                    {
+                                        <td><i class="glyphicon glyphicon-info-sign" style="color: darkorange"></i> Necessário informação</td>
+                                        <td>
                                             @Html.AntiForgeryToken()
-                                            @Html.Hidden("UserID", (string)ViewBag.UserID)
+                                            @Html.Hidden("UserID", (string) ViewBag.UserID)
                                             @Html.Hidden("ExposicaoID", item.ExposicaoID)
                                             @Html.TextArea("InformacaoExtra")
+                                        </td>
                                         <td>
                                             <div class="form-group">
                                                 <div class="col-md-offset-2 col-md-10">
-                                                    <input type="submit" value="Enviar Informação" class="btn btn-default" />
+                                                    <input type="submit" value="Enviar Informação" class="btn btn-default"/>
                                                 </div>
                                             </div>
                                         </td>
                                     }
-
-                                    </tr>
                                 }
-                            }
-                    </table>
-                }
-                else
-                {
-                    <h4>Não tem candidaturas à espera de informação adicional</h4>
-                }
-            }
-            <table><tr><th>&nbsp;</th></tr></table>
-            @{
-                if (Model.Any(u => u.Assigned == 1))
-                {
-                    <h4>Candidaturas Rejeitadas</h4>
-                    <table class="table">
-                        <tr>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Exposicao.Nome)
-                            </th>
-                        </tr>
-
-                        @foreach (var item in Model)
-                        {
-                            if (item.Assigned == 1)
-                            {
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Exposicao.Nome)
-                                    </td>
-                                </tr>
-                            }
+                                else if (item.Assigned == 3 && item.InformacaoExtra != null)
+                                {
+                                    <td><text><i class="glyphicon glyphicon-info-sign" style="color: green"></i> Submetido com informação adicional</text></td>
+                                    <td>@item.InformacaoExtra</td>
+                                }
+                            </tr>
                         }
                     </table>
-                }
-                else
-                {
-                    <h4>Não tem candidaturas Rejeitadas</h4>
-                }
-            }
-           
 
-            @section Scripts {
-                @Scripts.Render("~/bundles/jqueryval")
-            }
+                }
+            </div>
 
-        </div>
     </div>
 </div>
+    @section Scripts {
+                @Scripts.Render("~/bundles/jqueryval")
+            }
