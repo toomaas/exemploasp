@@ -23,7 +23,7 @@ namespace exemploasp.Controllers
 		MuseuInteractDB museuDB = new MuseuInteractDB();
 		// GET: Exposicao
 
-	    [Authorize]
+		[Authorize(Users = "Administrador")]
 		public ActionResult Index()
         {
 	        using (OurDBContext db = new OurDBContext())
@@ -34,7 +34,7 @@ namespace exemploasp.Controllers
         }
 
 		//Lista para users
-		[Authorize]
+	    [Authorize]
 		public ActionResult Lista()
         {
             int id = Convert.ToInt32(Session["UserAccountID"]);
@@ -44,7 +44,7 @@ namespace exemploasp.Controllers
         }
 
 		// GET: Exposicao/Create
-		[Authorize]
+	    [Authorize(Users = "Administrador")]
 		public ActionResult Create()
         {
             var exposicao = new Exposicao();
@@ -54,7 +54,7 @@ namespace exemploasp.Controllers
         }
 
 		// POST: Exposicao/Create
-	    [Authorize]
+		[Authorize(Users = "Administrador")]
 		[HttpPost]
         public ActionResult Create([Bind(Include = "Nome,DataInicial,DataFinal,Duracao,NrItens")]Exposicao exposicao, string[] selectedTemas)
         {
@@ -81,7 +81,7 @@ namespace exemploasp.Controllers
             return RedirectToAction("Index");
         }
 
-	    [Authorize]
+		[Authorize(Users = "Administrador")]
 		public ActionResult Edit(int? id)
 	    {
 		    Exposicao exposicao = db.Exposicao.Include(t => t.Temas).SingleOrDefault(u => u.ExposicaoID == id);
@@ -93,7 +93,7 @@ namespace exemploasp.Controllers
             return View(exposicao);
 	    }
 
-	    [Authorize]
+		[Authorize(Users = "Administrador")]
 		[HttpPost]
 		public ActionResult Edit(int? id,string Nome, DateTime DataInicial, DateTime DataFinal, DateTime Duracao, int NrItens, string[] selectedTemas)
 	    {
@@ -122,7 +122,7 @@ namespace exemploasp.Controllers
 	    }
 
 
-	    [Authorize]
+	    [Authorize(Users="Administrador")]
 		public ActionResult Delete(int? id)
 	    {
 		    var exposicaoToDelete = db.Exposicao.SingleOrDefault(e => e.ExposicaoID == id);

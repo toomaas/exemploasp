@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using exemploasp.Models;
 using exemploasp.Patterns;
 
@@ -72,7 +74,6 @@ namespace exemploasp.Controllers
         }
 
 		// POST: UserAccountExposicao/Candidatura
-		[Authorize]
 		[HttpPost]
         public ActionResult Candidatura(string UserID, string ExposicaoID)
         {
@@ -105,13 +106,13 @@ namespace exemploasp.Controllers
             return RedirectToAction("Candidatura","UserAccountExposicao");
         }
 
-	    [Authorize]
+	    [Authorize(Users = "Administrador")]
 		public ActionResult GestaoCandidaturas()
         {
             return View(db.UserAccountExposicao.Include(u => u.Exposicao).Include(u => u.UserAccount).ToList());
         }
 
-	    [Authorize]
+	    [Authorize(Users = "Administrador")]
 		[HttpPost]
         public ActionResult GestaoCandidaturas(int UserID, int ExposicaoID, string Evento )
         {

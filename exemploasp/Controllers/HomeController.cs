@@ -13,7 +13,9 @@ namespace exemploasp.Controllers
     public class HomeController : Controller
     {
         OurDBContext db = new OurDBContext();
-	    [Authorize]
+
+
+		[Authorize]
 		public ActionResult Index()
         {
             int id = Int32.Parse(Session["UserAccountID"].ToString());

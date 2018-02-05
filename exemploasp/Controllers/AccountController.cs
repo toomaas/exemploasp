@@ -83,6 +83,7 @@ namespace exemploasp.Controllers
 			return View();
 		}
 
+		[AllowAnonymous]
 		[HttpPost]
 		public ActionResult Login(UserAccount user)
 		{
@@ -123,6 +124,7 @@ namespace exemploasp.Controllers
 		}
 
 		//"int? id" signfica que o parametro id pode ter um valor inteiro ou pode receber um valor null
+		[Authorize]
 		public ActionResult PerfilUser()
 		{
 		    int id = Convert.ToInt32(Session["UserAccountID"]);
@@ -159,7 +161,7 @@ namespace exemploasp.Controllers
             ViewBag.Temas = museuDB.PopulateAssignedTemaData(userAccountToUpdate);
             return View(userAccountToUpdate);
         }
-
+		[Authorize]
 		public ActionResult Edit()//int? id)
 	    {
 	        int id = Convert.ToInt32(Session["UserAccountID"]);
@@ -195,8 +197,8 @@ namespace exemploasp.Controllers
 	        }
 	        return View(museuDB.EditUser(userAccountToUpdate, nome, morada, numTelefone));
 	    }
-
-	    public ActionResult AlterarPassword()//int? id)
+		[Authorize]
+		public ActionResult AlterarPassword()//int? id)
 	    {
 	        int id = Convert.ToInt32(Session["UserAccountID"]);
             var userAccountToUpdate = db.UserAccount.SingleOrDefault(u => u.UserAccountID == id);

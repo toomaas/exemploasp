@@ -15,7 +15,7 @@ namespace exemploasp.Controllers
         private OurDBContext db = new OurDBContext();
 
 		// GET: Tema
-	    [Authorize]
+	    [Authorize(Users = "Administrador")]
 		public ActionResult Index()
         {
             using (OurDBContext db = new OurDBContext())
@@ -26,14 +26,14 @@ namespace exemploasp.Controllers
         }
 
 		// GET: Tema/Create
-	    [Authorize]
+	    [Authorize(Users = "Administrador")]
 		public ActionResult Create()
         {
             return View();
         }
 
 		// POST: Tema/Create
-	    [Authorize]
+	    [Authorize(Users = "Administrador")]
 		[HttpPost]
         public ActionResult Create(Tema tema)
         {
@@ -55,7 +55,7 @@ namespace exemploasp.Controllers
         }
 
 		// GET: Tema/Delete/5
-	    [Authorize]
+	    [Authorize(Users = "Administrador")]
 		public ActionResult Delete(int? id)
           {
               var temaToDelete = db.Tema.SingleOrDefault(t => t.TemaID == id);
