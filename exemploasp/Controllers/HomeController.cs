@@ -22,5 +22,11 @@ namespace exemploasp.Controllers
             List<Marcacao> marcacaos = db.Marcacao.Where(m => m.UserAccountID == id).ToList();
             return View(marcacaos);
         }
+
+
+		public ActionResult Teste()
+		{
+			return View();
+		}
 	}
 }

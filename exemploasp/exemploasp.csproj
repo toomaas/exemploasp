@@ -196,6 +196,7 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\css\calendar.css" />
     <Content Include="Content\css\app.css" />
     <Content Include="Content\css\site.css" />
     <Content Include="Content\css\style.css" />
@@ -270,6 +271,7 @@
     <Content Include="Views\Exposicao\Arquivo.cshtml" />
     <Content Include="Views\UserAccountExposicao\Candidatura.cshtml" />
     <Content Include="Views\Exposicao\Lista.cshtml" />
+    <Content Include="Views\Home\Teste.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
