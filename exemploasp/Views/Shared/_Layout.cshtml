@@ -26,8 +26,8 @@
                     </div>
                     <div class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
-                            <li>@Html.ActionLink("Candidaturas", "Candidatura", "UserAccountExposicao", new { id = Session["UserAccountID"] }, null)</li>
-                            <li>@Html.ActionLink("Exposições", "Lista", "Exposicao", new { id = Session["UserAccountID"] }, null)</li>
+                            <li>@Html.ActionLink("Candidaturas", "Candidatura", "UserAccountExposicao")</li>
+                            <li>@Html.ActionLink("Exposições", "Lista", "Exposicao")</li>
                             @{
                                 if ((string)Session["TipoUtilizador"] == "Administrador")
                                 {
@@ -58,8 +58,8 @@
                                 
                                 <ul class="dropdown-menu">
                                 
-                                    <li>@Html.ActionLink("Conta de Utilizador", "PerfilUser", "Account", new {id=Session["UserAccountId"]},null)</li>
-                                    <li>@Html.ActionLink("Editar Perfil", "Edit", "Account",new { id = Session["UserAccountId"] }, null)</li>
+                                    <li>@Html.ActionLink("Conta de Utilizador", "PerfilUser", "Account")</li>
+                                    <li>@Html.ActionLink("Editar Perfil", "Edit", "Account")</li>
                                     <li>&nbsp;</li>
                                     <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
                                 </ul>

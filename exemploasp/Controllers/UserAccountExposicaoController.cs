@@ -35,7 +35,11 @@ namespace exemploasp.Controllers
                 {
                     if (db.UserAccountExposicao.Where(u => u.UserAccountID == idUser).Where(u => u.Assigned == 1).SingleOrDefault(u => u.ExposicaoID == exp.ExposicaoID) != null || db.UserAccountExposicao.Where(u => u.UserAccountID == idUser).SingleOrDefault(u => u.ExposicaoID == exp.ExposicaoID) == null)
                     {
-                        exposicoesAUsar.Add(exp);
+                        if (exp.DataFinal >= DateTime.Now)
+                        {
+                            exposicoesAUsar.Add(exp);
+                        }
+                        
                     }
  
                 }
@@ -55,15 +59,16 @@ namespace exemploasp.Controllers
         }
 
         //GET: UserAccountExposicao/Candidatura/id
-        public ActionResult Candidatura(int id)
+        public ActionResult Candidatura()//int id)
         {
+            int id = Convert.ToInt32(Session["UserAccountID"]);
             List<Exposicao> listaExposicoes = ExposicoesUtilizador(id);
             if (listaExposicoes.Count != 0)
             {
                 ViewBag.Exposicoes = listaExposicoes;
             }
             ViewBag.UserID = id.ToString();
-            return View(db.UserAccountExposicao.Where(u => u.UserAccountID == id).Include(u => u.Exposicao).Include(u => u.UserAccount).ToList());
+            return View(db.UserAccountExposicao.Where(u => u.UserAccountID == id).Where(u => u.Exposicao.DataFinal >= DateTime.Now).Include(u => u.Exposicao).Include(u => u.UserAccount).ToList());
         }
 
         // POST: UserAccountExposicao/Candidatura
@@ -95,7 +100,7 @@ namespace exemploasp.Controllers
                 db.Entry(userAccountExposicaoToUpdate).State = EntityState.Modified;
                 db.SaveChanges();
             }
-            return RedirectToAction("Candidatura","UserAccountExposicao", new {id = UserID});
+            return RedirectToAction("Candidatura","UserAccountExposicao");
         }
 
 		public ActionResult GestaoCandidaturas()

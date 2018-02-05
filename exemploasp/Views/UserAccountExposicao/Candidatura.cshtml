@@ -105,19 +105,19 @@
                                 @if (item.Assigned == 1)
                                 {
                                     <td>
-                                        <text>Rejeitada</text>
+                                        <text><i class="glyphicon glyphicon-remove-sign" style="color: red"></i> Rejeitada</text>
                                     </td>
                                 }
                                 else if (item.Assigned == 2)
                                 {
-                                    <td> <text>Submetido</text> </td>
+                                    <td> <text><i class="glyphicon glyphicon-circle-arrow-right" style="color: green"></i> Submetido</text> </td>
                                 }
                                 else if (item.Assigned == 3 && item.InformacaoExtra == null)
                                 {
 
                                     using (Html.BeginForm("ExtraInfo", "UserAccountExposicao"))
                                     {
-                                        <td>Necessário informação</td>
+                                        <td><i class="glyphicon glyphicon-info-sign" style="color: darkorange"></i> Necessário informação</td>
                                         <td>
                                             @Html.AntiForgeryToken()
                                             @Html.Hidden("UserID", (string) ViewBag.UserID)
@@ -135,7 +135,7 @@
                                 }
                                 else if (item.Assigned == 3 && item.InformacaoExtra != null)
                                 {
-                                    <td><text>Submetido com informação adicional</text></td>
+                                    <td><text><i class="glyphicon glyphicon-info-sign" style="color: green"></i> Submetido com informação adicional</text></td>
                                     <td>@item.InformacaoExtra</td>
                                 }
                             </tr>

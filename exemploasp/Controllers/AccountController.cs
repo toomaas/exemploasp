@@ -116,11 +116,12 @@ namespace exemploasp.Controllers
 		}
 
 		//"int? id" signfica que o parametro id pode ter um valor inteiro ou pode receber um valor null
-		public ActionResult PerfilUser(int? id)
+		public ActionResult PerfilUser()
 		{
+		    int id = Convert.ToInt32(Session["UserAccountID"]);
 		    UserAccount user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas).Include(u => u.Disponibilidades).Include(a => a.UserAccountExposicaos.Select(e=>e.Exposicao)).SingleOrDefault(u => u.UserAccountID == id);
 			var exp = db.Exposicao.Where(a=>a.UserAccountExposicaos.Any(c=>c.UserAccountID ==id && c.Assigned==4)).ToList();
-			if (id == null || user == null)
+			if (user == null)
 		    {
 		        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 		    }
@@ -130,10 +131,9 @@ namespace exemploasp.Controllers
 		}
 
 		[HttpPost]
-	    public ActionResult PerfilUser(int? id, string[] selectedTemas)
-	    {
-            if(id == null)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+	    public ActionResult PerfilUser(string[] selectedTemas)
+		{
+		    int id = Convert.ToInt32(Session["UserAccountID"]);
 	        var userAccountToUpdate = db.UserAccount.Include(u => u.Temas).Single(u => u.UserAccountID == id);
             if (TryUpdateModel(userAccountToUpdate, "",
 	            new string[] {"Nome,Morada,Idade,Sexo,NumTelefone,Email,Password,ConfirmPassword,TipoUtilizadorID"}))
@@ -152,9 +152,10 @@ namespace exemploasp.Controllers
             return View(userAccountToUpdate);
         }
 
-		public ActionResult Edit(int? id)
+		public ActionResult Edit()//int? id)
 	    {
-	        UserAccount user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas).SingleOrDefault(u => u.UserAccountID == id);
+	        int id = Convert.ToInt32(Session["UserAccountID"]);
+            UserAccount user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas).SingleOrDefault(u => u.UserAccountID == id);
 	        if (id == null || user == null)
 	        {
 	            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -164,10 +165,11 @@ namespace exemploasp.Controllers
 	    }
 
 		[HttpPost]
-	    public ActionResult Edit(int? id, string nome, string morada, int numTelefone)
+	    public ActionResult Edit(string nome, string morada, int numTelefone)
 	    {
-	        if (id == null)
-	            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+	        int id = Convert.ToInt32(Session["UserAccountID"]);
+            //if (id == null)
+	          //  return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 	        var userAccountToUpdate = db.UserAccount.Include(u => u.Temas).SingleOrDefault(u => u.UserAccountID == id);
             if (TryUpdateModel(museuDB.EditUser(userAccountToUpdate, nome, morada, numTelefone), "",
 	            new string[] { "Nome,Morada,Idade,Sexo,NumTelefone,Email,Password,ConfirmPassword,TipoUtilizadorID" }))
@@ -176,7 +178,7 @@ namespace exemploasp.Controllers
 	            {
                     db.Entry(museuDB.EditUser(userAccountToUpdate, nome, morada, numTelefone)).State = EntityState.Modified;
 	                db.SaveChanges();
-	                return RedirectToAction("PerfilUser", new {  id });
+	                return RedirectToAction("PerfilUser");
 	            }
 	            catch (RetryLimitExceededException /* dex */)
 	            {
@@ -186,10 +188,11 @@ namespace exemploasp.Controllers
 	        return View(museuDB.EditUser(userAccountToUpdate, nome, morada, numTelefone));
 	    }
 
-	    public ActionResult AlterarPassword(int? id)
+	    public ActionResult AlterarPassword()//int? id)
 	    {
-	        var userAccountToUpdate = db.UserAccount.SingleOrDefault(u => u.UserAccountID == id);
-            if (id == null || userAccountToUpdate == null)
+	        int id = Convert.ToInt32(Session["UserAccountID"]);
+            var userAccountToUpdate = db.UserAccount.SingleOrDefault(u => u.UserAccountID == id);
+            if (userAccountToUpdate == null)
 	        {
 	            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 	        }
@@ -198,10 +201,11 @@ namespace exemploasp.Controllers
 	    }
 
 		[HttpPost]
-	    public ActionResult AlterarPassword(int?id,string pwAntiga, string Password, string confpw)
+	    public ActionResult AlterarPassword(string pwAntiga, string Password, string confpw)
 	    {
-	        UserAccount user = db.UserAccount.SingleOrDefault(u => u.UserAccountID == id);
-	        if (id == null || user == null)
+	        int id = Convert.ToInt32(Session["UserAccountID"]);
+            UserAccount user = db.UserAccount.SingleOrDefault(u => u.UserAccountID == id);
+	        if (user == null)
 	        {
 	            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 	        }
@@ -212,7 +216,7 @@ namespace exemploasp.Controllers
 	            db.Entry(user).State = EntityState.Modified;
 	            db.SaveChanges();
 	            TempData["Message"] = "Password alterada com sucesso";
-                return RedirectToAction("PerfilUser", new { id });
+                return RedirectToAction("PerfilUser");
             }
 	        ModelState.AddModelError("", "Nao foi possivel atualizar a password");
 	        ViewBag.Temas = museuDB.PopulateAssignedTemaData(user);
