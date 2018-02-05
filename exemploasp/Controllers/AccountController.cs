@@ -12,6 +12,7 @@ using System.Text;
 using System.Web;
 using System.Web.ApplicationServices;
 using System.Web.Mvc;
+using System.Web.Security;
 using exemploasp.InteractDB;
 using exemploasp.Models;
 using exemploasp.Patterns.TemplateMethod;
@@ -24,6 +25,7 @@ namespace exemploasp.Controllers
 	    OurDBContext db = new OurDBContext();
 		MuseuInteractDB museuDB = new MuseuInteractDB();
 
+	    
         // GET: Account		
         public ActionResult Index()
 		{
@@ -225,10 +227,11 @@ namespace exemploasp.Controllers
 
 		public ActionResult Funcao()
 		{
-			UserAccountDropdownList();
+            UserAccountDropdownList();
 			TipoUtilizadorDropdownList();
 			var users = db.UserAccount.Include(t => t.TipoUtilizador);
 			return View(users.ToList());
+
 		}
 
 		[HttpPost]

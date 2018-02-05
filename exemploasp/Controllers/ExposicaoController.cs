@@ -21,9 +21,9 @@ namespace exemploasp.Controllers
     {
         OurDBContext db = new OurDBContext();
 		MuseuInteractDB museuDB = new MuseuInteractDB();
-		// GET: Exposicao
 
-		public ActionResult Index()
+        // GET: Exposicao
+        public ActionResult Index()
         {
 	        using (OurDBContext db = new OurDBContext())
 	        {
