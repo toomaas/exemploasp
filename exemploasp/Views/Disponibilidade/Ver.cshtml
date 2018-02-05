@@ -1,4 +1,5 @@
-﻿@using System.Web.Razor.Generator
+﻿@using System.Globalization
+@using System.Web.Razor.Generator
 @model IEnumerable<exemploasp.Models.Disponibilidade>
 
 @{
@@ -24,6 +25,8 @@
                 @culture.DateTimeFormat.GetDayName(item.DataDisponibilidade.DayOfWeek)
             </td>
         </tr>
+    }
+    @{
     }
 </table>
 <div>

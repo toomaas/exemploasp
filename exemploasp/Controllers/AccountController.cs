@@ -80,7 +80,10 @@ namespace exemploasp.Controllers
 		//Login
 		public ActionResult Login()
 		{
-			return View();
+		    Session.Remove("UserAccountID");
+		    Session.Remove("Username");
+            FormsAuthentication.SignOut();
+            return View();
 		}
 
 		[AllowAnonymous]

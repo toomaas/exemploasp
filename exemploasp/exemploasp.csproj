@@ -196,7 +196,7 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\css\calendar.css" />
+    <Content Include="Content\css\agenda.css" />
     <Content Include="Content\css\app.css" />
     <Content Include="Content\css\site.css" />
     <Content Include="Content\css\style.css" />
