@@ -1,14 +1,15 @@
 #myFooter {
-	background-color: #373a48;
-	color:white;
+	background-color: #0d0d0d;
+	color: white;
+
 }
 
-#myFooter .footer-copyright{
-	background-color: #383737;
-	padding-top:3px;
-	padding-bottom:3px;
-	text-align: center;
-}
+	#myFooter .footer-copyright {
+		background-color: #0d0d0d;
+		padding-top: 3px;
+		padding-bottom: 3px;
+		text-align: center;
+	}
 
 #myFooter .footer-copyright p{
 	margin:10px;
@@ -29,7 +30,7 @@
     margin-top: 30px;
 }
 
-#myFooter a{
+#myFooter li{
 	color:#d2d1d1;
 	text-decoration: none;
 }
@@ -75,6 +76,7 @@
 	color: #00aced;
 }
 
+
 @media screen and (max-width: 767px){
 	#myFooter {
 		text-align: center;
@@ -105,7 +107,8 @@ body{
 	min-height: 200px;
 }
 
-#myFooter{
+#myFooter {
 	flex: 0 0 auto;
-    -webkit-flex: 0 0 auto;
+	-webkit-flex: 0 0 auto;
+
 }

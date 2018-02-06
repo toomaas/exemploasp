@@ -4,76 +4,84 @@
     ViewBag.Title = "Lista de utilizadores";
 }
 
-<h2>Lista de utilizadores</h2>
+<div class="container">
+<div class="row">
 
-<a href="@Url.Action("Register", "Account")" class="btn btn-success btn-md">
-    <span class="glyphicon glyphicon-plus"></span> Registar utilizador
-</a>
-<h4></h4>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Nome)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Morada)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Idade)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Sexo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NumTelefone)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.TipoUtilizadorID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th>
-            Editar
+    <h2>Lista de utilizadores</h2>
 
-        </th>
-    </tr>
-
-    @foreach (var item in Model) {
+    <a href="@Url.Action("Register", "Account")" class="btn btn-success btn-md">
+        <span class="glyphicon glyphicon-plus"></span> Registar utilizador
+    </a>
+    <h4></h4>
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Morada)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Idade)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sexo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumTelefone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TipoUtilizador.Tipo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                <p data-placement="top" data-toggle="tooltip" title="Editar">
-                    <a href=" @Url.Action("Edit", new {id = item.UserAccountID}) " class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"></span></a>
-                </p>
-            </td>
-        </tr>
-    }
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Morada)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Idade)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sexo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumTelefone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TipoUtilizadorID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                Editar
 
-</table>
-<hr/>
-     <div>
-         <a href="@Url.Action("Index", "TipoUtilizador")" class="btn btn-warning btn-md">
-             <span class="glyphicon glyphicon-user"></span> Gestão de tipo de utilizador
-         </a>
-     </div>
+            </th>
+        </tr>
+
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Morada)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Idade)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Sexo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumTelefone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TipoUtilizador.Tipo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    <p data-placement="top" data-toggle="tooltip" title="Editar">
+                        <a href=" @Url.Action("Edit", new {id = item.UserAccountID}) " class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"></span></a>
+                    </p>
+                </td>
+            </tr>
+        }
+
+    </table>
+    <hr/>
+    <div>
+        <a href="@Url.Action("Index", "TipoUtilizador")" class="btn btn-warning btn-md">
+            <span class="glyphicon glyphicon-user"></span> Gestão de tipo de utilizador
+        </a>
+    </div>
+    <br/>
+    
+    
+    </div>
+</div>
