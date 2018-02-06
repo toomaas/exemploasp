@@ -15,6 +15,7 @@ namespace exemploasp.Controllers
     {
         OurDBContext db = new OurDBContext();
 
+        //retorna uma lista com todas as exposições que o utilizador pode se candidatar. é verificado se ainda nao se candidatou e se domina todos os temas da exposição
         private List<Exposicao> ExposicoesUtilizador(int idUser)
         {
             var user = db.UserAccount.Single(u => u.UserAccountID == idUser);
@@ -61,8 +62,9 @@ namespace exemploasp.Controllers
         }
 
         //GET: UserAccountExposicao/Candidatura/id
+        //
         [Authorize]
-        public ActionResult Candidatura()//int id)
+        public ActionResult Candidatura()
         {
             int id = Convert.ToInt32(Session["UserAccountID"]);
             List<Exposicao> listaExposicoes = ExposicoesUtilizador(id);

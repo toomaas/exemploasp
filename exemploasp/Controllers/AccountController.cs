@@ -25,37 +25,18 @@ namespace exemploasp.Controllers
 	    OurDBContext db = new OurDBContext();
 		MuseuInteractDb museuDB = new MuseuInteractDb();
 
-        // GET: Account
-		[Authorize]
+        // GET: Account mostra todos os utilizadores
+		[Authorize(Users = "Administrador")]
         public ActionResult Index()
 		{
 			var user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas);
 			return View(user.ToList());
 		}
-	
-	    private void PopulateAssignedTemaData(UserAccount userAccount)
-	    {
-	        var allTemas = db.Tema;
-	        var userAccountTemas = new HashSet<int>(userAccount.Temas.Select(t => t.TemaID));
-	        var viewModel = new List<AssignedTemaData>();
-	        foreach (var tema in allTemas)
-	        {
-	            viewModel.Add(new AssignedTemaData { TemaID = tema.TemaID, Nome = tema.Nome, Assigned = userAccountTemas.Contains(tema.TemaID) });
-	        }
-	        ViewBag.Temas = viewModel;
-	    }
-		[AllowAnonymous]
-		public ActionResult Register()
-		{
-			Session.Remove("UserAccountID");
-			Session.Remove("Username");
-			return View();
-		}
 
+        //valida e salva na base de dados um novo utilizador, se válido. utiliza o template method
 		[HttpPost]
 		public ActionResult Register(UserAccount account)
 		{
-		    //var firstWord = s.Substring(0, s.IndexOf(" "));
             ObjetoMuseu oUserAccount = new ObjUserAccount(account);
             if (ModelState.IsValid)
 			{
@@ -77,7 +58,7 @@ namespace exemploasp.Controllers
 		}
 
 		[AllowAnonymous]
-		//Login
+		//pagina de login
 		public ActionResult Login()
 		{
 		    Session.Remove("UserAccountID");
@@ -86,6 +67,7 @@ namespace exemploasp.Controllers
             return View();
 		}
 
+        //verifica se existe um utilizador na bd com o nome e password e faz a sua autenticação
 		[AllowAnonymous]
 		[HttpPost]
 		public ActionResult Login(UserAccount user)
@@ -93,20 +75,18 @@ namespace exemploasp.Controllers
 			var encrypt = museuDB.Encrypt(user.Password);
             var usr = db.UserAccount.FirstOrDefault(u => u.Email == user.Email && u.Password == encrypt);
 			if (usr != null)
-			{
-			
+			{			
 				FormsAuthentication.SetAuthCookie(usr.TipoUtilizador.Tipo, true);
-
 				Session["UserAccountID"] = usr.UserAccountID.ToString();
-				Session["Username"] = usr.Nome.ToString();
-				Session["TipoUtilizador"] = usr.TipoUtilizador.Tipo.ToString();
-				
+				Session["Username"] = usr.Nome;
+				Session["TipoUtilizador"] = usr.TipoUtilizador.Tipo;				
 				return RedirectToAction("Index","Home");
 			}
 			ModelState.AddModelError("", "username ou a pass estao mal");
 			return View();
 		}
 
+        //redireciona para dentro do site ou para o login, se está autenticado ou não, respetivamente
 		public ActionResult LoggedIn()
 		{
 			if (Session["UserAccountID"] != null)
@@ -116,6 +96,7 @@ namespace exemploasp.Controllers
 			return RedirectToAction("Login");
 		}
 
+        //remove a autenticação do utilizador
 		public ActionResult Logout()
 		{
 			if (Session["UserAccountID"] != null)
@@ -127,6 +108,7 @@ namespace exemploasp.Controllers
 		}
 
 		//"int? id" signfica que o parametro id pode ter um valor inteiro ou pode receber um valor null
+        //envia para a view os dados do utilizador e temas dominados pelo utilizador e também as exposições aceites
 		[Authorize]
 		public ActionResult PerfilUser()
 		{
@@ -142,6 +124,7 @@ namespace exemploasp.Controllers
             return View(user);
 		}
 
+        //atualiza os temas dominados pelo utilizador
 		[Authorize]
 		[HttpPost]
 	    public ActionResult PerfilUser(string[] selectedTemas)
@@ -164,25 +147,27 @@ namespace exemploasp.Controllers
             ViewBag.Temas = museuDB.PopulateAssignedTemaData(userAccountToUpdate);
             return View(userAccountToUpdate);
         }
+
+        //manda para a view os dados do utilizador, para que possam ser editados
 		[Authorize]
-		public ActionResult Edit()//int? id)
+		public ActionResult Edit()
 	    {
 	        int id = Convert.ToInt32(Session["UserAccountID"]);
             UserAccount user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas).SingleOrDefault(u => u.UserAccountID == id);
-	        if (id == null || user == null)
+	        if (user == null)
 	        {
 	            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 	        }
 	        ViewBag.Temas = museuDB.PopulateAssignedTemaData(user);
             return View(user);   
 	    }
+
+        //atualiza os dados do utilizador
 		[Authorize]
 		[HttpPost]
 	    public ActionResult Edit(string nome, string morada, int numTelefone)
 	    {
 	        int id = Convert.ToInt32(Session["UserAccountID"]);
-            //if (id == null)
-	          //  return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 	        var userAccountToUpdate = db.UserAccount.Include(u => u.Temas).SingleOrDefault(u => u.UserAccountID == id);
             if (TryUpdateModel(museuDB.EditUser(userAccountToUpdate, nome, morada, numTelefone), "",
 	            new string[] { "Nome,Morada,Idade,Sexo,NumTelefone,Email,Password,ConfirmPassword,TipoUtilizadorID" }))
@@ -200,8 +185,10 @@ namespace exemploasp.Controllers
 	        }
 	        return View(museuDB.EditUser(userAccountToUpdate, nome, morada, numTelefone));
 	    }
+
+        //envia para a view dados do utilizador que quer alterar a password
 		[Authorize]
-		public ActionResult AlterarPassword()//int? id)
+		public ActionResult AlterarPassword()
 	    {
 	        int id = Convert.ToInt32(Session["UserAccountID"]);
             var userAccountToUpdate = db.UserAccount.SingleOrDefault(u => u.UserAccountID == id);
@@ -212,6 +199,8 @@ namespace exemploasp.Controllers
 	        ViewBag.Temas = museuDB.PopulateAssignedTemaData(userAccountToUpdate);
             return View(userAccountToUpdate);
 	    }
+
+        //se as verificações de password estão válidas então altera para a nova password
 		[Authorize]
 		[HttpPost]
 	    public ActionResult AlterarPassword(string pwAntiga, string Password, string confpw)
@@ -235,16 +224,18 @@ namespace exemploasp.Controllers
 	        ViewBag.Temas = museuDB.PopulateAssignedTemaData(user);
             return View(user);
 	    }
-		[Authorize]
+
+        //envia para a view dados para criar duas seleclists para selecionar o utilizador e o seu novo tipo de utilizador
+		[Authorize(Users = "Administrador")]
 		public ActionResult Funcao()
 		{
             UserAccountDropdownList();
 			TipoUtilizadorDropdownList();
 			var users = db.UserAccount.Include(t => t.TipoUtilizador);
 			return View(users.ToList());
-
 		}
 
+        //altera o tipo de utilizador do utilizador selecionado
 		[Authorize]
 		[HttpPost]
 		public ActionResult Funcao(int userAccountID, int tipoUtilizadorID)
@@ -262,20 +253,22 @@ namespace exemploasp.Controllers
             ModelState.AddModelError("", "Erro ao alterar função");
             return View(users.ToList());
         }
-		[Authorize]
+
+        //retorna a conta com o novo tipo de utilizador
 		public UserAccount userAccountUpdate(int userAccountID, int tipoUtilizadorID)
 		{
 			var userAccountToUpdate = db.UserAccount.Single(u => u.UserAccountID == userAccountID);
 			userAccountToUpdate.TipoUtilizadorID = tipoUtilizadorID;
-
 			return userAccountToUpdate;
 		}
 
+        //envia para a view todos os utilizadores
 		private void UserAccountDropdownList(object userAccount = null)
 		{
 			ViewBag.UserAccountID = new SelectList(museuDB.Utilizadores(), "UserAccountID", "Nome", userAccount);
 		}
 
+        //envia para a view todos os tipos de utilizadores
 		private void TipoUtilizadorDropdownList(object tipoUtilizador = null)
 		{
 			ViewBag.TipoUtilizadorID = new SelectList(museuDB.TiposUtilizadores(), "TipoUtilizadorID", "Tipo", tipoUtilizador);

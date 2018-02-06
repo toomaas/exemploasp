@@ -12,29 +12,30 @@ namespace exemploasp.Controllers
 {
     public class DisponibilidadeController : Controller
     {
-        OurDBContext db = new OurDBContext();
+        readonly OurDBContext _db = new OurDBContext();
 
 		//GET: Disponibilidade/Definir/id?exp=exp
+        //envia para a view os dados necessários para apresentar as datas que o utilizador pode escolher para fazer visitas guiadas para a exposição selecionada
 		[Authorize]
 		public ActionResult Definir(int id, int exp)
         {
-            UserAccountExposicao userAccountExposicao = db.UserAccountExposicao.Find(id, exp);  
+            UserAccountExposicao userAccountExposicao = _db.UserAccountExposicao.Find(id, exp);  
             if (userAccountExposicao != null)
             {
-                Exposicao exposicao = db.Exposicao.Find(userAccountExposicao.ExposicaoID);
+                Exposicao exposicao = _db.Exposicao.Find(userAccountExposicao.ExposicaoID);
                 ViewBag.Datas = PopulateDatasExposicao(exposicao);
                 return View(userAccountExposicao);
             }
-            else
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            
         }
+
+        //guarda na em bd.disponibilidade todos os dias escolhidos pelo utilizador para fazer visitas para a exposi~ção selecionada
 	    [Authorize]
 		[HttpPost]
         public ActionResult Definir(int id, int exp, DateTime[] selectedDatas)
         {
-            UserAccountExposicao userAccountExposicao = db.UserAccountExposicao.Find(id, exp);
+            UserAccountExposicao userAccountExposicao = _db.UserAccountExposicao.Find(id, exp);
             if (userAccountExposicao != null)
             {
                 if (selectedDatas != null)
@@ -47,9 +48,9 @@ namespace exemploasp.Controllers
                             ExposicaoID = exp,
                             UserAccountID = id
                         };
-                        db.Disponibilidade.Add(disponibilidade);
+                        _db.Disponibilidade.Add(disponibilidade);
                     }
-                    db.SaveChanges();
+                    _db.SaveChanges();
                     return RedirectToAction("PerfilUser", "Account", new {id = id});
                 }
                 return RedirectToAction("Definir", new { id = id, exp=exp });
@@ -58,11 +59,12 @@ namespace exemploasp.Controllers
         }
 
 		//GET: Disponibilidade/Definir/id?exp=exp
+        //envia para a view os dados necessários para apresentar os dias escolhidos pelo utilizador para fazer visitas guiadas para a exposição selecionada
 		[Authorize]
 		public ActionResult Ver(int id, int exp)
         {
-            Exposicao exposicao = db.Exposicao.Find(exp);
-            List<Disponibilidade> disponibilidades = db.Disponibilidade.Where(d => d.ExposicaoID == exp).Where(d => d.UserAccountID == id).Include(d => d.Exposicao).Include(d => d.UserAccount).ToList();
+            Exposicao exposicao = _db.Exposicao.Find(exp);
+            List<Disponibilidade> disponibilidades = _db.Disponibilidade.Where(d => d.ExposicaoID == exp).Where(d => d.UserAccountID == id).Include(d => d.Exposicao).Include(d => d.UserAccount).ToList();
             if (exposicao != null)
             {
                 ViewBag.Exposicao = exposicao;
@@ -71,6 +73,7 @@ namespace exemploasp.Controllers
             return View(disponibilidades);
         }
 
+        //retorna uma lista com todos os dias de uma exposição
         public List<DataExposicao> PopulateDatasExposicao(Exposicao exposicao)
         {
             var viewModel = new List<DataExposicao>();
@@ -82,12 +85,11 @@ namespace exemploasp.Controllers
             return viewModel;
         }
 
+        //retorna um enumeravel com todos os dias entre duas datas
         public IEnumerable<DateTime> CadaDia(DateTime desde, DateTime ate)
         {
             for (var dia = desde.Date; dia.Date <= ate.Date; dia = dia.AddDays(1))
                 yield return dia;
-        }
-
-        
+        }       
     }
 }

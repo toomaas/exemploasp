@@ -141,7 +141,7 @@ namespace exemploasp.InteractDB
 			return hash;
 		}
 
-        //
+        //envia um viewmodel com os temas selecionados. Serve para temas de exposições ou temas de utilizadores
 	    public List<AssignedTemaData> PopulateAssignedTemaData(ITabelas tabela)
 	    {
 	        var allTemas = _db.Tema;

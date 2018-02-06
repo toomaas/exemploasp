@@ -9,10 +9,8 @@ namespace exemploasp.Models
 {
 	public class UserAccount : ITabelas
 	{
-
 		[Key]
 		public int UserAccountID { get; set; }
-
 
 		[Required(ErrorMessage = "O nome é óbrigatório")]
 		[RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Nome inválido. Utilize apenas letras.")]
@@ -25,7 +23,6 @@ namespace exemploasp.Models
 		[Required(ErrorMessage = "A idade é óbrigatória")]
 		[DataType(DataType.Date)]
 		public DateTime Idade { get; set; }
-        //public int Idade { get; set; }
 
 		[Required(ErrorMessage = "O Sexo é óbrigatório")]
 		public string Sexo { get; set; }
@@ -55,7 +52,6 @@ namespace exemploasp.Models
 			TipoUtilizadorID = 1;
 		}
 
-
 		public virtual TipoUtilizador TipoUtilizador { get; set; }
 
 		public virtual ICollection <Tema> Temas { get; set; }
@@ -65,7 +61,5 @@ namespace exemploasp.Models
 		public virtual ICollection<UserAccountExposicao> UserAccountExposicaos { get; set; }
 
 		public virtual ICollection<Marcacao> Marcacaos { get; set; }
-
-
 	}
 }

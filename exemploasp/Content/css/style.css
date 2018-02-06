@@ -151,7 +151,7 @@ body {
 	 text-decoration: none;
  }
 
-/*  footer {
+  footer {
     background-color: black;
     height: 260px;
     position: absolute;
@@ -204,4 +204,4 @@ footer iframe {
 
         .sm li a img {
             width: 32px;
-        }*/
+        }
