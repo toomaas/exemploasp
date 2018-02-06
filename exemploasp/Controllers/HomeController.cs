@@ -21,6 +21,6 @@ namespace exemploasp.Controllers
             int id = Int32.Parse(Session["UserAccountID"].ToString());
             List<Marcacao> marcacaos = _db.Marcacao.Where(m => m.UserAccountID == id).ToList();
             return View(marcacaos);
-        }}
-	}
+        }       
+    }
 }
