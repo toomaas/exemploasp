@@ -5,7 +5,8 @@
     ViewBag.Title = "PerfilUser";
 }
 
-<h2>Perfil de Utilizador</h2>
+
+
 <h5 style="color: red">@ViewBag.Message</h5>
 <p>
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -16,12 +17,14 @@
 
 <div class="container">
     <div class="row">
+        
+ 
         <div class="col-sm-6">
 
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">@Html.DisplayFor(model => model.Nome) </h3>
-                    
+
                 </div>
                 <div class="panel-body">
                     <div class="row">
@@ -55,61 +58,61 @@
                                 <tr>
                                     <th>@Html.DisplayNameFor(model => model.TipoUtilizador.Tipo):</th>
                                     <td>@Html.DisplayFor(model => model.TipoUtilizador.Tipo)</td>
-                                </tr>  
+                                </tr>
                                 <tr>
                                     <th>Temas:</th>
                                     <td>
                                         @using (Html.BeginForm())
-                                {
-                                    @Html.AntiForgeryToken()
+                                        {
+                                            @Html.AntiForgeryToken()
 
-                                    <div class="form-horizontal">
-                                        @Html.ValidationSummary(true, "", new {@class = "text-danger"})
-                                        @Html.HiddenFor(model => model.UserAccountID)
+                                            <div class="form-horizontal">
+                                                @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+                                                @Html.HiddenFor(model => model.UserAccountID)
 
-                                        <div class="form-group">
-                       
-                                            <table>
-                                                <tr>
-                                                @{
-                                                    int cnt = 0;
-                                                    List<exemploasp.ViewModels.AssignedTemaData> temas = ViewBag.Temas;
+                                                <div class="form-group">
 
-                                                    foreach (var tema in temas)
-                                                    {
-                                                        if (cnt++ % 3 == 0)
-                                                        {
-                                                            @:</tr><tr>
+                                                    <table>
+                                                        <tr>
+                                                        @{
+                                                            int cnt = 0;
+                                                            List<exemploasp.ViewModels.AssignedTemaData> temas = ViewBag.Temas;
+
+                                                            foreach (var tema in temas)
+                                                            {
+                                                                if (cnt++ % 3 == 0)
+                                                                {
+                                                                    @:</tr><tr>
+                                                                }
+                                                                @:<td>
+                                                                <input type="checkbox" name="selectedTemas" value="@tema.TemaID"
+                                                                       @(Html.Raw(tema.Assigned ? "checked=\"checked\"" : ""))/>
+                                                                @tema.TemaID
+                                                                @: @tema.Nome
+                                                                @:</td>
+                                                            }
+                                                            @:</tr>
                                                         }
-                                                        @:<td>
-                                                        <input type="checkbox" name="selectedTemas" value="@tema.TemaID"
-                                                               @(Html.Raw(tema.Assigned ? "checked=\"checked\"" : ""))/>
-                                                        @tema.TemaID
-                                                        @: @tema.Nome
-                                                        @:</td>
-                                                    }
-                                                    @:</tr>
-                                                }
 
-                                            </table>
-                       
-                                        </div>
-                                        <div class="form-group">
-                       
-                                            <input type="submit" value="Dominar temas" class="btn btn-primary"/>
-                    
-                                        </div>
+                                                    </table>
 
-                                    </div>
-                                 }
+                                                </div>
+                                                <div class="form-group">
+
+                                                    <input type="submit" value="Dominar temas" class="btn btn-primary"/>
+
+                                                </div>
+
+                                            </div>
+                                        }
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
                             <div class=" col-md-12 col-lg-12 ">
-                            
-                                
-                            
+
+
+
                             </div>
                         </div>
                     </div>
@@ -119,65 +122,65 @@
         </div>
 
         <div class="col-sm-6">
-            
+
             <h3> As Minhas Exposições</h3>
-           
+
             <div class="table-responsive">
                 <table id="mytable" class="table table-bordred table-striped">
                     @{
 
-                    <tr>
-                        <th>Exposição</th>
-                        <th>Data Inicial</th>
-                        <th>Data Final</th>
-                        <th>Duração</th>
-                        <th>Disponibilidade</th>
-                    </tr>
+                        <tr>
+                            <th>Exposição</th>
+                            <th>Data Inicial</th>
+                            <th>Data Final</th>
+                            <th>Duração</th>
+                            <th>Disponibilidade</th>
+                        </tr>
 
 
                         foreach (var data in Model.UserAccountExposicaos)
                         {
-                        if (data.Assigned == 4)
-                        {
-                            <tr>
-                                <td>@Html.DisplayFor(modelData => data.Exposicao.Nome)</td>
-                                <td>@Html.DisplayFor(modelData => data.Exposicao.DataInicial)</td>
-                                <td>@Html.DisplayFor(modelData => data.Exposicao.DataFinal)</td>
-                                <td>@Html.DisplayFor(modelData => data.Exposicao.Duracao)</td>
-                                @{
-                                    if (Model.Disponibilidades.All(m => m.ExposicaoID != data.ExposicaoID))
-                                    {
-                                        <td style="text-align: center">
-                                            <p data-placement="top" data-toggle="tooltip" title="Definir disponibilidade">
-                                                <a href=" @Url.Action("Definir","Disponibilidade", new {id = data.UserAccountID, exp = data.ExposicaoID}) " class="btn btn-info btn-sm">
-                                                    <span class="	glyphicon glyphicon-calendar"></span>
-                                                </a>
-                                            </p>
-                                        </td>
+                            if (data.Assigned == 4)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelData => data.Exposicao.Nome)</td>
+                                    <td>@Html.DisplayFor(modelData => data.Exposicao.DataInicial)</td>
+                                    <td>@Html.DisplayFor(modelData => data.Exposicao.DataFinal)</td>
+                                    <td>@Html.DisplayFor(modelData => data.Exposicao.Duracao)</td>
+                                    @{
+                                        if (Model.Disponibilidades.All(m => m.ExposicaoID != data.ExposicaoID))
+                                        {
+                                            <td style="text-align: center">
+                                                <p data-placement="top" data-toggle="tooltip" title="Definir disponibilidade">
+                                                    <a href=" @Url.Action("Definir", "Disponibilidade", new {id = data.UserAccountID, exp = data.ExposicaoID}) " class="btn btn-info btn-sm">
+                                                        <span class="	glyphicon glyphicon-calendar"></span>
+                                                    </a>
+                                                </p>
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td style="text-align: center">
+                                                <p data-placement="top" data-toggle="tooltip" title="Ver disponibilidade">
+                                                    <a href=" @Url.Action("Ver", "Disponibilidade", new {id = data.UserAccountID, exp = data.ExposicaoID}) " class="btn btn-warning btn-sm">
+                                                        <span class="	glyphicon glyphicon-th-list"></span>
+                                                    </a>
+                                                </p>
+                                            </td>
+                                        }
                                     }
-                                    else
-                                    {
-                                        <td style="text-align: center">
-                                            <p data-placement="top" data-toggle="tooltip" title="Ver disponibilidade">
-                                                <a href=" @Url.Action("Ver","Disponibilidade", new {id = data.UserAccountID, exp = data.ExposicaoID}) " class="btn btn-warning btn-sm">
-                                                    <span class="	glyphicon glyphicon-th-list"></span>
-                                                </a>
-                                            </p>
-                                        </td>
-                                    }
-                                }
-                                
-                            </tr>
+
+                                </tr>
+
+                            }
 
                         }
-
                     }
-                }
                 </table>
-                
+
             </div>
-         
-               
+
+
         </div>
     </div>
 </div>

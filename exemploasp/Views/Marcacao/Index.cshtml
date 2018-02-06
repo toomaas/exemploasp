@@ -99,10 +99,11 @@
             if (Model.Count(m => m.Data < DateTime.Now) != 0)
             {
                 <h4><a href="@Url.Action("Arquivo", "Marcacao")">Arquivo</a></h4>
+
             }
 
         }
-
+     
         <script type="text/javaScript">
             function say_hi(idt) {
                 var hi = confirm("Quer mesmo apagar esta marcação (" + idt + ")?");

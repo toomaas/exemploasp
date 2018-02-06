@@ -272,7 +272,6 @@
     <Content Include="Views\Exposicao\Arquivo.cshtml" />
     <Content Include="Views\UserAccountExposicao\Candidatura.cshtml" />
     <Content Include="Views\Exposicao\Lista.cshtml" />
-    <Content Include="Views\Home\Teste.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

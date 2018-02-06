@@ -3,47 +3,54 @@
 @{
     ViewBag.Title = "Candidaturas Aceites";
 }
+<div class="container">
+    <div class="row">
 
-@{
+        @{
     if (Model.Any())
     {
-        <h2>Candidaturas Aceites</h2>
-        <table class="table">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Exposicao.Nome)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.UserAccount.Nome)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.InformacaoExtra)
-                </th>
-                <th></th>
-            </tr>
 
-            @foreach (var item in Model)
-            {
+
+            <h2>Candidaturas Aceites</h2>
+            <table class="table">
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Exposicao.Nome)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UserAccount.Nome)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.InformacaoExtra)
-                    </td>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Exposicao.Nome)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UserAccount.Nome)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.InformacaoExtra)
+                    </th>
+                    <th></th>
                 </tr>
-            }
 
-        </table>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Exposicao.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserAccount.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.InformacaoExtra)
+                        </td>
+                    </tr>
+                }
+
+            </table>
+            }
+            else
+            {
+            <h1>Não existem candidaturas aceites.</h1>
+            }
     }
-    else
-    {
-        <h1>Não existem candidaturas aceites.</h1>
-    }
-}
-<div>
-    @Html.ActionLink("Voltar atrás", "GestaoCandidaturas")
+            <div>
+                @Html.ActionLink("Voltar atrás", "GestaoCandidaturas")
+            </div>
+               <br/>
+        </div>
 </div>
