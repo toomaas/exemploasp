@@ -11,13 +11,13 @@ namespace exemploasp.Patterns
 	public class State : IState
 	{
 		protected DecisorCandidatura decisorCandidatura { get; }
-		
 
 		protected State(DecisorCandidatura adecisorCandidatura)
 		{
 			decisorCandidatura = adecisorCandidatura;
 		}
 
+        //metodos a implementar
 		public virtual void Submeter(UserAccountExposicao userAccountExposicao)
 		{ }
 

@@ -7,6 +7,7 @@ namespace exemploasp.Patterns
 {
 	public class CandidaturaAceite : State
 	{
+        //neste estado nada acontece. FIM
 		public CandidaturaAceite(DecisorCandidatura adecisorCandidatura) : base(adecisorCandidatura)
 		{
 		}

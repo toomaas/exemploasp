@@ -15,6 +15,7 @@ namespace exemploasp.Patterns
 		public AguardarEnvio (DecisorCandidatura aDecisorCandidatura) : base(aDecisorCandidatura)
 		{ }
 
+        //passa do estado de aguardaenvio/rejeitada para submetido
 		public override void Submeter(UserAccountExposicao userAccountExposicao)
 		{
 			db.SubmeterDb(userAccountExposicao);	

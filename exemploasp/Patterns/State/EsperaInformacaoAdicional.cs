@@ -15,14 +15,15 @@ namespace exemploasp.Patterns
 		public EsperaInformacaoAdicional(DecisorCandidatura adecisorCandidatura) : base(adecisorCandidatura)
 		{ }
 
+        //passa do estado de ""ter informação e estar à espera de resposta" para o estado "rejeitado"
 		public override void Rejeitar(UserAccountExposicao userAccountExposicao)
 		{
-
 			stateDb.RejeitarDb(userAccountExposicao);
 			decisorCandidatura.EstadoActual = decisorCandidatura.AguardarEnvio;
 		}
 
-		public override void Aceitar(UserAccountExposicao userAccountExposicao)
+	    //passa do estado de ""ter informação e estar à espera de resposta" para o estado "aceite"
+        public override void Aceitar(UserAccountExposicao userAccountExposicao)
 		{
 			stateDb.AceitarDb(userAccountExposicao);
 			decisorCandidatura.EstadoActual = decisorCandidatura.CandidaturaAceite;

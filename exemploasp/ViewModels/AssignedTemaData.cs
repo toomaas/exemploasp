@@ -5,6 +5,7 @@ using System.Web;
 
 namespace exemploasp.ViewModels
 {
+    //viewmodel assignedtemadata que leva dados dos modelos desde o controller para a view
     public class AssignedTemaData
     {
         public int TemaID { get; set; }

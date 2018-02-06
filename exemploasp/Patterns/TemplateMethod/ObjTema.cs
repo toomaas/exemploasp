@@ -10,9 +10,11 @@ namespace exemploasp.Patterns.TemplateMethod
     {
         private Tema tema { get; set; }
         
+        //verifica se o tema é válido
         public override string Validar()
         {
             OurDBContext db = new OurDBContext();
+            //verifica se já existe algum tema
             if (!db.Tema.Any(n => n.Nome == tema.Nome))
             {
                 return null;
@@ -20,6 +22,7 @@ namespace exemploasp.Patterns.TemplateMethod
             return tema.Nome + " já existente";
         }
 
+        //guarda na bd o novo tema
         public override void SalvarBd(OurDBContext db)
         {
             db.Tema.Add(tema);

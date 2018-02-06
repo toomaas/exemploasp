@@ -10,7 +10,8 @@ namespace exemploasp.Patterns
 	public class DecisorCandidatura
 	{
 		OurDBContext db = new OurDBContext();
-
+        
+        //estados
 		public IState AguardarEnvio { get; }
 		public IState CandidaturaAceite { get; }
 		public IState EsperaInformacaoAdicional { get; }
@@ -22,6 +23,7 @@ namespace exemploasp.Patterns
 		public DecisorCandidatura(UserAccountExposicao userAccountExposicao)
 		{
 		    this.userAccountExposicao = userAccountExposicao;
+            //procura o estado atual da exposicao selecionada para o utilizador que fez o pedido
 		    EstadoActual = BuscarEstadoAtual();
 
 			AguardarEnvio = new AguardarEnvio(this);
@@ -32,9 +34,8 @@ namespace exemploasp.Patterns
 
 		public IState BuscarEstadoAtual()
 		{
-			var obterEstado = db.UserAccountExposicao
-				.Where(u => u.UserAccountID == userAccountExposicao.UserAccountID).SingleOrDefault(u => u.ExposicaoID == userAccountExposicao.ExposicaoID);
-
+            //tenta encontrar uma candidatura de acordo com a exposicao e utilizadores selecionados
+			var obterEstado = db.UserAccountExposicao.Where(u => u.UserAccountID == userAccountExposicao.UserAccountID).SingleOrDefault(u => u.ExposicaoID == userAccountExposicao.ExposicaoID);
 			if (obterEstado != null)
 			{
 
@@ -59,14 +60,13 @@ namespace exemploasp.Patterns
 					}
 				}
 			}
+            //como não existe nenhuma candidatura passada na bd da exposição e utilizadores selecionados, é passado para o estado aguarda envido que trata de criar uma nova candidatura
 			return AguardarEnvio;
 		}
 
 		public void Submeter()
 		{
-
-			EstadoActual.Submeter(userAccountExposicao);
-			
+			EstadoActual.Submeter(userAccountExposicao);			
 		}
 
 		public void Rejeitar()
@@ -83,7 +83,5 @@ namespace exemploasp.Patterns
 		{
 			EstadoActual.Aceitar(userAccountExposicao);
 		}
-
-
 	}
 }

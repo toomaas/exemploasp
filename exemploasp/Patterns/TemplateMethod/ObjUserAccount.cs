@@ -11,6 +11,7 @@ namespace exemploasp.Patterns.TemplateMethod
     {
         private UserAccount userAccount { get; set; }
 
+        //verifica se o registo do utilizador é válido
         public override string Validar()
         {
             OurDBContext db = new OurDBContext();
@@ -27,6 +28,7 @@ namespace exemploasp.Patterns.TemplateMethod
             return "Idade não permitida.";
         }
 
+        //adiciona na bd o novo utilizador
         public override void SalvarBd(OurDBContext db)
         {
             MuseuInteractDb museuDB = new MuseuInteractDb();

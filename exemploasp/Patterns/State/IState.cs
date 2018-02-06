@@ -7,6 +7,7 @@ using exemploasp.Models;
 
 namespace exemploasp.Patterns
 {
+    //IState
 	public interface IState
 	{
 		void Submeter(UserAccountExposicao userAccountExposicao);
