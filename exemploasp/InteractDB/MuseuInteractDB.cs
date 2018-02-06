@@ -11,38 +11,44 @@ using exemploasp.ViewModels;
 
 namespace exemploasp.InteractDB
 {
-	public class MuseuInteractDB
+	public class MuseuInteractDb
 	{
+	    private readonly OurDBContext _db = new OurDBContext();
 
-		OurDBContext db = new OurDBContext();
-
-		//CONTROLADOR MARCACAO
-
-		//query para obter os utilizadores
-		public IOrderedQueryable<UserAccount> Utilizadores()
+		//query para obter os utilizadores e a sua função
+		public List<UserAccount> Utilizadores()
 		{
-			return from u in db.UserAccount
+			var ulist =  from u in _db.UserAccount
 				orderby u.Nome
 				select u;
-		}
 
+		    List<UserAccount> newList = new List<UserAccount>();
+		    foreach (var member in ulist)
+		        newList.Add(new UserAccount
+		        {
+		            UserAccountID = member.UserAccountID,
+		            Nome = member.Nome + " : " + member.TipoUtilizador.Tipo
+		        });
 
-	    //query para obter os utilizadores
-	    public IOrderedQueryable<UserAccount> UtilizadoresMarcacao(int exposicaoID, int marcacaoID)
+		    return newList;
+        }
+
+	    //query para obter os utilizadores que têm disponibilidade para realizar uma certa masrcação
+	    public IOrderedQueryable<UserAccount> UtilizadoresMarcacao(int exposicaoId, int marcacaoId)
 	    {
-	        Marcacao marcacao = db.Marcacao.Find(marcacaoID);
-	        return from u in db.UserAccount
-                where u.UserAccountExposicaos.FirstOrDefault(m => m.ExposicaoID == exposicaoID).Assigned == 4
-                   where u.Disponibilidades.Where(d => d.ExposicaoID == exposicaoID).Any(d => d.DataDisponibilidade == marcacao.Data)
+	        Marcacao marcacao = _db.Marcacao.Find(marcacaoId);
+	        return from u in _db.UserAccount
+                where u.UserAccountExposicaos.FirstOrDefault(m => m.ExposicaoID == exposicaoId).Assigned == 4
+                   where u.Disponibilidades.Where(d => d.ExposicaoID == exposicaoId).Any(d => d.DataDisponibilidade == marcacao.Data)
 	            orderby u.Nome
 	            select u;
 	    }
 
-        // Lista de exposiçoes
+        // Lista de exposiçoes não expiradas
         public List<Exposicao> ListaExposicao()
 		{
-
-			var exposicoesQuery = from e in db.Exposicao
+			var exposicoesQuery = from e in _db.Exposicao
+                where e.DataFinal > DateTime.Now
 				orderby e.Nome
 				select e;
 
@@ -57,9 +63,8 @@ namespace exemploasp.InteractDB
 			return newList;
 		}
 
-
-		public bool DataExposicaoMarcacao(DateTime dataMarcacao, DateTime dataInicialExposicao,
-			DateTime dataFinalExposicao)
+        //verifica se a data escolhida para a marcação ocorre enquanto que a exposição está ativa
+		public bool DataExposicaoMarcacao(DateTime dataMarcacao, DateTime dataInicialExposicao, DateTime dataFinalExposicao)
 		{
 			if (dataMarcacao >= dataInicialExposicao && dataMarcacao <= dataFinalExposicao)
 			{
@@ -68,19 +73,16 @@ namespace exemploasp.InteractDB
 			return false;
 		}
 
-
-		//CONTROLADOR Account
-
-		//
+        //retorna os tipos de utilizador existentes
 		public IOrderedQueryable<TipoUtilizador> TiposUtilizadores()
 		{
-			return from u in db.TipoUtilizador
+			return from u in _db.TipoUtilizador
 				where u.TipoUtilizadorID != 1
 				orderby u.Tipo
 				select u;
 		}
 
-
+        //método que remove ou adiciona temas a uma exposição ou a um utilizador. ITabelas pode ser um utilizador ou uma exposição
 	    public void UpdateTemas(string[] selectedTemas, ITabelas tabela, OurDBContext dbContext)
 	    {
 	        var userAccountTemas = new HashSet<int>(tabela.Temas.Select(t => t.TemaID));
@@ -98,15 +100,14 @@ namespace exemploasp.InteractDB
 	            dbContext.SaveChanges();
                 return;
 	        }
-	        var selectedTemasHS = new HashSet<string>(selectedTemas);     
+	        var selectedTemasHs = new HashSet<string>(selectedTemas);     
 	        foreach (var tema in dbContext.Tema)
 	        {
-	            if (selectedTemasHS.Contains(tema.TemaID.ToString()))
+	            if (selectedTemasHs.Contains(tema.TemaID.ToString()))
 	            {
 	                if (!userAccountTemas.Contains(tema.TemaID))
 	                {
 	                    tabela.Temas.Add(tema);
-
 	                }
 	            }
 	            else
@@ -116,42 +117,34 @@ namespace exemploasp.InteractDB
 	                    tabela.Temas.Remove(tema);
 	                }
 	            }
-
 	        }
 	        dbContext.Entry(tabela).State = EntityState.Modified;
 	        dbContext.SaveChanges();
         }
 
-
+        //altera os dados do utilizador
         public UserAccount EditUser(UserAccount userAccountToUpdate, string nome, string morada, int numTelefone)
 		{
-			//var userAccountToUpdate = db.UserAccount.Include(u => u.Temas).Single(u => u.UserAccountID == id);
 			userAccountToUpdate.Morada = morada;
 			userAccountToUpdate.NumTelefone = numTelefone;
 			userAccountToUpdate.Nome = nome;
-
-
 			return userAccountToUpdate;
 		}
 
+        //função que encripta a password.
 		public string Encrypt(string passwordPlainText)
 		{
 			if (passwordPlainText == null) throw new ArgumentNullException("passwordPlainText");
-
-			//encrypt data
 			byte[] data = System.Text.Encoding.ASCII.GetBytes(passwordPlainText);
 			data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
 			String hash = System.Text.Encoding.ASCII.GetString(data);
-			//var data = Encoding.Unicode.GetBytes(passwordPlainText);
-			//byte[] encrypted = ProtectedData.Protect(data, null, Scope);
-
-			return hash; //System.Text.Encoding.UTF8.GetString(encrypted);//Convert.ToBase64String(encrypted);
-
+			return hash;
 		}
 
+        //
 	    public List<AssignedTemaData> PopulateAssignedTemaData(ITabelas tabela)
 	    {
-	        var allTemas = db.Tema;
+	        var allTemas = _db.Tema;
 	        var tabelaTemas = new HashSet<int>(tabela.Temas.Select(t => t.TemaID));
 	        var viewModel = new List<AssignedTemaData>();
 	        foreach (var tema in allTemas)

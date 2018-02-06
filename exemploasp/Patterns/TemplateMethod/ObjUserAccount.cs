@@ -29,7 +29,7 @@ namespace exemploasp.Patterns.TemplateMethod
 
         public override void SalvarBd(OurDBContext db)
         {
-            MuseuInteractDB museuDB = new MuseuInteractDB();
+            MuseuInteractDb museuDB = new MuseuInteractDb();
             var encrypt = museuDB.Encrypt(userAccount.Password);
             userAccount.Password = encrypt;
             encrypt = museuDB.Encrypt(userAccount.ConfirmPassword);

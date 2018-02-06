@@ -65,7 +65,7 @@ namespace exemploasp.Controllers
             List<Disponibilidade> disponibilidades = db.Disponibilidade.Where(d => d.ExposicaoID == exp).Where(d => d.UserAccountID == id).Include(d => d.Exposicao).Include(d => d.UserAccount).ToList();
             if (exposicao != null)
             {
-                ViewBag.NomeExposicao = exposicao.Nome;
+                ViewBag.Exposicao = exposicao;
                 
             }
             return View(disponibilidades);

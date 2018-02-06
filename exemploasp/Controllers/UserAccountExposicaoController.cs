@@ -61,6 +61,7 @@ namespace exemploasp.Controllers
         }
 
         //GET: UserAccountExposicao/Candidatura/id
+        [Authorize]
         public ActionResult Candidatura()//int id)
         {
             int id = Convert.ToInt32(Session["UserAccountID"]);

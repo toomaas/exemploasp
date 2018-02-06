@@ -11,6 +11,7 @@ namespace exemploasp.Patterns.TemplateMethod
         public abstract string Validar();
 
         public abstract void SalvarBd(OurDBContext db);
+
     }
 
 }

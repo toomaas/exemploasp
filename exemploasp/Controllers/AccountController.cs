@@ -23,7 +23,7 @@ namespace exemploasp.Controllers
 	public class AccountController : Controller
 	{
 	    OurDBContext db = new OurDBContext();
-		MuseuInteractDB museuDB = new MuseuInteractDB();
+		MuseuInteractDb museuDB = new MuseuInteractDb();
 
         // GET: Account
 		[Authorize]
