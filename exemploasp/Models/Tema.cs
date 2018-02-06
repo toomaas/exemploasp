@@ -9,10 +9,8 @@ namespace exemploasp.Models
 {
 	public class Tema
 	{
-
 		[Key]
 		public int TemaID { get; set; }
-
 
 		[Required(ErrorMessage = "O nome é óbrigatório")]
 		public string Nome { get; set; }
@@ -24,7 +22,5 @@ namespace exemploasp.Models
 		public virtual ICollection<Exposicao> Exposicoes { get; set; }
 
 		public virtual ICollection<UserAccount> UserAccounts { get; set; }
-
-
 	}
 }

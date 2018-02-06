@@ -62,7 +62,7 @@ namespace exemploasp.Controllers
         }
 
         //GET: UserAccountExposicao/Candidatura/id
-        //
+        //manda para a view uma lista de exposições que o utilizador pode candidatar-se e ainda todas as candidaturas ativas (aquelas que ainda não foram aceites ou que já terminaram)
         [Authorize]
         public ActionResult Candidatura()
         {
@@ -77,6 +77,7 @@ namespace exemploasp.Controllers
         }
 
 		// POST: UserAccountExposicao/Candidatura
+        //submete a candidatura escolhida pelo user. o padrão state trata do resto
 		[HttpPost]
         public ActionResult Candidatura(string UserID, string ExposicaoID)
         {
@@ -93,6 +94,7 @@ namespace exemploasp.Controllers
         }
 
 		// POST: UserAccountExposicao/Index/..extrainfo
+        //adiciona informação extra à candidatura que necessitava de informação extra.
 		[Authorize]
 		[HttpPost]
 		public ActionResult ExtraInfo(string UserID, int ExposicaoID, string InformacaoExtra)
@@ -109,12 +111,14 @@ namespace exemploasp.Controllers
             return RedirectToAction("Candidatura","UserAccountExposicao");
         }
 
+        //envia para a view todas as candidaturas
 	    [Authorize(Users = "Administrador")]
 		public ActionResult GestaoCandidaturas()
         {
             return View(db.UserAccountExposicao.Include(u => u.Exposicao).Include(u => u.UserAccount).ToList());
         }
 
+        //envia para o padrao state o evento a efetuar na exposição selecionada(aceitar, rejeitar ou pedir mais info)
 	    [Authorize(Users = "Administrador")]
 		[HttpPost]
         public ActionResult GestaoCandidaturas(int UserID, int ExposicaoID, string Evento )
@@ -140,12 +144,14 @@ namespace exemploasp.Controllers
             return RedirectToAction("GestaoCandidaturas", "UserAccountExposicao");
         }
 
+        //manda para a view todas as candidaturas aceites
 	    [Authorize]
 		public ActionResult CandidaturasAceites()
         {
             return View(db.UserAccountExposicao.Where(ue => ue.Assigned == 4).Include(u => u.UserAccount).Include(e => e.Exposicao).ToList());
         }
 
+        //manda para a view todas as candidaturas rejeitadas. o utilizador pode voltar a fazer um pedido de candidatura para uma que já tenha sido rejeitada
 	    [Authorize]
 		public ActionResult CandidaturasRejeitadas()
         {

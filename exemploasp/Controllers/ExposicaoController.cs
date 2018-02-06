@@ -21,19 +21,17 @@ namespace exemploasp.Controllers
     {
         OurDBContext db = new OurDBContext();
 		MuseuInteractDb museuDB = new MuseuInteractDb();
-		// GET: Exposicao
 
-		[Authorize(Users = "Administrador")]
+        // GET: Exposicao
+        //Lista de todas as exposições
+        [Authorize(Users = "Administrador")]
 		public ActionResult Index()
         {
-	        using (OurDBContext db = new OurDBContext())
-	        {
 	            if (TempData["Message"] != null) ViewBag.Message = TempData["Message"].ToString();
                 return View(db.Exposicao.ToList());
-	        }
         }
 
-		//Lista para users
+		//Lista exposições de acordo com o user
 	    [Authorize]
 		public ActionResult Lista()
         {
@@ -54,6 +52,7 @@ namespace exemploasp.Controllers
         }
 
 		// POST: Exposicao/Create
+        //verifica se os dados introduzidos são válidos e de seguida salva em bd.exposicao a nova exposição.É utilizado o template method
 		[Authorize(Users = "Administrador")]
 		[HttpPost]
         public ActionResult Create([Bind(Include = "Nome,DataInicial,DataFinal,Duracao,NrItens")]Exposicao exposicao, string[] selectedTemas)
@@ -81,6 +80,7 @@ namespace exemploasp.Controllers
             return RedirectToAction("Index");
         }
 
+        //manda para a view os dados necessários para editar a exposição selecionada
 		[Authorize(Users = "Administrador")]
 		public ActionResult Edit(int? id)
 	    {
@@ -93,6 +93,7 @@ namespace exemploasp.Controllers
             return View(exposicao);
 	    }
 
+        //atualiza os dados da exposição selecionada
 		[Authorize(Users = "Administrador")]
 		[HttpPost]
 		public ActionResult Edit(int? id,string Nome, DateTime DataInicial, DateTime DataFinal, DateTime Duracao, int NrItens, string[] selectedTemas)
@@ -121,7 +122,7 @@ namespace exemploasp.Controllers
             return View(exposicaoUpdate);
 	    }
 
-
+        //remove a exposição selecionada
 	    [Authorize(Users="Administrador")]
 		public ActionResult Delete(int? id)
 	    {
@@ -139,6 +140,7 @@ namespace exemploasp.Controllers
 		    return RedirectToAction("Index");
 		}
 
+        //envia para a view todas as exposições que já terminaram
         public ActionResult Arquivo()
         {
             List<Exposicao> exposicoes = db.Exposicao.Where(e => e.DataFinal < DateTime.Today).ToList();

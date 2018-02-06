@@ -29,6 +29,5 @@ namespace exemploasp.Models
 	    {
 		    modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 	    }
-
     }
 }

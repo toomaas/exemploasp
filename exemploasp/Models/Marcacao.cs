@@ -12,7 +12,6 @@ namespace exemploasp.Models
         [Key]
         public int MarcacaoID { get; set; }
 
-
 	    [Display(Name = "Nome do requerente")]
 		[Required(ErrorMessage = "O nome do requerente é obrigatório")]
         public string NomeRequerente { get; set; }
@@ -51,11 +50,5 @@ namespace exemploasp.Models
         public virtual Exposicao Exposicao { get; set; }
 
         public virtual UserAccount UserAccount { get; set; }
-
-
-
-
-
-
     }
 }

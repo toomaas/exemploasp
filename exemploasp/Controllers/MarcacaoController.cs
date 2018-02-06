@@ -21,6 +21,7 @@ namespace exemploasp.Controllers
         MuseuInteractDb dbMuseu = new MuseuInteractDb();
 
 		// GET: Marcacao
+        //apresenta todas as marcações
 		[Authorize(Users = "Administrador")]
 		public ActionResult Index()
         {
@@ -29,6 +30,7 @@ namespace exemploasp.Controllers
         }
 
 		// GET: Marcacao/Create
+        //manda para a view os dados das exposições existentes para que seja possivel ligar a marcação a uma exposição
 	    [Authorize(Users = "Administrador")]
 		public ActionResult Create()
         {
@@ -36,11 +38,7 @@ namespace exemploasp.Controllers
             return View();
         }
 
-		private void UserAccountDropdownList(object userAccount = null)
-		{
-			ViewBag.UserAccountID = new SelectList(dbMuseu.Utilizadores(), "UserAccountID", "Nome", userAccount);
-		}
-
+        //envia para a viewbag todos os utilizadores que são capazes de fazer a exposição da marcação e que têem disponibilidade para tal
         private void UserAccountDropdownListMarcacao(int exposicaoID,int marcacaoID, UserAccount userAccount = null)
         {
             IOrderedQueryable<UserAccount> users = dbMuseu.UtilizadoresMarcacao(exposicaoID, marcacaoID);
@@ -72,6 +70,7 @@ namespace exemploasp.Controllers
                         marcacaoSobreposto.Add(verificacao);
                     }
                 }
+                //se existe um false, isto significa que já há uma marcação sobreposta para aquele dia e hora, logo este utilizador não pode fazer a visita guiada da marcação em questão
                 if (!marcacaoSobreposto.Contains(false))
                 {
                     usersAUsar.Add(user);
@@ -88,12 +87,14 @@ namespace exemploasp.Controllers
             ViewBag.UserAccountID = new SelectList(usersAUsar, "UserAccountID", "Nome", userAccount.UserAccountID);
         }
 
+        //envia para a view todas as exposições
         private void ExposicaoDropdownList(object Exposicao = null)
 		{
             ViewBag.ExposicaoID = new SelectList(dbMuseu.ListaExposicao(), "ExposicaoID", "Nome", Exposicao);
 	    }
 
 		// POST: Marcacao/Create
+        //valida se os dados introduzidos são válidos e de seguida guarda em bd.marcacao a nova marcação (ainda sem guia escolhido)
 	    [Authorize(Users = "Administrador")]
 		[HttpPost]
         public ActionResult Create([Bind(Include = "MarcacaoID, NomeRequerente, Idade, NumTelefoneRequerente, Data,HoraDeInicio,HoraDeFim,NumPessoas,ExposicaoID, UserAccountID")]Marcacao marcacao)
@@ -111,7 +112,6 @@ namespace exemploasp.Controllers
                     var exp = db.Exposicao.FirstOrDefault(e => e.ExposicaoID == marcacao.ExposicaoID);
                     if(exp != null)
                         ModelState.AddModelError("Data", oMarcacao.Validar());
-                    UserAccountDropdownList();
                     ExposicaoDropdownList();
                     return View();
                 }
@@ -121,6 +121,7 @@ namespace exemploasp.Controllers
         }
 
 		// GET: Marcacao/Edit/5
+        //manda para a view os dados necessários para poder editar a marcação escolhida
 	    [Authorize(Users = "Administrador")]
 		public ActionResult Edit(int id)
         {
@@ -132,6 +133,7 @@ namespace exemploasp.Controllers
         }
 
 		// POST: Marcacao/Edit/5
+        //valida os dados editados e atualiza na base de dados a marcação selecionada
 	    [Authorize(Users = "Administrador")]
 		[HttpPost]
         public ActionResult Edit([Bind(Include="MarcacaoID,NomeRequerente,Idade,NumTelefoneRequerente,Data,HoraDeInicio,HoraDeFim,NumPessoas,ExposicaoID,UserAccountID")] Marcacao marcacao)
@@ -154,6 +156,7 @@ namespace exemploasp.Controllers
         }
 
 		// GET: Marcacao/Delete/5
+        //remove de bd.marcacao a marcação escolhida
 	    [Authorize(Users = "Administrador")]
 		public ActionResult Delete(int id)
         {
@@ -171,6 +174,7 @@ namespace exemploasp.Controllers
             return RedirectToAction("Index");
         }
 
+        //manda para a view todas as marcações que já terminaram
         public ActionResult Arquivo()
         {
             List<Marcacao> marcacaos = db.Marcacao.Where(m => m.Data < DateTime.Now).ToList();

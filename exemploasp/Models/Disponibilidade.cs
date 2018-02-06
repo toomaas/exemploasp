@@ -9,7 +9,6 @@ namespace exemploasp.Models
 {
     public class Disponibilidade
     {
-
         [Key]
         public int DisponibilidadeID { get; set; }
 

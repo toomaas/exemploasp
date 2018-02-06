@@ -12,14 +12,10 @@ namespace exemploasp.Models
 		[Key]
 		public int TipoUtilizadorID { get; set; }
 
-
 		[Display(Name = "Tipo de utilizador")]
 		[Required(ErrorMessage = "Introduza um tipo de utilizador")]
 		public string Tipo { get; set; }
 
-
 		public virtual ICollection<UserAccount> UserAccounts { get; set; }
-
-
 	}
 }
