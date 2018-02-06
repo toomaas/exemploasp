@@ -20,7 +20,7 @@ namespace exemploasp.Controllers
     public class ExposicaoController : Controller
     {
         OurDBContext db = new OurDBContext();
-		MuseuInteractDB museuDB = new MuseuInteractDB();
+		MuseuInteractDb museuDB = new MuseuInteractDb();
 		// GET: Exposicao
 
 		[Authorize(Users = "Administrador")]
@@ -40,7 +40,7 @@ namespace exemploasp.Controllers
             int id = Convert.ToInt32(Session["UserAccountID"]);
             UserAccount userAccount = db.UserAccount.Where(u => u.UserAccountID == id).Include(u => u.Temas).Include(u => u.UserAccountExposicaos).SingleOrDefault();
             ViewBag.UserAccount = userAccount;
-            return View(db.Exposicao.Include(e => e.Temas).ToList());
+            return View(db.Exposicao.Include(e => e.Temas).OrderByDescending(e => e.ExposicaoID).ToList());
         }
 
 		// GET: Exposicao/Create

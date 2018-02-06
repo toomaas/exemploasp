@@ -18,7 +18,7 @@ namespace exemploasp.Controllers
     public class MarcacaoController : Controller
     {
 		OurDBContext db = new OurDBContext();
-        MuseuInteractDB dbMuseu = new MuseuInteractDB();
+        MuseuInteractDb dbMuseu = new MuseuInteractDb();
 
 		// GET: Marcacao
 		[Authorize(Users = "Administrador")]
@@ -43,13 +43,49 @@ namespace exemploasp.Controllers
 
         private void UserAccountDropdownListMarcacao(int exposicaoID,int marcacaoID, UserAccount userAccount = null)
         {
+            IOrderedQueryable<UserAccount> users = dbMuseu.UtilizadoresMarcacao(exposicaoID, marcacaoID);
+            List<UserAccount> usersAUsar = new List<UserAccount>();
+            Marcacao marcacaoAtual = db.Marcacao.Find(marcacaoID);
+            foreach (var user in users)
+            {
+                List<Marcacao> marcacoesUser = db.Marcacao.Where(m => m.UserAccountID == user.UserAccountID).ToList();
+                List<bool> marcacaoSobreposto = new List<bool>();
+                foreach (var marcacao in marcacoesUser)
+                {
+                    if (marcacao.MarcacaoID != marcacaoAtual.MarcacaoID)
+                    {
+                        DateTime dataInicioMarcacaoAtual = new DateTime(marcacaoAtual.Data.Year,
+                            marcacaoAtual.Data.Month, marcacaoAtual.Data.Day, marcacaoAtual.HoraDeInicio.Hour,
+                            marcacaoAtual.HoraDeInicio.Minute, marcacaoAtual.HoraDeInicio.Second);
+                        DateTime dataFinalMarcacaoAtual = new DateTime(marcacaoAtual.Data.Year,
+                            marcacaoAtual.Data.Month, marcacaoAtual.Data.Day, marcacaoAtual.HoraDeFim.Hour,
+                            marcacaoAtual.HoraDeFim.Minute, marcacaoAtual.HoraDeFim.Second);
+
+                        DateTime dataInicioMarcacao = new DateTime(marcacao.Data.Year, marcacao.Data.Month,
+                            marcacao.Data.Day, marcacao.HoraDeInicio.Hour, marcacao.HoraDeInicio.Minute,
+                            marcacao.HoraDeInicio.Second);
+                        DateTime dataFinalMarcacao = new DateTime(marcacao.Data.Year, marcacao.Data.Month,
+                            marcacao.Data.Day, marcacao.HoraDeFim.Hour, marcacao.HoraDeFim.Minute,
+                            marcacao.HoraDeFim.Second);
+
+                        bool verificacao = dataInicioMarcacao < dataInicioMarcacaoAtual && dataFinalMarcacao < dataInicioMarcacaoAtual || dataInicioMarcacao > dataFinalMarcacaoAtual && dataFinalMarcacao > dataFinalMarcacaoAtual;
+                        marcacaoSobreposto.Add(verificacao);
+                    }
+                }
+                if (!marcacaoSobreposto.Contains(false))
+                {
+                    usersAUsar.Add(user);
+                }
+            }
             if (userAccount == null)
             {
                 UserAccount userAccountEmpty = new UserAccount();
-                ViewBag.UserAccountID = new SelectList(dbMuseu.UtilizadoresMarcacao(exposicaoID, marcacaoID), "UserAccountID", "Nome", userAccountEmpty.UserAccountID);
+                
+
+                ViewBag.UserAccountID = new SelectList(usersAUsar, "UserAccountID", "Nome", userAccountEmpty.UserAccountID);
                 return;
             }
-            ViewBag.UserAccountID = new SelectList(dbMuseu.UtilizadoresMarcacao(exposicaoID, marcacaoID), "UserAccountID", "Nome", userAccount.UserAccountID);
+            ViewBag.UserAccountID = new SelectList(usersAUsar, "UserAccountID", "Nome", userAccount.UserAccountID);
         }
 
         private void ExposicaoDropdownList(object Exposicao = null)

@@ -16,7 +16,7 @@ namespace exemploasp.Patterns.TemplateMethod
         public override string Validar()
         {
             OurDBContext db = new OurDBContext();
-            MuseuInteractDB dbMuseu = new MuseuInteractDB();
+            MuseuInteractDb dbMuseu = new MuseuInteractDb();
             if (exposicao != null)
             {
                 if (dbMuseu.DataExposicaoMarcacao(marcacao.Data, exposicao.DataInicial, exposicao.DataFinal))

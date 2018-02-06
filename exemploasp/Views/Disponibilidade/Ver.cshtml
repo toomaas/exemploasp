@@ -1,34 +1,89 @@
 ﻿@using System.Globalization
 @using System.Web.Razor.Generator
+@using exemploasp.Models
 @model IEnumerable<exemploasp.Models.Disponibilidade>
 
 @{
-    ViewBag.Title = "Ver";
+    ViewBag.Title = "Ver disponibilidade";
 }
 @{
     var culture = new System.Globalization.CultureInfo("pt-PT");
 }
-<h2>Disponibilidade da exposicao: @ViewBag.NomeExposicao</h2>
+<h2>Disponibilidade da exposicao: @ViewBag.Exposicao.Nome</h2>
 
-<table class="table">
+
+<link rel="stylesheet" href="/Content/css/calendar.css" media="screen" type="text/css" />
+<table class="table table-bordered table-style table-responsive">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.DataDisponibilidade)
-        </th>
-        <th></th>
+        <th colspan="7">&#160</th>
     </tr>
-
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataDisponibilidade)
-                @culture.DateTimeFormat.GetDayName(item.DataDisponibilidade.DayOfWeek)
-            </td>
-        </tr>
-    }
+<tr>
+    <th>Domingo</th>
+    <th>Segunda</th>
+    <th>Terça</th>
+    <th>Quarta</th>
+    <th>Quinta</th>
+    <th>Sexta</th>
+    <th>Sábado</th>
+</tr>
+<tr>
     @{
-    }
-</table>
+        Exposicao exposicao = ViewBag.Exposicao;
+        int cnt = 0;
+        DateTime data = exposicao.DataInicial;
+        switch (exposicao.DataInicial.DayOfWeek)
+        {
+            case DayOfWeek.Monday:
+                <td>&#160</td>
+                cnt = 1;
+                break;
+            case DayOfWeek.Tuesday:
+                <td>&#160</td><td>&#160</td>
+                cnt = 2;
+                break;
+            case DayOfWeek.Wednesday:
+                <td>&#160</td><td>&#160</td><td>&#160</td>
+                cnt = 3;
+                break;
+            case DayOfWeek.Thursday:
+                <td>&#160</td><td>&#160</td><td>&#160</td><td>&#160</td>
+                cnt = 4;
+                break;
+            case DayOfWeek.Friday:
+                <td>&#160</td><td>&#160</td><td>&#160</td><td>&#160</td><td>&#160</td>
+                cnt = 5;
+                break;
+            case DayOfWeek.Saturday:
+                <td></td><td></td><td></td><td></td><td></td><td></td>
+                cnt = 6;
+                break;
+        }
+        int dia = 0;
+        
+        int i = exposicao.DataInicial.Day;
+        do
+        {
+            if (cnt++ % 7 == 0)
+            {
+                @:</tr><tr>
+
+            }
+
+            if (Model.Any(d => d.DataDisponibilidade == data.AddDays(dia)))
+            {
+                <td class="selected">@data.AddDays(dia).ToShortDateString()</td>  
+            }
+            else
+            {
+                <td>@data.AddDays(dia).ToShortDateString()</td>
+            }
+            dia++;
+            i++;
+        } while (data.AddDays(dia) <= exposicao.DataFinal);
+
+}
+    </tr>
+    </table>
 <div>
     @Html.ActionLink("Voltar atrás", "PerfilUser", "Account")
 </div>
