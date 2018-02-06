@@ -4,23 +4,27 @@
     ViewBag.Title = "Gestão de Utilizadores";
 }
 
-<h2>Gestão de Utilizadores</h2>
-<hr />
 <link rel="stylesheet" href="/Content/css/app.css" media="screen" type="text/css" />
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
 
-
 <div class="container">
+    <div class="row">
+    <h2>Gestão de Utilizadores</h2>
+    <hr />
+
+
+
+
     <a href="@Url.Action("Create", "TipoUtilizador")" class="btn btn-success btn-md">
         <span class="glyphicon glyphicon-plus"></span> Adicionar Função
     </a>
     <a href="@Url.Action("Funcao", "Account")" class="btn btn-warning btn-md">
         <span class="glyphicon glyphicon-edit"></span> Alterar Função de um utilizador
-    </a> 
+    </a>
     <h4 class="message">@ViewBag.Message</h4>
 
-    <div class="row">
+ 
 
         @{
             if (Model.Any())
@@ -43,14 +47,14 @@
 
                             @foreach (var item in Model)
                             {
-                            <tr>
-                                <td>@Html.DisplayFor(modelItem => item.Tipo)</td>
-                                <td>
-                                    <p data-placement="top" data-toggle="tooltip" title="Eliminar">
-                                        <a onclick="say_hi(@item.TipoUtilizadorID)" href="#" class="btn btn-danger btn-sm"> <span class="glyphicon glyphicon-trash"> </span> </a>
-                                    </p>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.Tipo)</td>
+                                    <td>
+                                        <p data-placement="top" data-toggle="tooltip" title="Eliminar">
+                                            <a onclick="say_hi(@item.TipoUtilizadorID)" href="#" class="btn btn-danger btn-sm"> <span class="glyphicon glyphicon-trash"> </span> </a>
+                                        </p>
+                                    </td>
+                                </tr>
 
                             }
                         </table>
@@ -64,7 +68,7 @@
                 <h4><a href="@Url.Action("Create", "TipoUtilizador")">Adicionar Novo Tipo de Utilizador</a></h4>
             }
         }
-        
+
         <script type="text/javaScript">
             function say_hi(idt) {
                 var hi = confirm("Quer mesmo apagar este tema?");
@@ -75,5 +79,5 @@
         </script>
     </div>
 
-    
+
 </div>

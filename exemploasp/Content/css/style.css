@@ -150,8 +150,8 @@ body {
 	 color: #0b0;
 	 text-decoration: none;
  }
-
-  footer {
+ /*
+ footer {
     background-color: black;
     height: 260px;
     position: absolute;
@@ -202,6 +202,7 @@ footer iframe {
         float: left;
     }
 
-        .sm li a img {
+ .sm li a img {
             width: 32px;
         }
+ */

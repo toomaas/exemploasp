@@ -4,48 +4,54 @@
     ViewBag.Title = "Arquivo";
 }
 
-<h2>Arquivo</h2>
+<div class="container">
+<div class="row">
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Nome)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DataInicial)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DataFinal)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Duracao)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NrItens)
-        </th>
-        <th></th>
-    </tr>
+    <h2>Arquivo</h2>
 
-    @foreach (var item in Model)
-    {
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataInicial)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DataFinal)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Duracao)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NrItens)
-            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataInicial)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataFinal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Duracao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NrItens)
+            </th>
+            <th></th>
         </tr>
-    }
 
-</table>
-<h4><a href="@Url.Action("Index", "Exposicao")">Voltar a exposições</a></h4>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataInicial)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DataFinal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Duracao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NrItens)
+                </td>
+            </tr>
+        }
+
+    </table>
+    <h4><a href="@Url.Action("Index", "Exposicao")">Voltar a exposições</a></h4>
+
+    </div>
+</div>
