@@ -15,7 +15,7 @@
         {
             <div class="col-md-5 listing-block">
         
-                <h3>Lista de Exposições a candidatar: </h3>
+                <h3>Lista de Exposições que pode candidatar-se: </h3>
                 @foreach (Exposicao exposicao in ViewBag.Exposicoes)
             {
                 <div class="media">
@@ -76,74 +76,81 @@
         <h4>Não existem exposições que se possa candidatar</h4>
 }
         }
-            <div class="col-md-7 listing-block">
-                <table><tr><th>&nbsp;</th></tr></table>
-                @{
-                    <table class="table">
-                        <tr>
-                            <th>
-                                Exposição
-                            </th>
-                            <th>
-                                Estado
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.InformacaoExtra)
-                            </th>
-                        </tr>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                @if (item.Assigned != 4)
-                                {
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Exposicao.Nome)
-                                    </td>
-                                }
+        @{
+            if (Model.Any())
+            {
+        <div class="col-md-7 listing-block">
+            <table><tr><th>&nbsp;</th></tr></table>
+            @{
+                <table class="table">
+                    <tr>
+                        <th>
+                            Exposição
+                        </th>
+                        <th>
+                            Estado
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.InformacaoExtra)
+                        </th>
+                    </tr>
+                    @foreach (var item in Model)
+            {
+                <tr>
 
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Exposicao.Nome)
+                    </td>
 
-                                @if (item.Assigned == 1)
-                                {
-                                    <td>
-                                        <text><i class="glyphicon glyphicon-remove-sign" style="color: red"></i> Rejeitada</text>
-                                    </td>
-                                }
-                                else if (item.Assigned == 2)
-                                {
-                                    <td> <text><i class="glyphicon glyphicon-circle-arrow-right" style="color: green"></i> Submetido</text> </td>
-                                }
-                                else if (item.Assigned == 3 && item.InformacaoExtra == null)
-                                {
+                    @if (item.Assigned == 1)
+            {
+                <td>
+                    <text><i class="glyphicon glyphicon-remove-sign" style="color: red"></i> Rejeitada</text>
+                </td>
+    }
+    else if (item.Assigned == 2)
+    {
+        <td> <text><i class="glyphicon glyphicon-circle-arrow-right" style="color: green"></i> Submetido</text> </td>
+}
+else if (item.Assigned == 3 && item.InformacaoExtra == null)
+{
 
-                                    using (Html.BeginForm("ExtraInfo", "UserAccountExposicao"))
-                                    {
-                                        <td><i class="glyphicon glyphicon-info-sign" style="color: darkorange"></i> Necessário informação</td>
-                                        <td>
-                                            @Html.AntiForgeryToken()
-                                            @Html.Hidden("UserID", (string) ViewBag.UserID)
-                                            @Html.Hidden("ExposicaoID", item.ExposicaoID)
-                                            @Html.TextArea("InformacaoExtra")
-                                        </td>
-                                        <td>
-                                            <div class="form-group">
-                                                <div class="col-md-offset-2 col-md-10">
-                                                    <input type="submit" value="Enviar Informação" class="btn btn-default"/>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    }
-                                }
-                                else if (item.Assigned == 3 && item.InformacaoExtra != null)
-                                {
-                                    <td><text><i class="glyphicon glyphicon-info-sign" style="color: green"></i> Submetido com informação adicional</text></td>
-                                    <td>@item.InformacaoExtra</td>
-                                }
-                            </tr>
-                        }
-                    </table>
-
-                }
+using (Html.BeginForm("ExtraInfo", "UserAccountExposicao"))
+{
+        <td><i class="glyphicon glyphicon-info-sign" style="color: darkorange"></i> Necessário informação</td>
+        <td>
+            @Html.AntiForgeryToken()
+            @Html.Hidden("UserID", (string)ViewBag.UserID)
+            @Html.Hidden("ExposicaoID", item.ExposicaoID)
+            @Html.TextArea("InformacaoExtra")
+        </td>
+        <td>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Enviar Informação" class="btn btn-default" />
+                </div>
             </div>
+        </td>
+}
+}
+else if (item.Assigned == 3 && item.InformacaoExtra != null)
+{
+        <td><text><i class="glyphicon glyphicon-info-sign" style="color: green"></i> Submetido com informação adicional</text></td>
+        <td>@item.InformacaoExtra</td>
+}
+                </tr>
+    }
+                </table>
+
+            }
+        </div>  
+            }
+            else
+            {
+                <h4>Não há candidaturas pendentes</h4>
+            }
+        }
+            
 
     </div>
 </div>

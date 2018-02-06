@@ -71,7 +71,7 @@ namespace exemploasp.Controllers
                 ViewBag.Exposicoes = listaExposicoes;
             }
             ViewBag.UserID = id.ToString();
-            return View(db.UserAccountExposicao.Where(u => u.UserAccountID == id).Where(u => u.Exposicao.DataFinal >= DateTime.Now).Include(u => u.Exposicao).Include(u => u.UserAccount).ToList());
+            return View(db.UserAccountExposicao.Where(u => u.UserAccountID == id).Where(u => u.Exposicao.DataFinal >= DateTime.Now).Where(u => u.Assigned != 4).Include(u => u.Exposicao).Include(u => u.UserAccount).ToList());
         }
 
 		// POST: UserAccountExposicao/Candidatura
