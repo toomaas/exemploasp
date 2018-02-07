@@ -122,65 +122,71 @@
         </div>
 
         <div class="col-sm-6">
+            @{
+                if (Model.UserAccountExposicaos.Where(u => u.Exposicao.DataFinal > DateTime.Now).Any(u => u.Assigned == 4))
+                {
+                    <h3> As Minhas Exposições</h3>
 
-            <h3> As Minhas Exposições</h3>
+                    <div class="table-responsive">
+                        <table id="mytable" class="table table-bordred table-striped">
+                            @{
 
-            <div class="table-responsive">
-                <table id="mytable" class="table table-bordred table-striped">
-                    @{
-
-                        <tr>
-                            <th>Exposição</th>
-                            <th>Data Inicial</th>
-                            <th>Data Final</th>
-                            <th>Duração</th>
-                            <th>Disponibilidade</th>
-                        </tr>
-
-
-                        foreach (var data in Model.UserAccountExposicaos)
-                        {
-                            if (data.Assigned == 4)
-                            {
                                 <tr>
-                                    <td>@Html.DisplayFor(modelData => data.Exposicao.Nome)</td>
-                                    <td>@Html.DisplayFor(modelData => data.Exposicao.DataInicial)</td>
-                                    <td>@Html.DisplayFor(modelData => data.Exposicao.DataFinal)</td>
-                                    <td>@Html.DisplayFor(modelData => data.Exposicao.Duracao)</td>
-                                    @{
-                                        if (Model.Disponibilidades.All(m => m.ExposicaoID != data.ExposicaoID))
-                                        {
-                                            <td style="text-align: center">
-                                                <p data-placement="top" data-toggle="tooltip" title="Definir disponibilidade">
-                                                    <a href=" @Url.Action("Definir", "Disponibilidade", new {id = data.UserAccountID, exp = data.ExposicaoID}) " class="btn btn-info btn-sm">
-                                                        <span class="	glyphicon glyphicon-calendar"></span>
-                                                    </a>
-                                                </p>
-                                            </td>
-                                        }
-                                        else
-                                        {
-                                            <td style="text-align: center">
-                                                <p data-placement="top" data-toggle="tooltip" title="Ver disponibilidade">
-                                                    <a href=" @Url.Action("Ver", "Disponibilidade", new {id = data.UserAccountID, exp = data.ExposicaoID}) " class="btn btn-warning btn-sm">
-                                                        <span class="	glyphicon glyphicon-th-list"></span>
-                                                    </a>
-                                                </p>
-                                            </td>
-                                        }
-                                    }
-
+                                    <th>Exposição</th>
+                                    <th>Data Inicial</th>
+                                    <th>Data Final</th>
+                                    <th>Duração</th>
+                                    <th>Disponibilidade</th>
                                 </tr>
 
+
+                                foreach (var data in Model.UserAccountExposicaos)
+                                {
+                                    if (data.Assigned == 4)
+                                    {
+                                        <tr>
+                                            <td>@Html.DisplayFor(modelData => data.Exposicao.Nome)</td>
+                                            <td>@Html.DisplayFor(modelData => data.Exposicao.DataInicial)</td>
+                                            <td>@Html.DisplayFor(modelData => data.Exposicao.DataFinal)</td>
+                                            <td>@Html.DisplayFor(modelData => data.Exposicao.Duracao)</td>
+                                            @{
+                                                if (Model.Disponibilidades.All(m => m.ExposicaoID != data.ExposicaoID))
+                                                {
+                                                    <td style="text-align: center">
+                                                        <p data-placement="top" data-toggle="tooltip" title="Definir disponibilidade">
+                                                            <a href=" @Url.Action("Definir", "Disponibilidade", new {id = data.UserAccountID, exp = data.ExposicaoID}) " class="btn btn-info btn-sm">
+                                                                <span class="	glyphicon glyphicon-calendar"></span>
+                                                            </a>
+                                                        </p>
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td style="text-align: center">
+                                                        <p data-placement="top" data-toggle="tooltip" title="Ver disponibilidade">
+                                                            <a href=" @Url.Action("Ver", "Disponibilidade", new {id = data.UserAccountID, exp = data.ExposicaoID}) " class="btn btn-warning btn-sm">
+                                                                <span class="	glyphicon glyphicon-th-list"></span>
+                                                            </a>
+                                                        </p>
+                                                    </td>
+                                                }
+                                            }
+
+                                        </tr>
+
+                                    }
+
+                                }
                             }
+                        </table>
 
-                        }
-                    }
-                </table>
-
-            </div>
-
-
+                    </div>
+                }
+                else
+                {
+                    <h3>Não tem exposições ativas</h3>
+                }
+            }
         </div>
     </div>
 </div>

@@ -33,6 +33,14 @@ namespace exemploasp.Controllers
 			return View(user.ToList());
 		}
 
+	    public ActionResult Register()
+	    {
+	        Session.Remove("UserAccountID");
+	        Session.Remove("Username");
+	        FormsAuthentication.SignOut();
+            return View();
+	    }
+
         //valida e salva na base de dados um novo utilizador, se válido. utiliza o template method
 		[HttpPost]
 		public ActionResult Register(UserAccount account)
