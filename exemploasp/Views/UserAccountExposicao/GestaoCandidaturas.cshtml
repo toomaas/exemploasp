@@ -78,7 +78,7 @@
 
         <hr>
         @{
-            if (Model.Any(u => u.Assigned == 3))
+            if (Model.Where(u => u.Assigned == 3).Any(u => u.InformacaoExtra != null))
             {
                 <h4>Candidaturas por verificar com informação adicional</h4>
                 <table class="table">
