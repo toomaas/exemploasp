@@ -99,6 +99,7 @@ namespace exemploasp.Controllers
 		[HttpPost]
         public ActionResult Create([Bind(Include = "MarcacaoID, NomeRequerente, Idade, NumTelefoneRequerente, Data,HoraDeInicio,HoraDeFim,NumPessoas,ExposicaoID, UserAccountID")]Marcacao marcacao)
         {
+            var exp = db.Exposicao.FirstOrDefault(e => e.ExposicaoID == marcacao.ExposicaoID);
             if (ModelState.IsValid)
             {
                 ObjetoMuseu oMarcacao = new ObjMarcacao(marcacao);
@@ -108,16 +109,19 @@ namespace exemploasp.Controllers
                     ViewBag.Message = "Marcação de " + marcacao.NomeRequerente + " criada com sucesso!";
                 }
                 else
-                {
-                    var exp = db.Exposicao.FirstOrDefault(e => e.ExposicaoID == marcacao.ExposicaoID);
+                {               
                     if(exp != null)
                         ModelState.AddModelError("Data", oMarcacao.Validar());
                     ExposicaoDropdownList();
                     return View();
                 }
                 ModelState.Clear();
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+            if (exp != null)
+                ModelState.AddModelError("", "Erro. Tente novamente");
+            ExposicaoDropdownList();
+            return View();
         }
 
 		// GET: Marcacao/Edit/5
