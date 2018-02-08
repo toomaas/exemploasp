@@ -158,9 +158,10 @@ namespace exemploasp.Controllers
 
         //manda para a view os dados do utilizador, para que possam ser editados
 		[Authorize]
-		public ActionResult Edit()
-	    {
-	        int id = Convert.ToInt32(Session["UserAccountID"]);
+		public ActionResult Edit(int? id)
+		{
+            if(id == null)
+	          id = Convert.ToInt32(Session["UserAccountID"]);
             UserAccount user = db.UserAccount.Include(t => t.TipoUtilizador).Include(u => u.Temas).SingleOrDefault(u => u.UserAccountID == id);
 	        if (user == null)
 	        {
@@ -173,9 +174,9 @@ namespace exemploasp.Controllers
         //atualiza os dados do utilizador
 		[Authorize]
 		[HttpPost]
-	    public ActionResult Edit(string nome, string morada, int numTelefone)
-	    {
-	        int id = Convert.ToInt32(Session["UserAccountID"]);
+	    public ActionResult Edit(int UserAccountID,string nome, string morada, int numTelefone)
+		{
+		    int id = UserAccountID;//Convert.ToInt32(Session["UserAccountID"]);
 	        var userAccountToUpdate = db.UserAccount.Include(u => u.Temas).SingleOrDefault(u => u.UserAccountID == id);
             if (TryUpdateModel(museuDB.EditUser(userAccountToUpdate, nome, morada, numTelefone), "",
 	            new string[] { "Nome,Morada,Idade,Sexo,NumTelefone,Email,Password,ConfirmPassword,TipoUtilizadorID" }))
